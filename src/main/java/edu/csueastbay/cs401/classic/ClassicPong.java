@@ -27,11 +27,11 @@ public class ClassicPong extends Game {
         bottom.setFill(Color.WHITE);
         addObject(bottom);
 
-        Goal left = new Goal("Player 1 Goal", this.fieldWidth -10, 10, 10, this.fieldWidth - 20);
+        Goal left = new Goal("Player 1 Goal", this.fieldWidth -10, 10, 10, this.fieldHeight - 20);
         left.setFill(Color.RED);
         addObject(left);
 
-        Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldWidth - 20);
+        Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
         right.setFill(Color.BLUE);
         addObject(right);
 
@@ -89,12 +89,6 @@ public class ClassicPong extends Game {
     }
 
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {
-//        double relative_range = (a2 - a1);
-//        double relative_position = (s - a1);
-//        double ratio = relative_position / relative_range;
-//        double target_range = b2 - b1;
-//        double relative_result = target_range * ratio;
-//        return (b1 + relative_result);
         return b1 + ((s - a1)*(b2 - b1))/(a2 - a1);
     }
 
