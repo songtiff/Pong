@@ -16,7 +16,7 @@ Each student will:
 * When you're ready you'll create a pull request back to the original repository.  
 * Lastly you'll submit you work on Blackboard
   
-###Grading Rubic:
+### Grading Rubic:
   10: Coding Style, variable names, comments, code organization  
   10: Test Coverage of your code not including game controller  
   10: JavaDocs of your code  
