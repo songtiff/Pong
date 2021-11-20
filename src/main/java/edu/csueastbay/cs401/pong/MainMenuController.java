@@ -40,9 +40,10 @@ public class MainMenuController implements Initializable {
             gameButton.setText(registry.getStudentName());
             gameButton.setPrefWidth(180);
             gameButton.setOnAction(new EventHandler<ActionEvent>() {
+                private final String packageName = registry.getPackageName();
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    loadGamePane("/edu/csueastbay/cs401/" + registry.getPackageName() +"/field.fxml");
+                    loadGamePane("/edu/csueastbay/cs401/" + packageName +"/field.fxml");
                 }
             });
             studentGameList.getChildren().add(gameButton);
