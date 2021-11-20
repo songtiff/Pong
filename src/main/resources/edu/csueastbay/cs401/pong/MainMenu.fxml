@@ -4,17 +4,22 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="baseBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.csueastbay.cs401.pong.MainMenuController">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.csueastbay.cs401.pong.MainMenuController">
    <top>
       <Label fx:id="titleLabel" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" style="-fx-font-size: 30;" text="Main Menu" BorderPane.alignment="CENTER" />
    </top>
    <center>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="860.0" prefWidth="1300.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="scalePane" prefHeight="860.0" prefWidth="1300.0">
+         <children>
+            <AnchorPane fx:id="gamePane" prefHeight="860.0" prefWidth="1300.0" />
+         </children>
+      </StackPane>
    </center>
    <left>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="860.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="860.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
             <VBox fx:id="studentGameList" prefWidth="100.0">
                <children>
