@@ -1,16 +1,19 @@
 package edu.csueastbay.cs401.pong;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -25,40 +28,30 @@ public class MainMenuController implements Initializable {
     @FXML
     private StackPane scalePane;
     @FXML
-    private AnchorPane gamePane;
+    private Group gameGroup;
     @FXML
     private Label titleLabel;
     @FXML
     private VBox studentGameList;
 
+    private DoubleProperty prefWidth, prefHeight;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         registry = new Registry();
         registry.register("Classic Pong", "classic", "Classic Pong Game");
 
         registry.reset();
 
-        DoubleBinding gameScale = Bindings.createDoubleBinding(
-                ()-> {
-                    System.out.println(scalePane.getWidth()+" "+scalePane.getHeight());
-                    return Math.min(1, Math.min(
-                            scalePane.getWidth()/gamePane.getPrefWidth(),
-                            scalePane.getHeight()/gamePane.getPrefHeight()
-                    ));
-                },
-                scalePane.widthProperty(), scalePane.heightProperty()
-        );
+        prefWidth = new SimpleDoubleProperty(scalePane.getPrefWidth());
+        prefHeight = new SimpleDoubleProperty(scalePane.getPrefHeight());
 
-        gamePane.setManaged(false);
-        gamePane.scaleXProperty().bind(gameScale);
-        gamePane.scaleYProperty().bind(gameScale);
-        gamePane.translateXProperty().bind(Bindings.createDoubleBinding(
-                ()->(scalePane.getWidth()-gamePane.getPrefWidth()*gameScale.get())/2,
-                scalePane.widthProperty(), gameScale));
-        gamePane.translateYProperty().bind(Bindings.createDoubleBinding(
-                ()->(scalePane.getHeight()-gamePane.getPrefHeight()*gameScale.get())/2,
-                scalePane.heightProperty(), gameScale));
+        NumberBinding gameScale = Bindings.min(
+                Bindings.divide(scalePane.widthProperty(), prefWidth),
+                Bindings.divide(scalePane.heightProperty(), prefHeight)
+        );
+        gameGroup.scaleXProperty().bind(gameScale);
+        gameGroup.scaleYProperty().bind(gameScale);
 
         while (registry.next()) {
             Button gameButton = new Button();
@@ -80,7 +73,11 @@ public class MainMenuController implements Initializable {
         try {
             Parent root;
             root = FXMLLoader.load(getClass().getResource(template));
-            gamePane.getChildren().setAll(root);
+            if(root instanceof Region region) {
+                prefWidth.set(region.getPrefWidth());
+                prefHeight.set(region.getPrefHeight());
+            }
+            gameGroup.getChildren().setAll(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
