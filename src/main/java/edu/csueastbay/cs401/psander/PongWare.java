@@ -1,6 +1,7 @@
 package edu.csueastbay.cs401.psander;
 
 import edu.csueastbay.cs401.psander.engine.input.InputManager;
+import edu.csueastbay.cs401.psander.engine.scenes.SceneManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -30,9 +31,11 @@ public class PongWare {
     // Systems
     private static PongWare _instance = null;
     private InputManager _inputManager = null;
+    private SceneManager _sceneManager = null;
 
     private PongWare() {
         _inputManager = InputManager.getInstance();
+        _sceneManager = SceneManager.getInstance();
     }
 
     public static PongWare getInstance() {
@@ -60,6 +63,8 @@ public class PongWare {
         _graphicsContext = gc;
 
         _inputManager.init();
+        _sceneManager.init();
+
         var game = this;
 
         _timeline = new Timeline(new KeyFrame(Duration.millis(16.6), new EventHandler<ActionEvent>() {
@@ -104,6 +109,7 @@ public class PongWare {
         _graphicsContext.fillRect(0, 0, _fieldWidth, _fieldHeight);
         
         _inputManager.update(delta);
+        _sceneManager.update(delta);
 
         _previousNano = currentNano;
     }
