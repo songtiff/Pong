@@ -1,6 +1,7 @@
 package edu.csueastbay.cs401.psander.engine.scenes;
 
 import edu.csueastbay.cs401.psander.engine.gameObjects.GameObject;
+import edu.csueastbay.cs401.psander.engine.scripts.ScriptManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ public abstract class Scene {
 
     private final List<GameObject> _gameObjects = new ArrayList<>();
 
+    private final ScriptManager _scriptManager = new ScriptManager();
+
     /**
      * Initializes the scene.
      */
@@ -26,6 +29,7 @@ public abstract class Scene {
      *              frame, in seconds.
      */
     public void update(double delta) {
+        _scriptManager.update(delta, _gameObjects);
     }
 
     /**
