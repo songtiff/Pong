@@ -2,6 +2,7 @@ package edu.csueastbay.cs401.psander.engine.scenes;
 
 import edu.csueastbay.cs401.psander.engine.gameObjects.GameObject;
 import edu.csueastbay.cs401.psander.engine.physics.CollisionManager;
+import edu.csueastbay.cs401.psander.engine.render.RenderManager;
 import edu.csueastbay.cs401.psander.engine.scripts.ScriptManager;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public abstract class Scene {
     public void update(double delta) {
         _scriptManager.update(delta, _gameObjects);
         _collisionManager.update(delta, _gameObjects);
+        RenderManager.getInstance().update(delta, _gameObjects);
     }
 
     /**

@@ -3,7 +3,9 @@ package edu.csueastbay.cs401.psander.engine.scenes;
 import edu.csueastbay.cs401.psander.engine.gameObjects.GameObject;
 import edu.csueastbay.cs401.psander.engine.physics.BoxCollider;
 import edu.csueastbay.cs401.psander.engine.physics.ColliderMode;
+import edu.csueastbay.cs401.psander.engine.render.RenderManager;
 import edu.csueastbay.cs401.psander.engine.scripts.Script;
+import javafx.scene.canvas.Canvas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,6 +66,11 @@ public class SceneTest {
         go.addComponent(col);
 
         scene.addGameObject(go);
+
+        // Extra setup to make sure RenderManager doesn't throw an error
+        var canvas = new Canvas();
+        var gc = canvas.getGraphicsContext2D();
+        RenderManager.getInstance().init(1.0, 1.0, gc);
         scene.update(1.0);
 
         assertEquals(1.0, script.Delta);
