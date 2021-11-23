@@ -1,6 +1,8 @@
 package edu.csueastbay.cs401.psander.engine.scenes;
 
 import edu.csueastbay.cs401.psander.engine.gameObjects.GameObject;
+import edu.csueastbay.cs401.psander.engine.physics.BoxCollider;
+import edu.csueastbay.cs401.psander.engine.physics.ColliderMode;
 import edu.csueastbay.cs401.psander.engine.scripts.Script;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,12 +51,17 @@ public class SceneTest {
         assertDoesNotThrow(() -> scene.removeGameObject(go));
     }
 
+    // This was going to have a collider mock but I couldn't get the
+    // update method for BoxCollider to override correctly, and
+    // I don't have a base collider class yet.
     @Test
     public void TestScriptExecution() {
         var scene = new SceneMock();
         var go = new GameObject("test");
         var script = new ScriptMock();
         go.addComponent(script);
+        var col = new BoxCollider(10.0, 10.0, ColliderMode.STATIC);
+        go.addComponent(col);
 
         scene.addGameObject(go);
         scene.update(1.0);

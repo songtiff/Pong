@@ -1,6 +1,7 @@
 package edu.csueastbay.cs401.psander.engine.scenes;
 
 import edu.csueastbay.cs401.psander.engine.gameObjects.GameObject;
+import edu.csueastbay.cs401.psander.engine.physics.CollisionManager;
 import edu.csueastbay.cs401.psander.engine.scripts.ScriptManager;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public abstract class Scene {
     private final List<GameObject> _gameObjects = new ArrayList<>();
 
     private final ScriptManager _scriptManager = new ScriptManager();
+    private CollisionManager _collisionManager = new CollisionManager();
 
     /**
      * Initializes the scene.
@@ -30,6 +32,7 @@ public abstract class Scene {
      */
     public void update(double delta) {
         _scriptManager.update(delta, _gameObjects);
+        _collisionManager.update(delta, _gameObjects);
     }
 
     /**
