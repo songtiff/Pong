@@ -1,10 +1,10 @@
 package edu.csueastbay.cs401.psander;
 
+import edu.csueastbay.cs401.psander.demo.demo2collisionTests.CollisionTestScene;
 import edu.csueastbay.cs401.psander.engine.events.EventHub;
 import edu.csueastbay.cs401.psander.engine.input.InputManager;
 import edu.csueastbay.cs401.psander.engine.render.RenderManager;
 import edu.csueastbay.cs401.psander.engine.scenes.SceneManager;
-import edu.csueastbay.cs401.psander.demo.demo1scenesAndGameobjects.TestScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -77,9 +77,9 @@ public class PongWare {
         _renderManager.init(_fieldWidth, _fieldHeight, gc);
         _eventHub.init();
 
-        var testScene = new TestScene();
-        testScene.init();
-        _sceneManager.push(testScene);
+        var collisionTestScene = new CollisionTestScene();
+        collisionTestScene.init();
+        _sceneManager.push(collisionTestScene);
 
         var game = this;
 
