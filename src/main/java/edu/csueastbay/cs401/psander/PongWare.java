@@ -1,6 +1,6 @@
 package edu.csueastbay.cs401.psander;
 
-import edu.csueastbay.cs401.psander.demo.demo2collisionTests.CollisionTestScene;
+import edu.csueastbay.cs401.psander.demo.demo3renderlayers.LayerTestScene;
 import edu.csueastbay.cs401.psander.engine.events.EventHub;
 import edu.csueastbay.cs401.psander.engine.input.InputManager;
 import edu.csueastbay.cs401.psander.engine.render.RenderManager;
@@ -77,9 +77,9 @@ public class PongWare {
         _renderManager.init(_fieldWidth, _fieldHeight, gc);
         _eventHub.init();
 
-        var collisionTestScene = new CollisionTestScene();
-        collisionTestScene.init();
-        _sceneManager.push(collisionTestScene);
+        var layerTestScene = new LayerTestScene();
+        layerTestScene.init();
+        _sceneManager.push(layerTestScene);
 
         var game = this;
 
