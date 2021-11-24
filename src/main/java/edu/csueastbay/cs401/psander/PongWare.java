@@ -1,5 +1,6 @@
 package edu.csueastbay.cs401.psander;
 
+import edu.csueastbay.cs401.psander.engine.events.EventHub;
 import edu.csueastbay.cs401.psander.engine.input.InputManager;
 import edu.csueastbay.cs401.psander.engine.render.RenderManager;
 import edu.csueastbay.cs401.psander.engine.scenes.SceneManager;
@@ -32,11 +33,13 @@ public class PongWare {
     private InputManager _inputManager = null;
     private SceneManager _sceneManager = null;
     private RenderManager _renderManager;
+    private EventHub _eventHub;
 
     private PongWare() {
         _inputManager = InputManager.getInstance();
         _sceneManager = SceneManager.getInstance();
         _renderManager = RenderManager.getInstance();
+        _eventHub = EventHub.getInstance();
     }
 
     public static PongWare getInstance() {
@@ -64,6 +67,7 @@ public class PongWare {
         _inputManager.init();
         _sceneManager.init();
         _renderManager.init(_fieldWidth, _fieldHeight, gc);
+        _eventHub.init();
 
         var game = this;
 
