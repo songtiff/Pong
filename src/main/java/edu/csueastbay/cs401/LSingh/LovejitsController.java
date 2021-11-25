@@ -1,6 +1,13 @@
 package edu.csueastbay.cs401.LSingh;
 
+import edu.csueastbay.cs401.classic.ClassicPong;
+import edu.csueastbay.cs401.pong.Collidable;
+import edu.csueastbay.cs401.pong.Puckable;
 import edu.csueastbay.cs401.pong.Registry;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.DoubleProperty;
@@ -11,87 +18,87 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class LovejitsController implements Initializable {
+    public static final int FIELD_WIDTH = 1300;
+    public static final int FIELD_HEIGHT = 860;
+    public static final int VICTORY_SCORE = 10;
 
-    private Registry registry;
-
-
+    private ClassicPong game;
+    private Timeline timeline;
 
     @FXML
-    private StackPane scalePane;
+    AnchorPane fieldPane;
     @FXML
-    private Group gameGroup;
+    Label playerOneScore;
     @FXML
-    private Label titleLabel;
-    @FXML
-    private VBox studentGameList;
-
-    private DoubleProperty prefWidth, prefHeight;
+    Label playerTwoScore;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        registry = new Registry();
-        registry.register("Classic Pong", "classic", "Classic Pong Game");
-        registry.register("Lovejit's Game", "LSingh", "Classic Pong Game");
+        game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
+        Platform.runLater(()->fieldPane.requestFocus());
+        addGameElementsToField();
+        setUpTimeline();
 
-        registry.reset();
 
-        prefWidth = new SimpleDoubleProperty(scalePane.getPrefWidth());
-        prefHeight = new SimpleDoubleProperty(scalePane.getPrefHeight());
-
-        NumberBinding gameScale = Bindings.min(
-                Bindings.divide(scalePane.widthProperty(), prefWidth),
-                Bindings.divide(scalePane.heightProperty(), prefHeight)
-        );
-        gameGroup.scaleXProperty().bind(gameScale);
-        gameGroup.scaleYProperty().bind(gameScale);
-
-        while (registry.next()) {
-            Button gameButton = new Button();
-            gameButton.setText(registry.getStudentName());
-            gameButton.setPrefWidth(180);
-            gameButton.setOnAction(new EventHandler<ActionEvent>() {
-                private final String packageName = registry.getPackageName();
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    loadGamePane("/edu/csueastbay/cs401/" + packageName +"/field.fxml");
-                }
-            });
-            studentGameList.getChildren().add(gameButton);
-        }
     }
 
 
-    private void loadGamePane(String template) {
-        try {
-            Parent root;
-            root = FXMLLoader.load(getClass().getResource(template));
-            if(root instanceof Region region) {
-                prefWidth.set(region.getPrefWidth());
-                prefHeight.set(region.getPrefHeight());
+    private void addGameElementsToField() {
+        ArrayList<Puckable> pucks = game.getPucks();
+        pucks.forEach((puck) -> {
+            fieldPane.getChildren().add((Node) puck);
+        });
+
+        ArrayList<Collidable> objects = game.getObjects();
+        objects.forEach((object)-> {
+            fieldPane.getChildren().add((Node) object);
+        });
+
+    }
+
+    @FXML
+    public void keyPressed(KeyEvent event) {
+        System.out.println("Pressed: " + event.getCode());
+        game.keyPressed(event.getCode());
+    }
+
+    @FXML
+    public void keyReleased(KeyEvent event) {
+        game.keyReleased(event.getCode());
+        System.out.println("Released: " + event.getCode());
+    }
+
+    private void setUpTimeline() {
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                game.move();
+                playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
+                playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
             }
-            gameGroup.getChildren().setAll(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }));
 
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
-    public void keyPressed(KeyEvent keyEvent) {
-    }
 
-    public void keyReleased(KeyEvent keyEvent) {
-    }
 }
