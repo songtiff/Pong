@@ -34,6 +34,7 @@ public class PongWare {
     private SceneManager _sceneManager = null;
     private RenderManager _renderManager;
     private EventHub _eventHub;
+    private static GameState _gameState = new GameState();
 
     private PongWare() {
         _inputManager = InputManager.getInstance();
@@ -52,6 +53,12 @@ public class PongWare {
     public static double getFieldWidth() { return getInstance()._fieldWidth; }
 
     public static double getFieldHeight() { return getInstance()._fieldHeight; }
+
+    /**
+     * Returns the game's state data.
+     * @return An object containing the game's state data.
+     */
+    public static GameState State() { return _gameState; }
 
     /**
      * Reinitialize the PongWare object.
