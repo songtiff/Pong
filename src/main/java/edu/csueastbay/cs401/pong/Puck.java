@@ -1,6 +1,8 @@
 package edu.csueastbay.cs401.pong;
 
 import edu.csueastbay.cs401.pong.Puckable;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -27,10 +29,12 @@ public class Puck extends Circle implements Puckable {
     @Override
     public void reset() {
         Random random = new Random();
-        setCenterX(fieldWidth / 2);
-        setCenterY(fieldHeight / 2);
+        setCenterX(fieldWidth/2);
+        setCenterY(fieldHeight/2);
         setRadius(STARTING_RADIOUS);
         setFill(Color.WHITE);
+
+
 
         speed = STARTING_SPEED;
         if (random.nextInt(2) == 0) {

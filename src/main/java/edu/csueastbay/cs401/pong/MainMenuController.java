@@ -25,6 +25,8 @@ public class MainMenuController implements Initializable {
 
     private Registry registry;
 
+
+
     @FXML
     private StackPane scalePane;
     @FXML
@@ -40,6 +42,7 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         registry = new Registry();
         registry.register("Classic Pong", "classic", "Classic Pong Game");
+        registry.register("Lovejit's Game", "LSingh", "Classic Pong Game");
 
         registry.reset();
 
