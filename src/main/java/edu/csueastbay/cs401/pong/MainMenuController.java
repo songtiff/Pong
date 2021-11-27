@@ -49,6 +49,7 @@ public class MainMenuController implements Initializable {
                 " ping pong game that is fast paced with power small power zones that make the game experience interesting. ");
         registry.register("Ethan Ketell", "ethan", "Neon Pong+");
 
+
         registry.reset();
 
         prefWidth = new SimpleDoubleProperty(scalePane.getPrefWidth());
