@@ -33,7 +33,12 @@ public class GameController implements Initializable {
     Label playerOneScore;
     @FXML
     Label playerTwoScore;
-
+    @FXML
+    Label playerOneBlocks;
+    @FXML
+    Label playerTwoBlocks;
+    @FXML
+    Label timer;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
