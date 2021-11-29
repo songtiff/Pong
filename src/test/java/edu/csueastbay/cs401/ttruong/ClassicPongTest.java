@@ -1,6 +1,7 @@
 package edu.csueastbay.cs401.ttruong;
 
 import edu.csueastbay.cs401.pong.*;
+import javafx.scene.layout.AnchorPane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ClassicPongTest {
 
-    edu.csueastbay.cs401.classic.ClassicPong game;
+    edu.csueastbay.cs401.ttruong.ClassicPong game;
 
     @BeforeEach
     void setUp() {
-        game = new edu.csueastbay.cs401.classic.ClassicPong(10, 1300, 860);
+        game = new edu.csueastbay.cs401.ttruong.ClassicPong(10, 1300, 860, new AnchorPane());
     }
 
     @Test
@@ -192,7 +193,7 @@ class ClassicPongTest {
 
     @Test
     void mapRange0to10and30to50() {
-        double result = edu.csueastbay.cs401.classic.ClassicPong.mapRange(0,10,30,50, 5);
+        double result = edu.csueastbay.cs401.ttruong.ClassicPong.mapRange(0,10,30,50, 5);
         assertEquals(40, result);
 
     }

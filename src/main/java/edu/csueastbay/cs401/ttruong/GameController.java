@@ -1,6 +1,6 @@
 package edu.csueastbay.cs401.ttruong;
 
-import edu.csueastbay.cs401.classic.ClassicPong;
+import edu.csueastbay.cs401.ttruong.ClassicPong;
 import edu.csueastbay.cs401.pong.Collidable;
 import edu.csueastbay.cs401.pong.Puckable;
 import javafx.animation.Animation;
@@ -26,7 +26,7 @@ public class GameController implements Initializable {
     public static final int FIELD_HEIGHT = 860;
     public static final int VICTORY_SCORE = 10;
 
-    private edu.csueastbay.cs401.classic.ClassicPong game;
+    private edu.csueastbay.cs401.ttruong.ClassicPong game;
     private Timeline timeline;
 
     @FXML
@@ -38,7 +38,7 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
+        game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT, fieldPane);
         Platform.runLater(()->fieldPane.requestFocus());
         addGameElementsToField();
         setUpTimeline();

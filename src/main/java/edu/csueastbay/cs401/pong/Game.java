@@ -69,6 +69,10 @@ public abstract class Game {
         return (ArrayList<Puckable>) pucks.clone();
     }
 
+    public void clearPucks() {
+        pucks.clear();
+    }
+
     public void move() {
 
         playOnePaddle.move();

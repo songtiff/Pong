@@ -1,20 +1,29 @@
 package edu.csueastbay.cs401.ttruong;
 
 import edu.csueastbay.cs401.pong.*;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
 
 public class ClassicPong extends Game {
 
+
     private double fieldHeight;
     private double fieldWidth;
+    private PuckFactory puckFactory;
+    private AnchorPane field;
 
-    public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight) {
+    public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight, AnchorPane field) {
         super(victoryScore);
 
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
+        this.field = field;
+        this.puckFactory = new PuckFactory(fieldWidth, fieldHeight);
 
-        Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
+        Puck puck = (Puck) puckFactory.createPuck();
         puck.setID("Classic");
         addPuck(puck);
 
@@ -57,6 +66,7 @@ public class ClassicPong extends Game {
         addPlayerPaddle(2, playerTwo);
     }
 
+
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
 
@@ -67,10 +77,10 @@ public class ClassicPong extends Game {
             case "Goal":
                 if (collision.getObjectID() == "Player 1 Goal") {
                     addPointsToPlayer(1, 1);
-                    puck.reset();
+                    newPuck();
                 } else if (collision.getObjectID() == "Player 2 Goal") {
                     addPointsToPlayer(2, 1);
-                    puck.reset();
+                    newPuck();
                 }
                 break;
             case "Paddle":
@@ -84,6 +94,18 @@ public class ClassicPong extends Game {
                 puck.setDirection(angle);
 
         }
+    }
+
+    public void newPuck() {
+        ArrayList<Puckable> pucks = getPucks();
+        pucks.forEach((old_puck) -> {
+            field.getChildren().remove((Node) old_puck);
+        });
+        clearPucks();
+        Puckable puck = PuckFactory.createPuck();
+        puck.setID("Random");
+        addPuck(puck);
+        field.getChildren().add((Node)puck);
     }
 
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {
