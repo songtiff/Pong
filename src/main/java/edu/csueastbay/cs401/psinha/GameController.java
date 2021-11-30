@@ -1,7 +1,6 @@
 package edu.csueastbay.cs401.psinha;
 
 import edu.csueastbay.cs401.pong.Collidable;
-import edu.csueastbay.cs401.pong.Puck;
 import edu.csueastbay.cs401.pong.Puckable;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -27,7 +26,7 @@ public class GameController implements Initializable {
     public static final int FIELD_HEIGHT = 860;
     public static final int VICTORY_SCORE = 10;
 
-    private ClassicPong game;
+    private PyushPong game;
     private Timeline timeline;
 
 
@@ -42,7 +41,7 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         boolean test = true;
-        game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
+        game = new PyushPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
         Platform.runLater(()->fieldPane.requestFocus());
         addGameElementsToField();
         setUpTimeline();

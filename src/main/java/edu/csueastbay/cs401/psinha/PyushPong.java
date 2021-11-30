@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
-public class ClassicPong extends Game {
+public class PyushPong extends Game {
 
     private double fieldHeight;
     private double fieldWidth;
@@ -17,7 +17,7 @@ public class ClassicPong extends Game {
 
 
 
-    public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight) {
+    public PyushPong(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
 
         this.fieldWidth = fieldWidth;
