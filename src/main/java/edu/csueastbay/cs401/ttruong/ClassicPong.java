@@ -35,7 +35,7 @@ public class ClassicPong extends Game {
         zoom1.setCenterX(200);
         zoom1.setCenterY(300);
         zoom1.setRadius(10.0);
-        zoom1.setFill(Color.SKYBLUE);
+        zoom1.setFill(Color.LIGHTBLUE);
         addObject(zoom1);
 
         SpeedBoost zoom2 = new SpeedBoost(this.fieldWidth, this.fieldHeight);
@@ -43,7 +43,7 @@ public class ClassicPong extends Game {
         zoom2.setCenterX(1000);
         zoom2.setCenterY(300);
         zoom2.setRadius(10.0);
-        zoom2.setFill(Color.DEEPSKYBLUE);
+        zoom2.setFill(Color.LIGHTBLUE);
         addObject(zoom2);
 
         SpeedDebuff slow1 = new SpeedDebuff(this.fieldWidth, this.fieldHeight);
@@ -51,7 +51,7 @@ public class ClassicPong extends Game {
         slow1.setCenterX(1000);
         slow1.setCenterY(600);
         slow1.setRadius(10.0);
-        slow1.setFill(Color.LIGHTPINK);
+        slow1.setFill(Color.LIGHTBLUE);
         addObject(slow1);
 
         SpeedDebuff slow2 = new SpeedDebuff(this.fieldWidth, this.fieldHeight);
@@ -59,23 +59,23 @@ public class ClassicPong extends Game {
         slow2.setCenterX(200);
         slow2.setCenterY(600);
         slow2.setRadius(10.0);
-        slow2.setFill(Color.LIGHTCORAL);
+        slow2.setFill(Color.LIGHTBLUE);
         addObject(slow2);
 
         Wall top = new Wall("Top Wall", 0, 0, this.fieldWidth, 10);
-        top.setFill(Color.WHITE);
+        top.setFill(Color.MIDNIGHTBLUE);
         addObject(top);
 
         Wall bottom = new Wall("Bottom Wall", 0, this.fieldHeight - 10, this.fieldWidth, 10);
-        bottom.setFill(Color.WHITE);
+        bottom.setFill(Color.LIGHTBLUE);
         addObject(bottom);
 
         Goal left = new Goal("Player 1 Goal", this.fieldWidth - 10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.ORANGE);
+        left.setFill(Color.DEEPSKYBLUE);
         addObject(left);
 
         Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.ORANGE);
+        right.setFill(Color.DEEPSKYBLUE);
         addObject(right);
 
         Paddle playerOne = new Paddle(
@@ -86,7 +86,7 @@ public class ClassicPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerOne.setFill(Color.VIOLET);
+        playerOne.setFill(Color.AZURE);
         addPlayerPaddle(1, playerOne);
 
         Paddle playerTwo = new Paddle(
@@ -97,7 +97,7 @@ public class ClassicPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerTwo.setFill(Color.BLUEVIOLET);
+        playerTwo.setFill(Color.AZURE);
         addPlayerPaddle(2, playerTwo);
     }
 
@@ -107,8 +107,10 @@ public class ClassicPong extends Game {
         switch (collision.getType()) {
             case "SpeedBuff":
                 puck.setSpeed(10.0);
+                break;
             case "SpeedDebuff":
-                puck.setSpeed(3.5);
+                puck.setSpeed(2.0);
+                break;
             case "Wall":
                 puck.setDirection(0 - puck.getDirection());
                 break;
