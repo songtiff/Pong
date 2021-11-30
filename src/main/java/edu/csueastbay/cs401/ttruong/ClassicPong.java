@@ -109,11 +109,9 @@ public class ClassicPong extends Game {
 
         switch (collision.getType()) {
             case "SpeedBuff":
-                puck_speed_boost = puck.getSpeed();
-                puck_speed_boost += 2.5;
+                puck.setSpeed(10.0);
             case "SpeedDebuff":
-                puck_speed_boost = puck.getSpeed();
-                puck_speed_boost -= 2.5;
+                puck.setSpeed(3.5);
             case "Wall":
                 puck.setDirection(0 - puck.getDirection());
                 break;
