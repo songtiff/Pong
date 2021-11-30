@@ -1,9 +1,13 @@
 package edu.csueastbay.cs401.ethan;
 
+import edu.csueastbay.cs401.ethan.game.Game;
+import edu.csueastbay.cs401.ethan.game.InputHandler;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -14,11 +18,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class PongController extends StackPane {
+public class PongController extends StackPane implements InputHandler {
 
     private static final PongController instance = new PongController();
     public static PongController getInstance() { return instance; }
@@ -39,31 +41,52 @@ public class PongController extends StackPane {
         }
     }
 
-    PongGame game;
+    Set<KeyCode> heldKeys;
+    ObservableMap<String, KeyCode> controls;
 
+    ObjectProperty<PongGame> game;
     PongPane pongPane;
     MenuPane menuPane;
 
     public PongController() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("pong.css")).toExternalForm());
-        game = new PongGame();
+
+        heldKeys = new HashSet<>();
+        Map<String, KeyCode> temp = new LinkedHashMap<>();
+        temp.put("Player 1 Up", KeyCode.W);
+        temp.put("Player 1 Down", KeyCode.S);
+        temp.put("Player 2 Up", KeyCode.UP);
+        temp.put("Player 2 Down", KeyCode.DOWN);
+        temp.put("Pause/Back", KeyCode.ESCAPE);
+        controls = FXCollections.observableMap(temp);
 
         focusedProperty().addListener((obj, oldVal, newVal)->{
             if(!newVal) {
-                game.setPlaying(false);
-                menuPane.setVisible(true);
+                if(game.get() != null) game.get().setPlaying(false);
+                if(!menuPane.isVisible()) {
+                    menuPane.setVisible(true);
+                    menuPane.setActiveMenu("PAUSED");
+                }
                 requestFocus();
             }
         });
 
         setOnKeyPressed(this::onKeyPressed);
-        game.input.bind(this);
+        setOnKeyReleased(e->heldKeys.remove(e.getCode()));
 
-        pongPane = new PongPane(game);
+        game = new SimpleObjectProperty<>();
+        game.addListener((obs, oldVal, newVal)->{
+            newVal.input = this;
+            pongPane.setGame(newVal);
+        });
+
+        pongPane = new PongPane();
         getChildren().add(pongPane);
 
         menuPane = createMenus();
         getChildren().add(menuPane);
+
+        game.set(new PongGame());
     }
 
     private MenuPane createMenus() {
@@ -74,7 +97,16 @@ public class PongController extends StackPane {
         button = new Button("RESUME");
         button.setOnAction(e->{
             menuPane.setVisible(false);
-            game.setPlaying(true);
+            game.get().setPlaying(true);
+        });
+        button.disableProperty().bind(Bindings.selectBoolean(game, "gameOver"));
+        menu.addButton(button);
+
+        button = new Button("NEW GAME");
+        button.setOnAction(e->{
+            game.set(new PongGame());
+            menuPane.setVisible(false);
+            game.get().setPlaying(true);
         });
         menu.addButton(button);
 
@@ -83,19 +115,12 @@ public class PongController extends StackPane {
         menu.addButton(button);
 
         menu = menuPane.getMenu("CONTROLS");
-        for(Map.Entry<String, KeyCode> entry : game.input.controls.entrySet()) {
-            String control = entry.getKey();
-            Button controlButton = new Button(String.format("<%s>", entry.getValue().getName()));
-            controlButton.setOnAction(actionEvent->{
-                controlButton.setText("<...>");
-                setOnKeyPressed(keyEvent->{
-                    if(!keyEvent.getCode().equals(KeyCode.ESCAPE)) {
-                        game.input.controls.put(control, keyEvent.getCode());
-                    }
-                    controlButton.setText(String.format("<%s>", game.input.controls.get(control).getChar()));
-                    setOnKeyPressed(this::onKeyPressed);
-                });
-            });
+        for(String control : controls.keySet()) {
+            Button controlButton = new Button();
+            controlButton.textProperty().bind(Bindings.createStringBinding(
+                    ()->(controls.get(control) != null) ? String.format("<%s>", controls.get(control).getName()) : "<...>",
+                    controls));
+            controlButton.setOnAction(actionEvent->rebind(control));
             menu.addLabelledButton(control+": ", controlButton);
         }
         button = new Button("DONE");
@@ -105,24 +130,38 @@ public class PongController extends StackPane {
         return menuPane;
     }
 
-    @FXML
     public void onKeyPressed(KeyEvent event) {
-        if(event.getCode().equals(KeyCode.ESCAPE)) {
-            if(game.isPlaying()) {
-                menuPane.setVisible(true);
+        if(event.getCode().equals(controls.get("Pause/Back"))) {
+            if(game.get().isPlaying()) {
+                game.get().setPlaying(false);
                 menuPane.setActiveMenu("PAUSED");
-                game.setPlaying(false);
+                menuPane.setVisible(true);
             } else if(menuPane.isVisible()) {
                 if(!menuPane.previousMenu()) {
                     menuPane.setVisible(false);
-                    game.setPlaying(true);
+                    game.get().setPlaying(true);
                 }
             }
+        } else {
+            heldKeys.add(event.getCode());
         }
     }
 
-    public void rebindControl(String control, KeyEvent event) {
-        if(event.getCode().equals(KeyCode.ESCAPE)) return;
-        game.input.controls.put(control, event.getCode());
+    private void rebind(String control) {
+        var oldControl = controls.put(control, null);
+        var oldHandler = getOnKeyPressed();
+        setOnKeyPressed(event -> {
+            if(event.getCode().equals(controls.get("Pause/Back"))) {
+                controls.put(control, oldControl);
+            } else {
+                controls.put(control, event.getCode());
+            }
+            setOnKeyPressed(oldHandler);
+        });
+    }
+
+    @Override
+    public boolean isHeld(String control) {
+        return heldKeys.contains(controls.get(control));
     }
 }
