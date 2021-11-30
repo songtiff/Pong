@@ -25,7 +25,7 @@ public class PongPane extends StackPane {
     @FXML
     private Label p2Score;
 
-    public PongPane() {
+    public PongPane(PongGame game) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pong_pane.fxml"));
             loader.setController(this);
@@ -34,15 +34,8 @@ public class PongPane extends StackPane {
         } catch (IOException exc) {
             exc.printStackTrace();
         }
-    }
 
-    public PongPane(PongGame game) {
-        this();
-        setGame(game);
-    }
-
-    public void setGame(PongGame game) {
-        entityGroup.getChildren().setAll(game.pane);
+        entityGroup.getChildren().add(game.pane);
         p1Score.textProperty().bind(game.p1Score.asString());
         p2Score.textProperty().bind(game.p2Score.asString());
     }

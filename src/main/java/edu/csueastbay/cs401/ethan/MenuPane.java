@@ -123,7 +123,6 @@ public class MenuPane extends StackPane {
     }
 
     private void transition(Menu menu, boolean right) {
-        if(menu == current) return;
         double offset = right ? getWidth() : -getWidth();
         Menu prev = current;
         current = menu;

@@ -9,19 +9,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PongGame extends Game {
-
-    private static final Map<String, KeyCode> controls;
-    static {
-        controls = new LinkedHashMap<>();
-        controls.put("Player 1 Up",   KeyCode.W);
-        controls.put("Player 1 Down", KeyCode.S);
-        controls.put("Player 2 Up",   KeyCode.UP);
-        controls.put("Player 2 Down", KeyCode.DOWN);
-    }
 
     public final IntegerProperty p1Score, p2Score;
 
@@ -33,6 +24,12 @@ public class PongGame extends Game {
         p1Score = new SimpleIntegerProperty(0);
         p2Score = new SimpleIntegerProperty(0);
 
+        // Initialize default controls
+        input.controls.put("Player 1 Up",   KeyCode.W);
+        input.controls.put("Player 1 Down", KeyCode.S);
+        input.controls.put("Player 2 Up",   KeyCode.UP);
+        input.controls.put("Player 2 Down", KeyCode.DOWN);
+
         getEntities().addListener((SetChangeListener<? super Entity>) change->{
             if(change.wasAdded() && change.getElementAdded() instanceof Ball) {
                 ballCount++;
@@ -43,7 +40,6 @@ public class PongGame extends Game {
                 }
             }
         });
-
 
         Entity temp;
         temp = new Paddle("Player 1 Up", "Player 1 Down", Color.MAGENTA);
@@ -64,7 +60,6 @@ public class PongGame extends Game {
         add(temp);
 
         addBall();
-        schedule(10, this::addRandomUpgrade);
         commit();
     }
 
@@ -74,11 +69,4 @@ public class PongGame extends Game {
         schedule(1, ball::launch);
     }
 
-    private void addRandomUpgrade() {
-        Upgrade upgrade = new Upgrade.SplitUpgrade();
-        upgrade.x = (0.33+0.33*Math.random())*bounds.getWidth();
-        upgrade.y = (0.1+0.8*Math.random())*bounds.getHeight();
-        add(upgrade);
-        schedule(2+3*Math.random(), this::addRandomUpgrade);
-    }
 }
