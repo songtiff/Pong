@@ -4,9 +4,7 @@ import edu.csueastbay.cs401.ethan.game.Game;
 import edu.csueastbay.cs401.ethan.game.InputHandler;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -122,13 +120,11 @@ public class PongController extends StackPane implements InputHandler {
             controlButton.textProperty().bind(Bindings.createStringBinding(
                     ()->(controls.get(control) != null) ? String.format("<%s>", controls.get(control).getName()) : "<...>",
                     controls));
-
             controlButton.setOnAction(actionEvent->rebind(control));
             menu.addLabelledButton(control+": ", controlButton);
         }
         button = new Button("DONE");
         button.setOnAction(e->menuPane.previousMenu());
-        button.disableProperty().bind(rebinding);
         menu.addButton(button);
 
         return menuPane;
@@ -151,10 +147,7 @@ public class PongController extends StackPane implements InputHandler {
         }
     }
 
-    private final BooleanProperty rebinding = new SimpleBooleanProperty(false);
     private void rebind(String control) {
-        if(rebinding.get()) return;
-        rebinding.set(true);
         var oldControl = controls.put(control, null);
         var oldHandler = getOnKeyPressed();
         setOnKeyPressed(event -> {
@@ -164,7 +157,6 @@ public class PongController extends StackPane implements InputHandler {
                 controls.put(control, event.getCode());
             }
             setOnKeyPressed(oldHandler);
-            rebinding.set(false);
         });
     }
 

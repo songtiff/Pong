@@ -64,7 +64,6 @@ public class PongGame extends Game {
         add(temp);
 
         addBall();
-        schedule(10, this::addRandomUpgrade);
         commit();
     }
 
@@ -72,13 +71,5 @@ public class PongGame extends Game {
         Ball ball = new Ball(5, width/2, height/2);
         add(ball);
         schedule(1, ball::launch);
-    }
-
-    private void addRandomUpgrade() {
-        Upgrade upgrade = new Upgrade.SplitUpgrade();
-        upgrade.x = (0.33+0.33*Math.random())*bounds.getWidth();
-        upgrade.y = (0.1+0.8*Math.random())*bounds.getHeight();
-        add(upgrade);
-        schedule(2+3*Math.random(), this::addRandomUpgrade);
     }
 }
