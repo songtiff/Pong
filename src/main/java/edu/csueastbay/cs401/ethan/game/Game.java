@@ -129,30 +129,38 @@ public abstract class Game {
         entities.forEach(e->e.update(delta));
     }
 
-    public Set<Collision> getCollisions(Collidable collidable) {
-        Set<Collision> out = new HashSet<>();
+    public <T extends Collidable> Set<Collision<T>> getCollisionsWithType(Collidable collidable, Class<T> type) {
+        Set<Collision<T>> out = new HashSet<>();
         Map<Collidable, Shape> localCache = cache.getOrDefault(collidable, Collections.emptyMap());
         Bounds boundsInScene = collidable.getCollisionShape().localToScene(collidable.getCollisionShape().getBoundsInLocal());
-        for(Collidable other : collidables) {
-            if(other == collidable) continue; // Don't collide with yourself
-            Shape intersect;
-            if(localCache.containsKey(other)) {
-                intersect = localCache.get(other);
-            } else {
-                // Check bounds first to avoid expensive Shape.intersect if possible
-                if(other.getCollisionShape().localToScene(other.getCollisionShape().getBoundsInLocal()).intersects(boundsInScene)) {
-                    intersect = Shape.intersect(collidable.getCollisionShape(), other.getCollisionShape());
+        for(Collidable c : collidables) {
+            if(c == collidable) continue; // Don't collide with yourself
+            if(type.isAssignableFrom(c.getClass())) {
+                T other = type.cast(c);
+                Shape intersect;
+                if(localCache.containsKey(other)) {
+                    intersect = localCache.get(other);
                 } else {
-                    intersect = null;
+                    // Check bounds first to avoid expensive Shape.intersect if possible
+                    if(other.getCollisionShape().localToScene(other.getCollisionShape().getBoundsInLocal()).intersects(boundsInScene)) {
+                        intersect = Shape.intersect(collidable.getCollisionShape(), other.getCollisionShape());
+                    } else {
+                        intersect = null;
+                    }
+                    cache.putIfAbsent(other, new HashMap<>());
+                    cache.get(other).put(collidable, intersect);
                 }
-                cache.putIfAbsent(other, new HashMap<>());
-                cache.get(other).put(collidable, intersect);
+                if(intersect != null && intersect.getBoundsInLocal().getWidth() > 0) {
+                    out.add(new Collision<T>(other, intersect));
+                }
             }
-            if(intersect != null && intersect.getBoundsInLocal().getWidth() > 0) {
-                out.add(new Collision(other, intersect));
-            }
+
         }
         return out;
+    }
+
+    public Set<Collision<Collidable>> getCollisions(Collidable collidable) {
+        return getCollisionsWithType(collidable, Collidable.class);
     }
 
     protected void commit() {
