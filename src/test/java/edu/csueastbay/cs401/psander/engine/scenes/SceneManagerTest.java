@@ -8,6 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SceneManagerTest {
     private class SceneMock extends Scene {
         double Delta;
+
+        @Override
+        public void init() {
+
+        }
+
         @Override
         public void update(double delta) {
             Delta = delta;
