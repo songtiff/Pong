@@ -9,11 +9,13 @@ import java.util.ArrayList;
 
 public class ClassicPong extends Game {
 
-
     private double fieldHeight;
     private double fieldWidth;
     private PuckFactory puckFactory;
     private AnchorPane field;
+
+    //speed boost variables
+    public double puck_speed_boost;
 
     public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight, AnchorPane field) {
         super(victoryScore);
@@ -26,6 +28,38 @@ public class ClassicPong extends Game {
         Puckable puck = puckFactory.createPuck();
         puck.setID("Classic");
         addPuck(puck);
+
+        SpeedBoost zoom1 = new SpeedBoost(this.fieldWidth, this.fieldHeight);
+        zoom1.setId("Boost Top Left");
+        zoom1.setCenterX(200);
+        zoom1.setCenterY(300);
+        zoom1.setRadius(10.0);
+        zoom1.setFill(Color.SKYBLUE);
+        addObject(zoom1);
+
+        SpeedBoost zoom2 = new SpeedBoost(this.fieldWidth, this.fieldHeight);
+        zoom2.setId("Boost Top Right");
+        zoom2.setCenterX(1000);
+        zoom2.setCenterY(300);
+        zoom2.setRadius(10.0);
+        zoom2.setFill(Color.DEEPSKYBLUE);
+        addObject(zoom2);
+
+        SpeedDebuff slow1 = new SpeedDebuff(this.fieldWidth, this.fieldHeight);
+        slow1.setId("Debuff Bottom Right");
+        slow1.setCenterX(1000);
+        slow1.setCenterY(600);
+        slow1.setRadius(10.0);
+        slow1.setFill(Color.LIGHTPINK);
+        addObject(slow1);
+
+        SpeedDebuff slow2 = new SpeedDebuff(this.fieldWidth, this.fieldHeight);
+        slow2.setId("Debuff Bottom Left");
+        slow2.setCenterX(200);
+        slow2.setCenterY(600);
+        slow2.setRadius(10.0);
+        slow2.setFill(Color.LIGHTCORAL);
+        addObject(slow2);
 
         Wall top = new Wall("Top Wall", 0, 0, this.fieldWidth, 10);
         top.setFill(Color.WHITE);
@@ -71,6 +105,12 @@ public class ClassicPong extends Game {
     public void collisionHandler(Puckable puck, Collision collision) {
 
         switch (collision.getType()) {
+            case "SpeedBuff":
+                puck_speed_boost = puck.getSpeed();
+                puck_speed_boost += 2.5;
+            case "SpeedDebuff":
+                puck_speed_boost = puck.getSpeed();
+                puck_speed_boost -= 2.5;
             case "Wall":
                 puck.setDirection(0 - puck.getDirection());
                 break;
