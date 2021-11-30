@@ -24,7 +24,7 @@ public abstract class Game {
     }
 
 
-    public int getPlayerScore(int player) {
+    public int getPlayerScore(int player) { // can work with this
         if (player == 1) return playerOneScore;
         else if (player == 2) return playerTwoScore;
         return 0;
