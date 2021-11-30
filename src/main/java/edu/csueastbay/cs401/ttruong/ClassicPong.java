@@ -23,7 +23,7 @@ public class ClassicPong extends Game {
         this.field = field;
         this.puckFactory = new PuckFactory(fieldWidth, fieldHeight);
 
-        Puck puck = (Puck) puckFactory.createPuck();
+        Puckable puck = puckFactory.createPuck();
         puck.setID("Classic");
         addPuck(puck);
 
@@ -84,7 +84,7 @@ public class ClassicPong extends Game {
                 }
                 break;
             case "Paddle":
-                double puckCenter = ((Puck) puck).getCenterY();
+                double puckCenter = puck.getCenterY();
                 double angle;
                 if (collision.getObjectID() == "Player 1 Paddle") {
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
@@ -102,7 +102,7 @@ public class ClassicPong extends Game {
             field.getChildren().remove((Node) old_puck);
         });
         clearPucks();
-        Puckable puck = PuckFactory.createPuck();
+        Puckable puck = puckFactory.createPuck();
         puck.setID("Random");
         addPuck(puck);
         field.getChildren().add((Node)puck);
