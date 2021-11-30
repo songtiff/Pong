@@ -8,6 +8,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -16,8 +19,31 @@ import javafx.util.Pair;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Game {
+
+    public static class InputHandler {
+
+        public final Map<String, KeyCode> controls = new LinkedHashMap<>();
+        private final Set<KeyCode> heldKeys = new HashSet<>();
+
+        public String toString() {
+            return "["+heldKeys.stream().map(KeyCode::toString).collect(Collectors.joining(", "))+"]";
+        }
+
+        public void bind(Node source) {
+            source.addEventHandler(KeyEvent.KEY_PRESSED,e->heldKeys.add(e.getCode()));
+            source.addEventHandler(KeyEvent.KEY_RELEASED,e->heldKeys.remove(e.getCode()));
+        }
+
+        public boolean isHeld(String control) {
+            return controls.containsKey(control) && heldKeys.contains(controls.get(control));
+        }
+        public boolean isKeyHeld(KeyCode key) {
+            return heldKeys.contains(key);
+        }
+    }
 
     public final Pane pane;
 
@@ -26,14 +52,14 @@ public abstract class Game {
     private double gameTime;
     private final Queue<Pair<Double, Runnable>> scheduledEvents;
 
-    private final BooleanProperty playing, gameOver;
+    private final BooleanProperty playing;
     private final ObservableSet<Entity> entities;
     private final ObservableSet<Entity> _entities;
     private final Set<Entity> toAdd, toRemove;
     private final Set<Collidable> collidables;
     private final Map<Collidable, Map<Collidable, Shape>> cache;
 
-    public InputHandler input;
+    public final InputHandler input;
     public final Bounds bounds;
     public final double width, height;
 
@@ -45,10 +71,9 @@ public abstract class Game {
         pane.setMinSize(width, height);
         pane.setMaxSize(width, height);
         pane.setClip(new Rectangle(width, height));
-        input = control -> false;
+        input = new InputHandler();
         bounds = new BoundingBox(0, 0, width, height);
         playing = new SimpleBooleanProperty(false);
-        gameOver = new SimpleBooleanProperty(false);
         entities = FXCollections.observableSet(new HashSet<>());
         _entities = FXCollections.unmodifiableObservableSet(entities);
         toAdd = new HashSet<>();
@@ -115,52 +140,34 @@ public abstract class Game {
 
     public final BooleanProperty playingProperty() { return playing; }
 
-    public final void setGameOver(boolean gameOver) {
-        this.gameOver.set(gameOver);
-    }
-
-    public final boolean isGameOver() {
-        return gameOver.get();
-    }
-
-    public final BooleanProperty gameOverProperty() { return gameOver; }
-
     protected void update(double delta) {
         entities.forEach(e->e.update(delta));
     }
 
-    public <T extends Collidable> Set<Collision<T>> getCollisionsWithType(Collidable collidable, Class<T> type) {
-        Set<Collision<T>> out = new HashSet<>();
+    public Set<Collision> getCollisions(Collidable collidable) {
+        Set<Collision> out = new HashSet<>();
         Map<Collidable, Shape> localCache = cache.getOrDefault(collidable, Collections.emptyMap());
         Bounds boundsInScene = collidable.getCollisionShape().localToScene(collidable.getCollisionShape().getBoundsInLocal());
-        for(Collidable c : collidables) {
-            if(c == collidable) continue; // Don't collide with yourself
-            if(type.isAssignableFrom(c.getClass())) {
-                T other = type.cast(c);
-                Shape intersect;
-                if(localCache.containsKey(other)) {
-                    intersect = localCache.get(other);
+        for(Collidable other : collidables) {
+            if(other == collidable) continue; // Don't collide with yourself
+            Shape intersect;
+            if(localCache.containsKey(other)) {
+                intersect = localCache.get(other);
+            } else {
+                // Check bounds first to avoid expensive Shape.intersect if possible
+                if(other.getCollisionShape().localToScene(other.getCollisionShape().getBoundsInLocal()).intersects(boundsInScene)) {
+                    intersect = Shape.intersect(collidable.getCollisionShape(), other.getCollisionShape());
                 } else {
-                    // Check bounds first to avoid expensive Shape.intersect if possible
-                    if(other.getCollisionShape().localToScene(other.getCollisionShape().getBoundsInLocal()).intersects(boundsInScene)) {
-                        intersect = Shape.intersect(collidable.getCollisionShape(), other.getCollisionShape());
-                    } else {
-                        intersect = null;
-                    }
-                    cache.putIfAbsent(other, new HashMap<>());
-                    cache.get(other).put(collidable, intersect);
+                    intersect = null;
                 }
-                if(intersect != null && intersect.getBoundsInLocal().getWidth() > 0) {
-                    out.add(new Collision<T>(other, intersect));
-                }
+                cache.putIfAbsent(other, new HashMap<>());
+                cache.get(other).put(collidable, intersect);
             }
-
+            if(intersect != null && intersect.getBoundsInLocal().getWidth() > 0) {
+                out.add(new Collision(other, intersect));
+            }
         }
         return out;
-    }
-
-    public Set<Collision<Collidable>> getCollisions(Collidable collidable) {
-        return getCollisionsWithType(collidable, Collidable.class);
     }
 
     protected void commit() {

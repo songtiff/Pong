@@ -2,23 +2,27 @@ package edu.csueastbay.cs401.ethan;
 
 import edu.csueastbay.cs401.ethan.game.Collidable;
 import edu.csueastbay.cs401.ethan.game.Collision;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
+import edu.csueastbay.cs401.ethan.game.Entity;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.effect.Light;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.util.Duration;
 
+import java.security.Key;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class Ball extends NeonEntity implements Collidable {
 
-    ObjectProperty<Paddle> owner;
     private final Circle collision;
     DoubleProperty radius;
     double dx, dy;
@@ -31,13 +35,6 @@ public class Ball extends NeonEntity implements Collidable {
         dx = 0;
         dy = 0;
         mass = 1;
-
-        owner = new SimpleObjectProperty<>();
-        owner.addListener((obs, oldVal, newVal)->{
-            fillColor.set(newVal.fillColor.get());
-            glowColor.set(newVal.glowColor.get());
-        });
-
 
         solid.set(true);
         Circle visual = new Circle(radius);
@@ -57,15 +54,6 @@ public class Ball extends NeonEntity implements Collidable {
         dy = Math.sin(direction)*speed;
     }
 
-    public Ball(Ball other) {
-        this(other.radius.get(), other.x, other.y);
-        this.dx = other.dx;
-        this.dy = other.dy;
-        this.owner.set(other.owner.get());
-        this.exceptions.add(other);
-        other.exceptions.add(this);
-    }
-
     private Set<Collidable> exceptions = new HashSet<>();
     @Override
     public void update(double delta) {
@@ -75,6 +63,8 @@ public class Ball extends NeonEntity implements Collidable {
             collisions.add(collision.other());
             if(exceptions.contains(collision.other())) continue;
             if(collision.other() instanceof Ball other) {
+//                dx = (dx * (mass - other.mass) + (2 * other.mass * other.dx)) / (mass + other.mass);
+//                dy = (dy * (mass - other.mass) + (2 * other.mass * other.dy)) / (mass + other.mass);
                 other.exceptions.add(this);
                 handleCollision(other);
             } else if(collision.other() instanceof Paddle paddle) {
@@ -88,12 +78,14 @@ public class Ball extends NeonEntity implements Collidable {
                 vel = vel.add(0, paddle.getYSpeed());
                 dx = vel.getX();
                 dy = vel.getY();
-                owner.set(paddle);
+                color.set(paddle.color.get());
+                glowColor.set(paddle.glowColor.get());
                 pulse();
                 paddle.pulse();
             }
         }
         exceptions = collisions;
+
 
         x += dx * delta;
         y += dy * delta;
