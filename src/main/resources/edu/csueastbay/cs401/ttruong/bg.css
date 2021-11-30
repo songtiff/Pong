@@ -1,4 +1,6 @@
 .background {
     -fx-background-image: url("bg.png");
-    -fx-background-position: center;
+     -fx-background-repeat: stretch;
+    -fx-background-size: 800 900;
+    -fx-background-position: center center;
 }
