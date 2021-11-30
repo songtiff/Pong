@@ -2,8 +2,11 @@ package edu.csueastbay.cs401.ttruong;
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -70,11 +73,11 @@ public class ClassicPong extends Game {
         addObject(bottom);
 
         Goal left = new Goal("Player 1 Goal", this.fieldWidth - 10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.RED);
+        left.setFill(Color.ORANGE);
         addObject(left);
 
         Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.BLUE);
+        right.setFill(Color.ORANGE);
         addObject(right);
 
         Paddle playerOne = new Paddle(
@@ -85,7 +88,7 @@ public class ClassicPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerOne.setFill(Color.RED);
+        playerOne.setFill(Color.VIOLET);
         addPlayerPaddle(1, playerOne);
 
         Paddle playerTwo = new Paddle(
@@ -96,7 +99,7 @@ public class ClassicPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerTwo.setFill(Color.BLUE);
+        playerTwo.setFill(Color.BLUEVIOLET);
         addPlayerPaddle(2, playerTwo);
     }
 
@@ -128,8 +131,12 @@ public class ClassicPong extends Game {
                 double angle;
                 if (collision.getObjectID() == "Player 1 Paddle") {
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
+                    puck_speed_boost = puck.getSpeed();
+                    puck_speed_boost += 2.5;
                 } else {
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
+                    puck_speed_boost = puck.getSpeed();
+                    puck_speed_boost += 2.5;
                 }
                 puck.setDirection(angle);
 

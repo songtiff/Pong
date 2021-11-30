@@ -1,0 +1,4 @@
+.background {
+    -fx-background-image: url("bg.png");
+    -fx-background-position: center;
+}
