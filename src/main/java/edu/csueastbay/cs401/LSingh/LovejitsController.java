@@ -39,7 +39,7 @@ public class LovejitsController implements Initializable {
     public static final int FIELD_HEIGHT = 860;
     public static final int VICTORY_SCORE = 10;
 
-    private ClassicPong game;
+    private LovejitsPong game;
     private Timeline timeline;
 
     @FXML
@@ -51,7 +51,7 @@ public class LovejitsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
+        game = new LovejitsPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
         Platform.runLater(()->fieldPane.requestFocus());
         addGameElementsToField();
         setUpTimeline();
@@ -69,6 +69,7 @@ public class LovejitsController implements Initializable {
         ArrayList<Collidable> objects = game.getObjects();
         objects.forEach((object)-> {
             fieldPane.getChildren().add((Node) object);
+
         });
 
     }
