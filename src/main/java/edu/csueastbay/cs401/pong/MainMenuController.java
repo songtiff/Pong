@@ -27,6 +27,8 @@ public class MainMenuController implements Initializable {
     private Registry registry;
 
     @FXML
+    private BorderPane baseBorderPane;
+    @FXML
     private StackPane scalePane;
     @FXML
     private Label titleLabel;
