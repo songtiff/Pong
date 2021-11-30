@@ -13,8 +13,8 @@ public class Paddle extends NeonEntity implements Collidable {
     private final Path visual, collision;
     private final String up, down;
 
-    private final DoubleProperty height;
-    private double speed;
+    public final DoubleProperty height;
+    public double speed;
 
     public Paddle(String upInput, String downInput, Color color) {
         this.up = upInput;
@@ -22,7 +22,7 @@ public class Paddle extends NeonEntity implements Collidable {
         this.height = new SimpleDoubleProperty(75);
         this.speed = 250;
 
-        this.color.set(color.interpolate(Color.WHITE, 0.5));
+        this.fillColor.set(color.interpolate(Color.WHITE, 0.5));
         this.glowColor.set(color);
         this.visual = generateShape();
         this.collision = new Path(visual.getElements());
