@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 /**
-*This class extends Puck
+*This class extends Puck class
 *
 */
 

@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
@@ -46,18 +45,6 @@ public class GameControllerEXT implements Initializable {
     @FXML
     Label playerTwoScore;
 
-    /*@Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        game = new ClassicPongEXT(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
-        Platform.runLater(()->fieldPane.requestFocus());
-        addGameElementsToField();
-        setUpTimeline();
-
-    }
-
-     */
-    @FXML
-    private ImageView image;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,7 +64,6 @@ public class GameControllerEXT implements Initializable {
 
     }
 
-
     private void addGameElementsToField() {
         ArrayList<Puckable> pucks = game.getPucks();
         pucks.forEach((puck) -> {
@@ -85,7 +71,7 @@ public class GameControllerEXT implements Initializable {
         });
 
         ArrayList<Collidable> objects = game.getObjects();
-        objects.forEach((object)-> {
+        objects.forEach((object) -> {
             fieldPane.getChildren().add((Node) object);
         });
 
@@ -117,6 +103,5 @@ public class GameControllerEXT implements Initializable {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
-
 
 }

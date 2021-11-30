@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
  */
 
-
 public abstract class GameEXT extends Game {
 	private int playerOneScore;
 	private Paddle playOnePaddle;
