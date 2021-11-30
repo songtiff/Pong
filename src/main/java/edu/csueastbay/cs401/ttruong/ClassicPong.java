@@ -2,11 +2,8 @@ package edu.csueastbay.cs401.ttruong;
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -16,6 +13,7 @@ public class ClassicPong extends Game {
     private double fieldWidth;
     private PuckFactory puckFactory;
     private AnchorPane field;
+
 
     //speed boost variables
     public double puck_speed_boost;
@@ -106,7 +104,6 @@ public class ClassicPong extends Game {
 
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
-
         switch (collision.getType()) {
             case "SpeedBuff":
                 puck.setSpeed(10.0);
@@ -137,7 +134,7 @@ public class ClassicPong extends Game {
                     puck_speed_boost += 2.5;
                 }
                 puck.setDirection(angle);
-
+                break;
         }
     }
 

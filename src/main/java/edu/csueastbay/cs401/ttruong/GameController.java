@@ -1,6 +1,5 @@
 package edu.csueastbay.cs401.ttruong;
 
-import edu.csueastbay.cs401.ttruong.ClassicPong;
 import edu.csueastbay.cs401.pong.Collidable;
 import edu.csueastbay.cs401.pong.Puckable;
 import javafx.animation.Animation;
@@ -14,7 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -36,6 +35,7 @@ public class GameController implements Initializable {
     @FXML
     Label playerTwoScore;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT, fieldPane);
@@ -44,7 +44,6 @@ public class GameController implements Initializable {
         setUpTimeline();
 
     }
-
 
     private void addGameElementsToField() {
         ArrayList<Puckable> pucks = game.getPucks();
@@ -79,13 +78,13 @@ public class GameController implements Initializable {
                 game.move();
                 playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
                 playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
+
             }
         }));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
-
 
 }
 
