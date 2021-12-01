@@ -24,6 +24,8 @@ public abstract class Game {
     }
 
 
+
+
     public int getPlayerScore(int player) {
         if (player == 1) return playerOneScore;
         else if (player == 2) return playerTwoScore;
@@ -110,6 +112,7 @@ public abstract class Game {
             case D:
                 playOnePaddle.moveDown();
                 break;
+
             case I:
                 playTwoPaddle.moveUp();
                 break;
