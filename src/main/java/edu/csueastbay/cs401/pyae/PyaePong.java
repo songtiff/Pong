@@ -7,6 +7,12 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 
+/***
+ *
+ *
+ *
+ * ***/
+
 public class PyaePong extends PGame {
 
     private double fieldWidth;
@@ -90,7 +96,7 @@ public class PyaePong extends PGame {
                     MediaPlayer sfxPlayer = new MediaPlayer(sfx);
                     sfxPlayer.setAutoPlay(true);
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
-                    // Difficulty: Increasing ball speed for each hit
+                    // Difficulty: Increasing ball speed for each hit without scoring
                     double speed = puck.getSpeed();
                     puck.setSpeed(speed + 1);
 
@@ -100,7 +106,7 @@ public class PyaePong extends PGame {
                     MediaPlayer sfxPlayer = new MediaPlayer(sfx);
                     sfxPlayer.setAutoPlay(true);
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
-                    // Difficulty: Increasing ball speed for each hit
+                    // Difficulty: Increasing ball speed for each hit without scoring
                     double speed = puck.getSpeed();
                     puck.setSpeed(speed + 1);
                 }

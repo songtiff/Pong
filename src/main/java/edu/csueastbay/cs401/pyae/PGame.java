@@ -6,6 +6,16 @@ import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 
+/***
+ *
+ *  Game rule and key binding. New PGame class extends from the original Game class.
+ *  New Keybinding :
+ *              Up      Down
+ *  Player 1:   Q        C
+ *  Player 2:   M        P
+ *
+ * ***/
+
 public abstract class PGame extends Game {
     private int playerOneScore;
     private Paddle playOnePaddle;
@@ -104,16 +114,16 @@ public abstract class PGame extends Game {
 
     public void keyPressed(KeyCode code) {
         switch (code) {
-            case E:
+            case Q:
                 playOnePaddle.moveUp();
                 break;
-            case D:
+            case C:
                 playOnePaddle.moveDown();
                 break;
-            case I:
+            case P:
                 playTwoPaddle.moveUp();
                 break;
-            case K:
+            case M:
                 playTwoPaddle.moveDown();
                 break;
         }
@@ -121,10 +131,10 @@ public abstract class PGame extends Game {
 
     public void keyReleased(KeyCode code) {
         switch (code) {
-            case E, D:
+            case Q, C:
                 playOnePaddle.stop();
                 break;
-            case I, K:
+            case M, P:
                 playTwoPaddle.stop();
                 break;
         }
