@@ -54,7 +54,8 @@ public class MainMenuController implements Initializable {
                 " ping pong game that is fast paced with power small power zones that make the game experience interesting. ");
         registry.register("Jonathan Zepeda", "jzepeda", "Pong Game");
         registry.register("Ethan Ketell", "ethan", "Neon Pong+");
-
+        registry.register("Rahul Ravi", "rravi", "The regular pong game with additions that" +
+                " that make the experience feel like a full fledged Pong game! ");
 
         registry.reset();
 
