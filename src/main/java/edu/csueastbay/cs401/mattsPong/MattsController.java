@@ -98,31 +98,14 @@ public class MattsController implements Initializable {
         Iterator<Puckable> itr = pucks.iterator();
         while(itr.hasNext()) {
             Puckable puck = itr.next();
-            System.out.println("loop 1");
             objects.forEach((object) -> {
-                System.out.println("loop 2");
-                System.out.println("before " + pucks.size());
                 Collision collision = object.getCollision((Shape) puck);
                 if (collision.isCollided() && Objects.equals(collision.getType(), "Goal") && puck.getID() == "Timer Puck") {
-                    //System.out.println("before " + pucks.size());
                     fieldPane.getChildren().remove((Node) puck);
-                    //pucksToRemove.add(puck);
-                    itr.remove();
-
-                    System.out.println("after " + pucks.size());
-
+                    game.removePuck(puck);
                 }
             });
         }
-        //System.out.println("removeable pucks: "+pucksToRemove.size());
-        //if (pucksToRemove.size() > 0) {
-            /*pucksToRemove.forEach((puck) -> {
-                //pucks.remove(puck);
-                System.out.println("removeable pucks: "+pucksToRemove.size());
-                System.out.println("IDR: " +puck.getID());
-            });*/
-            //pucksToRemove.clear();
-        //}
     }
 
     @FXML
@@ -143,7 +126,7 @@ public class MattsController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 game.move();
-                //removeExtraPucks();
+                removeExtraPucks();
                 playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
                 playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
                 timer.setText(game.getTime(game.startTime) / 60 +":"+(game.getTime(game.startTime) % 60));

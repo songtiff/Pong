@@ -14,13 +14,16 @@ public class MattsGame extends Game {
     public long startTime;
     private long playerOneTime;
     private long playerTwoTime;
+    private long playerOneTime2;
+    private long playerTwoTime2;
     private boolean paddleOneYellow = false;
     private boolean paddleTwoYellow = false;
+    private boolean paddleOneGreen = false;
+    private boolean paddleTwoGreen = false;
     private double fieldHeight;
     private double fieldWidth;
     private int playerOneBlocks;
     private int playerTwoBlocks;
-    //private final AudioClip goalSound;
     private Paddle playOnePaddle;
     private Paddle playTwoPaddle;
 
@@ -32,7 +35,7 @@ public class MattsGame extends Game {
         this.startTime = System.currentTimeMillis();
         this.playerOneBlocks = 0;
         this.playerTwoBlocks = 0;
-        //this.goalSound = new AudioClip(Objects.requireNonNull(this.getClass().getResource("PongGoal.wav")).toExternalForm());
+        //this.goalSound = new AudioClip(Objects.requireNonNull(this.getClass().getResource(")).toExternalForm());
 
 
         Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
@@ -79,7 +82,6 @@ public class MattsGame extends Game {
         addPlayerPaddle(2, playerTwo);
         this.playTwoPaddle = playerTwo;
     }
-
 
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
@@ -129,16 +131,6 @@ public class MattsGame extends Game {
     }
 
 
-   /* public void findPaddles() {
-        ArrayList<Collidable> obj = getObjects();
-        obj.forEach((object)-> {
-            if(object.getID() == "Player 1 Paddle"){
-                //this.playOnePaddle = object;
-                //object.
-            }
-        });
-    }*/
-
     @Override
     public void keyPressed(KeyCode code) {
         switch (code) {
@@ -170,18 +162,23 @@ public class MattsGame extends Game {
                     paddleTwoYellow = true;
                 }
                 break;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyCode code) {
-        switch (code) {
-            case E, D:
-                this.playOnePaddle.stop();
+            case Q:
+                if(playerOneBlocks >=10){
+                    this.playOnePaddle.setFill(Color.GREEN);
+                    this.playOnePaddle.setHeight(200);
+                    playerOneBlocks -= 10;
+                    this.playerOneTime2 = System.currentTimeMillis();
+                    paddleOneGreen = true;
+                }
                 break;
-            case I, K:
-                this.playTwoPaddle.stop();
-                break;
+            case P:
+                if(playerTwoBlocks >= 10){
+                    this.playTwoPaddle.setFill(Color.GREEN);
+                    this.playTwoPaddle.setHeight(200);
+                    playerTwoBlocks -= 10;
+                    this.playerTwoTime2 = System.currentTimeMillis();
+                    paddleTwoGreen = true;
+                }
         }
     }
 
@@ -193,6 +190,16 @@ public class MattsGame extends Game {
         if(paddleTwoYellow && getTime(playerTwoTime) >= 20) {
             this.playTwoPaddle.setFill(Color.BLUE);
             paddleTwoYellow = false;
+        }
+        if(paddleOneGreen && getTime(playerOneTime2) >= 20){
+            this.playOnePaddle.setFill(Color.RED);
+            this.playOnePaddle.setHeight(100);
+            paddleOneGreen = false;
+        }
+        if(paddleTwoGreen && getTime(playerTwoTime2) >= 20){
+            this.playTwoPaddle.setFill(Color.BLUE);
+            this.playTwoPaddle.setHeight(100);
+            paddleTwoGreen = false;
         }
     }
 
@@ -229,13 +236,16 @@ public class MattsGame extends Game {
 
                 break;
             case "Goal":
-                //this.goalSound.play();
-
+                AudioClip goalSound = new AudioClip(getClass().getResource("PongGoal3.wav").toExternalForm());
+                goalSound.play();
                 break;
             case "Paddle":
 
         }
     }
 
+    public void removePuck(Puckable puck){
+        pucks.remove(puck);
+    }
 
 }
