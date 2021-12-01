@@ -32,7 +32,6 @@ public class MenuPane extends StackPane {
     /**
      * A floating menu with a title and buttons.
      * @see MenuPane#getMenu(String)
-     * @see
      */
     public static class Menu extends VBox {
         /** The title of this Menu */
