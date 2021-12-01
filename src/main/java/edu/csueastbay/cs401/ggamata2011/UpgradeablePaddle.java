@@ -2,6 +2,10 @@ package edu.csueastbay.cs401.ggamata2011;
 
 import edu.csueastbay.cs401.pong.Paddle;
 
+/**
+ * Upgradeable Paddle that is extended from the original Paddle
+ * Allows for adjustment of Height and Speed
+ */
 public class UpgradeablePaddle extends Paddle
 {
   public final double START_SPEED = 5.0;
@@ -14,6 +18,16 @@ public class UpgradeablePaddle extends Paddle
   enum Direction {UP, Down, STILL}
   private Direction newmove;
 
+  /**
+   * Default Constructor of Upgradeable Paddle
+   * @param id sets ID of Paddle
+   * @param x sets default x coordinate of Paddle on field
+   * @param y sets default y coordinate of Paddle on field
+   * @param width sets width of paddle
+   * @param height sets height of paddle
+   * @param topBound sets the Topbound in which the paddle can travel
+   * @param bottomBound sets the BottomBound in which the paddle can travel
+   */
   public UpgradeablePaddle(String id, double x, double y, double width, double height, double topBound, double bottomBound)
   {
       super(id,x,y,width,height,topBound,bottomBound);
@@ -21,6 +35,10 @@ public class UpgradeablePaddle extends Paddle
       this.bottomBound = bottomBound;
   }
 
+  /**
+   *
+   * @param boost
+   */
   public void ModifySpeed(double boost)
   {
     UPGRADE_SPEED = UPGRADE_SPEED + boost;
@@ -37,6 +55,10 @@ public class UpgradeablePaddle extends Paddle
 
   }
 
+  /**
+   *
+   * @param boost
+   */
   public void ModifyHeight(double boost)
   {
     UPGRADE_HEIGHT = UPGRADE_HEIGHT + boost;
@@ -52,6 +74,9 @@ public class UpgradeablePaddle extends Paddle
     super.setHeight(getHeight()+UPGRADE_HEIGHT);
   }
 
+  /**
+   *
+   */
   @Override
   public void move()
   {
@@ -67,16 +92,25 @@ public class UpgradeablePaddle extends Paddle
 
   }
 
+  /**
+   *
+   */
   @Override
   public void stop() {
     newmove = Direction.STILL;
   }
 
+  /**
+   *
+   */
   @Override
   public void moveUp() {
     newmove = Direction.UP;
   }
 
+  /**
+   *
+   */
   @Override
   public void moveDown() {
     newmove = Direction.Down;

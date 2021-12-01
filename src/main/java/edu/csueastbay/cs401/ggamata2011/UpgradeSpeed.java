@@ -11,7 +11,9 @@ import javafx.scene.image.Image;
 
 import java.util.Random;
 
-
+/**
+ * UpGradeSpeed Class used to Instantiate a HeightItem on field
+ */
 public class UpgradeSpeed extends Rectangle implements Collidable
 {
     private String id;
@@ -28,6 +30,18 @@ public class UpgradeSpeed extends Rectangle implements Collidable
     private static final int Default_Width = 5;
     private static final int Default_Height = 5;
 
+    /**
+     * Default Constructor to instantiate UpGradeSpeed objects constructs a Square shape
+     * @param ID ID used to identify what the instantiation is
+     * @param xcord xcoordinate used for initial spawn location (arbitratry)
+     * @param ycord ycoordinate used for initial spawn location (arbitrary)
+     * @param width Width of the UpGradeSpeed Item
+     * @param height The Height of the UpGradeSpeed Item
+     * @param TopBound The Top bound of the playable area for spawn
+     * @param BottomBound The bottom bound of the playable area for spawn
+     * @param LeftBound The Left bound of the playable area for spawn
+     * @param RightBound The right bound of the playable area for spawn
+     */
     public UpgradeSpeed(String ID, double xcord, double ycord, double width, double height, double TopBound, double BottomBound
                        , double LeftBound, double RightBound)
     {
@@ -44,6 +58,12 @@ public class UpgradeSpeed extends Rectangle implements Collidable
         setVisible(false);
     }
 
+    /**
+     * Gets Collision with Shape returns the state of a Collision
+     * if it is intersected with UpgradeSpeed or not
+     * @param shape Used for intersects
+     * @return Returns a Collision object
+     */
     @Override
     public Collision getCollision(Shape shape) {
         return new Collision(
@@ -57,28 +77,48 @@ public class UpgradeSpeed extends Rectangle implements Collidable
         );
     }
 
+    /**
+     * Returns ID of UpGradeSpeed object
+     * @return an ID
+     */
     @Override
     public String getID() {
         return id;
     }
 
+    /**
+     * Returns the Type of UpGradeSpeed
+     * @return returns a string "UpGradeSpeed"
+     */
     @Override
     public String getType() {
         return "UpgradeSpeed";
     }
 
+    /**
+     * Sets InPlay to true
+     * Also sets the item to visible on the field
+     */
     public void InPlay()
     {
        InPlay = true;
        setVisible(true);
     }
 
+    /**
+     * Sets InPlay to false
+     * Also sets the item to invisible on the field
+     */
     public void OutOfPlay()
     {
         InPlay = false;
         setVisible(false);
     }
 
+    /**
+     * Returns the Inplay status of the UpGradeSpeed Item
+     * @return the Inplay status of the UpGradeSpeed Item
+     */
     public Boolean PlayState()
     {
         return InPlay;
@@ -86,8 +126,10 @@ public class UpgradeSpeed extends Rectangle implements Collidable
 
 
     /**
-     * Returns a random speed modifier for the player that has collided with it
-     * @return
+     * Generates a Random Number for an UpgradeablePaddle to modify
+     * its speed
+     * @return a Number between 2 and 1
+     * @see UpgradeablePaddle
      */
     public double SpeedModify()
     {
@@ -96,8 +138,9 @@ public class UpgradeSpeed extends Rectangle implements Collidable
         OutOfPlay();
         return speedmodifier;
     }
+
     /**
-     * Reset position on the field of the upgrade puck
+     * Reset position on the field of the UpGradeSpeed upgrade item
      */
     public void ResetPosition()
     {

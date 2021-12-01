@@ -42,7 +42,6 @@ public class GameController implements Initializable {
         Platform.runLater(()->fieldPane.requestFocus());
         addGameElementsToField();
         setUpTimeline();
-
     }
 
 
@@ -60,7 +59,6 @@ public class GameController implements Initializable {
         fieldPane.getChildren().add(game.getSpeedUpgrades());
         fieldPane.getChildren().add(game.getHeightUpgrades());
         fieldPane.getChildren().add(game.getDebuff());
-
 
     }
 
@@ -81,8 +79,21 @@ public class GameController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 game.move();
-                playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
-                playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
+
+                if((game.getVictor() != 1) || (game.getVictor() != 2)) {
+                    playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
+                    playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
+                }
+                if (game.getVictor() == 1)
+                {
+                    System.out.println("Player 1 Won!");
+                    playerOneScore.setText("P1!");
+                }
+                if (game.getVictor() == 2)
+                {
+                    System.out.println("Player 2 Won!");
+                    playerTwoScore.setText("P2!");
+                }
             }
         }));
 

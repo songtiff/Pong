@@ -7,21 +7,29 @@ import java.util.ArrayList;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
+import javafx.util.Duration;
 
 import javafx.scene.shape.Shape;
 
 
-
+/**
+ * This is used to instantiate the Game Instance
+ * @see UpgradeablePuck
+ * @see UpgradeablePaddle
+ * @see UpgradeSpeed
+ * @see UpgradeHeight
+ */
 public class Pong2TheSequel extends Game {
 
     private double fieldHeight;
     private double fieldWidth;
     private int NumberofHits = 0;
+    private Boolean Victor = false;
 
     private ArrayList<Collidable> Upgrades = new ArrayList<>();
 
-    UpgradeablePuck puck;
+    //Instantiations of the puck and player one and two
+    Puck puck;
     UpgradeablePaddle playerOne;
     UpgradeablePaddle playerTwo;
 
@@ -30,25 +38,43 @@ public class Pong2TheSequel extends Game {
     private UpgradeHeight HeightItem;
     private Debuff DebuffItem;
 
+    //Used for Seeing what Upgrade will be applied to
     private Boolean PaddleOneHit = false;
     private Boolean PaddleTwoHit = false;
 
+    //Instantiations of Audio Clips for in game sounds
     AudioClip P1HitSound  = new AudioClip(getClass().getResource("P1Hit.wav").toExternalForm());
     AudioClip P2HitSound  = new AudioClip(getClass().getResource("P2Hit.wav").toExternalForm());
-    AudioClip GoalSound = new AudioClip(getClass().getResource("P2Hit.wav").toExternalForm()) ;
+    AudioClip GoalSound = new AudioClip(getClass().getResource("Score.mp3").toExternalForm()) ;
+    AudioClip WallHitSound = new AudioClip(getClass().getResource("WallPong.wav").toExternalForm());
 
     AudioClip SpeedBoostSound = new AudioClip(getClass().getResource("SpeedUpgradeSound.wav").toExternalForm());
     AudioClip HeightBoostSound = new AudioClip(getClass().getResource("HeightUpgradeSound.wav").toExternalForm());
     AudioClip DebuffSound = new AudioClip(getClass().getResource("fart-01.mp3").toExternalForm());
 
+    MediaPlayer SickTunes = new MediaPlayer(new Media(getClass().getResource("MonkeyWarholDelay.mp3").toExternalForm()));
 
 
+    /**
+     * Default Constructor, sets victory score and spawns all other objects into play
+     * @param victoryScore Sets Victory Score
+     * @param fieldWidth Sets Default Field Width
+     * @param fieldHeight Sets Default Field Height
+     */
     public Pong2TheSequel(int victoryScore, double fieldWidth, double fieldHeight) {
 
         super(victoryScore);
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
 
+        //Cycle Count of 10 used cause
+        //indefinite will bleed over to next game
+        SickTunes.stop();
+        SickTunes.setCycleCount(10);
+        SickTunes.play();
+
+        //Instantiations of Upgrades and Debuffs xcord and ycord are arbitrary values
+        //since they are randomized on spawn
         SpeedItem = new UpgradeSpeed(
                 "UpgradeSpeed",
                 250.0,
@@ -82,7 +108,7 @@ public class Pong2TheSequel extends Game {
                 200.0,
                 (double) this.fieldWidth - 200);
 
-        puck = new UpgradeablePuck(this.fieldWidth, this.fieldHeight);
+        puck = new Puck(this.fieldWidth, this.fieldHeight);
         puck.setID("Pong2TheSequel");
         addPuck(puck);
 
@@ -127,22 +153,54 @@ public class Pong2TheSequel extends Game {
 
     }
 
+    /**
+     *
+     * @param puck What is being used to be collided with
+     * @param collision Collision handles what puck intersecs with
+     * @see Collision
+     * @see Puckable
+     *
+     */
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
 //        System.out.println(puck.getDirection());
         switch (collision.getType()) {
             case "Wall":
                 puck.setDirection(0 - puck.getDirection());
+                WallHitSound.play();
                 NumberofHits++;
                 break;
             case "Goal":
                 if (collision.getObjectID() == "Player 1 Goal") {
                     addPointsToPlayer(1, 1);
-                    puck.reset();
+                    if(getVictor() != 1)
+                    {
+                        puck.reset();
+
+                    }
+                    if(getVictor() == 1)
+                    {
+                        AllUpgradesOutOfPlay();
+                        puck.reset();
+                        puck.setSpeed(0);
+                    }
+
                 } else if (collision.getObjectID() == "Player 2 Goal") {
                     addPointsToPlayer(2, 1);
-                    puck.reset();
+                    if(getVictor() != 2)
+                    {
+
+                        puck.reset();
+
+                    }
+                    if(getVictor() == 2)
+                    {
+                        AllUpgradesOutOfPlay();
+                        puck.reset();
+                        puck.setSpeed(0);
+                    }
                 }
+                GoalSound.play();
                 PaddleOneHit = PaddleTwoHit = false;
                 NumberofHits++;
                 break;
@@ -218,13 +276,11 @@ public class Pong2TheSequel extends Game {
                         if(DebuffItem.DebuffRandomizer() >= 5)
                         {
                             System.out.println("Player 1 Height Debuff");
-
                             playerOne.ModifyHeight(DebuffItem.DebuffHeight());
                         }
                         else
                         {
                             System.out.println("Player 1 Speed Debuff");
-
                             playerOne.ModifySpeed(DebuffItem.DebuffSpeed());
                         }
                     }
@@ -237,18 +293,23 @@ public class Pong2TheSequel extends Game {
         //Upgrades will Spawn every 4 hits
         if(NumberofHits%4 == 0 && NumberofHits >= 4)
         {
-               //AddSpeedUpgrade();
+               AddSpeedUpgrade();
                AddHeightUpgrade();
-               //AddDebuff();
+               AddDebuff();
         }
 
     }
 
-    @Override
-    public void move()
-    {
-        super.move();
-    }
+
+    /**
+     * Detects for Collisions in code with puck, if any puck collides with an item
+     * it will hand it over to the collision handler
+     * @param puck
+     * @see UpgradeSpeed
+     * @see UpgradeHeight
+     * @see Debuff
+     *
+     */
     @Override
     public void checkCollision(Puckable puck)
     {
@@ -278,21 +339,40 @@ public class Pong2TheSequel extends Game {
     }
 
 
+    /**
+     * This Function Returns a SpeedItem Upgrade for use to spawn in GameController
+     * @return Returns a SpeedItem for use with GameController to spawn
+     * @see UpgradeSpeed
+     */
     //All my Extra Functions will be defined here
     public UpgradeSpeed getSpeedUpgrades()
     {
         return SpeedItem;
     }
+
+    /**
+     * This Function Returns a HeightItem Upgrade for use to spawn in GameController
+     * @return Returns a HeightItem for use with Game Controller
+     * @see UpgradeHeight
+     */
     public UpgradeHeight getHeightUpgrades()
     {
         return HeightItem;
     }
 
+    /**
+     * This Function Returns a DebuffItem Upgrade for use to spawn in GameController
+     * @return Returns a DebuffItem for use with Game Controller
+     */
     public Debuff getDebuff()
     {
         return DebuffItem;
     }
 
+    /**
+     * Adds a DebuffItem Into play, calls Inplay to spawn object
+     * @see Debuff
+     */
     public void AddDebuff()
     {
         if(!DebuffItem.InPlay)
@@ -303,6 +383,10 @@ public class Pong2TheSequel extends Game {
 
     }
 
+    /**
+     * Adds a SpeedUpgrade Into play, calls Inplay to spawn object
+     * @see UpgradeSpeed
+     */
     public void AddSpeedUpgrade()
     {
       if(!SpeedItem.InPlay)
@@ -312,6 +396,10 @@ public class Pong2TheSequel extends Game {
       }
     }
 
+    /**
+     * Adds a HeightUpgrade Into play, calls Inplay to spawn object
+     * @see UpgradeHeight
+     */
     public void AddHeightUpgrade()
     {
         if(!HeightItem.InPlay)
@@ -322,6 +410,18 @@ public class Pong2TheSequel extends Game {
 
     }
 
+    /**
+     * Sets All Items to Out of Play state, despawning all instances
+     * @see UpgradeHeight
+     * @see UpgradeSpeed
+     * @see Debuff
+     */
+    public void AllUpgradesOutOfPlay()
+    {
+        HeightItem.OutOfPlay();
+        SpeedItem.OutOfPlay();
+        DebuffItem.OutOfPlay();
+    }
 
 
 }

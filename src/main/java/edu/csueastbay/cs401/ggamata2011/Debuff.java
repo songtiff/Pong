@@ -11,7 +11,9 @@ import javafx.scene.image.Image;
 
 import java.util.Random;
 
-
+/**
+ * Debuff Class used to Instantiate a Debuff on field
+ */
 public class Debuff extends Rectangle implements Collidable
 {
     private String id;
@@ -29,9 +31,22 @@ public class Debuff extends Rectangle implements Collidable
     private static final int Default_Width = 5;
     private static final int Default_Height = 5;
 
+    /**
+     * Default Constructor to Debuff constructs a Square shape
+     * @param ID ID used to identify what the instantiation is
+     * @param xcord xcoordinate used for initial spawn location (arbitratry)
+     * @param ycord ycoordinate used for initial spawn location (arbitrary)
+     * @param width Width of the Debuff Item
+     * @param height The Height of the Debuff Item
+     * @param TopBound The Top bound of the playable area for spawn
+     * @param BottomBound The bottom bound of the playable area for spawn
+     * @param LeftBound The Left bound of the playable area for spawn
+     * @param RightBound The right bound of the playable area for spawn
+     */
     public Debuff(String ID, double xcord, double ycord, double width, double height, double TopBound, double BottomBound
             , double LeftBound, double RightBound)
     {
+        //Call to Super
         super(xcord, ycord, width, height);
         this.id = id;
         this.TopBound = TopBound;
@@ -45,6 +60,12 @@ public class Debuff extends Rectangle implements Collidable
         InPlay = false;
     }
 
+    /**
+     * Gets Collision with Shape returns the state of a Collision
+     * if it is intersected with Debuff or not
+     * @param shape Used for intersects
+     * @return Returns a Collision object
+     */
     @Override
     public Collision getCollision(Shape shape) {
         return new Collision(
@@ -58,28 +79,48 @@ public class Debuff extends Rectangle implements Collidable
         );
     }
 
+    /**
+     * Returns ID of Debuff
+     * @return an ID of Debuff Object
+     */
     @Override
     public String getID() {
         return id;
     }
 
+    /**
+     * Returns the Type of Debuff
+     * @return returns a string "Debuff"
+     */
     @Override
     public String getType() {
         return "Debuff";
     }
 
+    /**
+     * Sets InPlay to true
+     * Also sets the item to visible on the field
+     */
     public void InPlay()
     {
         InPlay = true;
         setVisible(true);
     }
 
+    /**
+     * Sets InPlay to false
+     * Also sets the item to invisible on the field
+     */
     public void OutOfPlay()
     {
         InPlay = false;
         setVisible(false);
     }
 
+    /**
+     * Returns the Inplay status of the Debuff
+     * @return the Inplay status of the Debuff
+     */
     public Boolean PlayState()
     {
         return InPlay;
@@ -87,8 +128,9 @@ public class Debuff extends Rectangle implements Collidable
 
 
     /**
-     * Returns a random speed modifier for the player that has collided with it
-     * @return
+     * Returns a random integer 1-10 to see which debuff to apply
+     * to Upgradeable Paddle
+     * @see UpgradeablePaddle
      */
     public int DebuffRandomizer()
     {
@@ -97,14 +139,26 @@ public class Debuff extends Rectangle implements Collidable
         return DebuffChoice;
     }
 
+    /**
+     * Generates a Random Number between -25 and 5
+     * used to apply debuffs to Upgradeable Paddle
+     * @return A Random integer between -25 and 5
+     * @see UpgradeablePaddle
+     */
     public double DebuffHeight()
     {
         Random rand = new Random();
-        double HeightDebuff = rand.nextInt(25);
+        double HeightDebuff = rand.nextInt(25)+5;
         OutOfPlay();
         return (-1)*HeightDebuff;
     }
 
+    /**
+     * Generates a Random Number between -2.50 and -0.5
+     * used to apply debuffs to Upgradeable Paddle
+     * @return A Random integer between -2.50 and -0.5
+     * @see UpgradeablePaddle
+     */
     public double DebuffSpeed()
     {
         Random rand = new Random();
@@ -114,7 +168,7 @@ public class Debuff extends Rectangle implements Collidable
     }
 
     /**
-     * Reset position on the field of the upgrade puck
+     * Reset position on the field of the Debuff item
      */
     public void ResetPosition()
     {
