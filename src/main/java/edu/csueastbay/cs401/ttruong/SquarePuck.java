@@ -1,37 +1,54 @@
-package edu.csueastbay.cs401.pong;
+package edu.csueastbay.cs401.ttruong;
 
-import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.scene.layout.AnchorPane;
+import edu.csueastbay.cs401.pong.Puckable;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.stage.PopupWindow;
+import javafx.scene.shape.Rectangle;
 
 import java.util.Random;
 
-public class Puck extends Circle implements Puckable {
+/**
+ * creates a square puck
+ */
+public class SquarePuck extends Rectangle implements Puckable {
 
-    public static final double STARTING_SPEED = 5;
-    public static final int STARTING_RADIUS = 5;
+    public static final double STARTING_SPEED = 5.0;
+    public static final int STARTING_WIDTH = 25; //changed radius to width cause rectangular shapes don't have a radius
     private final double fieldWidth;
     private final double fieldHeight;
     private String id;
     private Double speed;
     private Double direction;
+    private Integer direction_lock;
 
-    public Puck(double fieldWidth, double fieldHeight) {
+    /**
+     * SquarePuck constructor takes in
+     * @param fieldWidth - width of the field
+     * @param fieldHeight - height of the field
+     */
+
+    public SquarePuck(double fieldWidth, double fieldHeight) {
         super();
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
         reset();
+        direction_lock = 0;
+    }
+
+    public double getCenterX() {
+        return getX() - (getWidth() / 2);
+    }
+
+    public double getCenterY() {
+        return getY() + (getHeight() / 2);
     }
 
     @Override
     public void reset() {
         Random random = new Random();
-        setCenterX(fieldWidth / 2);
-        setCenterY(fieldHeight / 2);
-        setRadius(STARTING_RADIUS);
+        setX(fieldWidth / 2);
+        setY(fieldHeight / 2);
+        setWidth(STARTING_WIDTH);
+        setHeight(STARTING_WIDTH);
         setFill(Color.WHITE);
 
         speed = STARTING_SPEED;
@@ -70,16 +87,23 @@ public class Puck extends Circle implements Puckable {
 
     @Override
     public void setDirection(double angle) {
-        this.direction = angle;
+        if (direction_lock < 1) {
+            this.direction = angle;
+            direction_lock = 10;
+        }
     }
+
 
     @Override
     public void move() {
         double deltaX = speed * Math.cos(Math.toRadians(direction));
         double deltaY = speed * Math.sin(Math.toRadians(direction));
-        setCenterX(getCenterX() + deltaX);
-        setCenterY(getCenterY() + deltaY);
+        setX(getX() + deltaX);
+        setY(getY() + deltaY);
+        setRotate(getRotate() + 10);
+        direction_lock--;
     }
+
 
 
 }

@@ -40,6 +40,7 @@ public class MainMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         registry = new Registry();
         registry.register("Classic Pong", "classic", "Classic Pong Game");
+        registry.register("Tiffany Truong", "ttruong", "Pongo Pongo Pongo in the Congo");
         registry.register("Dillon Lin", "DlinPong", "Dillon's Pong Game");
         registry.register("Samuel Celli", "frantic", "Frantic Pong Game");
         registry.register("Jamdar Pong", "ejamdar", "My Version of Pong");
