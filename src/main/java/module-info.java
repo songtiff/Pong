@@ -6,6 +6,7 @@ module edu.csueastbay.cs401.pong {
 
     opens edu.csueastbay.cs401.pong to javafx.fxml;
     opens edu.csueastbay.cs401.classic to javafx.fxml;
+    opens edu.csueastbay.cs401.khlPong to javafx.fxml;
     opens edu.csueastbay.cs401.srishti to javafx.fxml;
     opens edu.csueastbay.cs401.thansen to javafx.fxml;
     opens edu.csueastbay.cs401.ethan to javafx.fxml;
