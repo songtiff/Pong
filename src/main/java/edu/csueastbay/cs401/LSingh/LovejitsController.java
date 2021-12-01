@@ -53,6 +53,7 @@ public class LovejitsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         game = new LovejitsPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
         Platform.runLater(()->fieldPane.requestFocus());
+
         addGameElementsToField();
         setUpTimeline();
 

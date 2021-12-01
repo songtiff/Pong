@@ -20,6 +20,14 @@ public class LovejitsPong extends Game {
         puck.setID("Classic");
         addPuck(puck);
 
+        Puck puck1 = new Puck(this.fieldWidth, this.fieldHeight);
+        puck.setID("Classic1");
+        addPuck(puck1);
+
+        Puck puck2 = new Puck(this.fieldWidth, this.fieldHeight);
+        puck.setID("Classic2");
+        addPuck(puck2);
+
 
 
 
@@ -33,11 +41,11 @@ public class LovejitsPong extends Game {
 
 
         Goal left = new Goal("Player 1 Goal", this.fieldWidth -10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.RED);
+        left.setFill(Color.GOLD);
         addObject(left);
 
         Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.BLUE);
+        right.setFill(Color.HOTPINK);
         addObject(right);
 
         Paddle playerOne = new Paddle(
@@ -48,7 +56,7 @@ public class LovejitsPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerOne.setFill(Color.RED);
+        playerOne.setFill(Color.GOLD);
         addPlayerPaddle(1, playerOne);
 
         Paddle playerTwo = new Paddle(
@@ -59,25 +67,31 @@ public class LovejitsPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerTwo.setFill(Color.BLUE);
+        playerTwo.setFill(Color.HOTPINK);
         addPlayerPaddle(2, playerTwo);
+
 
     }
 
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
+
         switch(collision.getType()) {
             case "Wall":
                 puck.setDirection(0 - puck.getDirection());
+                ((Puck) puck).setFill(Color.RED);
                 break;
             case "Goal":
                 if (collision.getObjectID() == "Player 1 Goal") {
                     addPointsToPlayer(1, 1);
                     puck.reset();
+
                 } else if (collision.getObjectID() == "Player 2 Goal") {
                     addPointsToPlayer(2, 1);
                     puck.reset();
                 }
+                ((Puck) puck).setFill(Color.GREEN);
+
                 break;
             case "Paddle":
                 double puckCenter = ((Puck) puck).getCenterY();
@@ -88,6 +102,8 @@ public class LovejitsPong extends Game {
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
                 }
                 puck.setDirection(angle);
+                ((Puck) puck).setFill(Color.BLUE);
+
 
         }
     }
