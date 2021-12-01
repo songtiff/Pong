@@ -19,7 +19,9 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+/**
+ * Sets the field of the game
+ */
 public class GameController implements Initializable {
     public static final int FIELD_WIDTH = 1300;
     public static final int FIELD_HEIGHT = 860;

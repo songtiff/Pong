@@ -3,19 +3,27 @@ package edu.csueastbay.cs401.rravi;
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.paint.Color;
 import javafx.scene.media.AudioClip;
-
+/**
+ * PolishedPong extends Game class. This class handles how the game is run
+ */
 public class PolishedPong extends Game {
 
     private double fieldHeight;
     private double fieldWidth;
-
+    /**
+     * Initializes the field of the game
+     *
+     * @param  victoryScore
+     * @param  fieldWidth
+     * @param  fieldHeight
+     */
     public PolishedPong(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
 
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
 
-        Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
+        PolishedPuck puck = new PolishedPuck(this.fieldWidth, this.fieldHeight);
         puck.setID("PolishedPong");
         addPuck(puck);
 
@@ -28,11 +36,11 @@ public class PolishedPong extends Game {
         addObject(bottom);
 
         Goal left = new Goal("Player 1 Goal", this.fieldWidth - 10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.BLACK);
+        left.setFill(Color.AQUA);
         addObject(left);
 
         Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.BLACK);
+        right.setFill(Color.AQUA);
         addObject(right);
 
         Paddle playerOne = new Paddle(
@@ -43,7 +51,7 @@ public class PolishedPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerOne.setFill(Color.RED);
+        playerOne.setFill(Color.ORANGERED);
         addPlayerPaddle(1, playerOne);
 
         Paddle playerTwo = new Paddle(
@@ -54,12 +62,17 @@ public class PolishedPong extends Game {
                 100,
                 10,
                 this.fieldHeight - 10);
-        playerTwo.setFill(Color.BLUE);
+        playerTwo.setFill(Color.GREEN);
         addPlayerPaddle(2, playerTwo);
 
     }
 
-
+    /**
+     * Handles collision of the game. Added sounds for each type of collision the puck may hit
+     *
+     * @param  puck
+     * @param  collision
+     */
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
 //        System.out.println(puck.getDirection());
@@ -88,9 +101,14 @@ public class PolishedPong extends Game {
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
                 }
                 puck.setDirection(angle);
-
+                puck.setSpeed(puck.getSpeed() + 0.2);
         }
     }
+    /**
+     * Handles sound for the game
+     *
+     * @param  type
+     */
     public void playAudio(String type){
         switch(type){
             case "Hit":
@@ -107,7 +125,9 @@ public class PolishedPong extends Game {
                 break;
         }
     }
-
+    /**
+     * Returns random number based on the paddle that was hit
+     */
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {
         return b1 + ((s - a1)*(b2 - b1))/(a2 - a1);
     }
