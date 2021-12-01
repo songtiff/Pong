@@ -88,6 +88,7 @@ public class MattsGame extends Game {
 //        System.out.println(puck.getDirection());
         switch(collision.getType()) {
             case "Wall":
+                playAudio("Wall");
                 puck.setDirection(0 - puck.getDirection());
                 break;
             case "Goal":
@@ -106,6 +107,7 @@ public class MattsGame extends Game {
                 }
                 break;
             case "Paddle":
+                playAudio("Paddle");
                 double puckCenter = ((Puck) puck).getCenterY();
                 double angle;
                 if (collision.getObjectID() == "Player 1 Paddle") {
@@ -233,14 +235,17 @@ public class MattsGame extends Game {
     public void playAudio(String type){
         switch(type){
             case "Wall":
-
+                AudioClip wallSound = new AudioClip(getClass().getResource("PongWall.wav").toExternalForm());
+                wallSound.play();
                 break;
             case "Goal":
                 AudioClip goalSound = new AudioClip(getClass().getResource("PongGoal3.wav").toExternalForm());
                 goalSound.play();
                 break;
             case "Paddle":
-
+                AudioClip paddleSound = new AudioClip(getClass().getResource("PongPaddle.wav").toExternalForm());
+                paddleSound.play();
+                break;
         }
     }
 
