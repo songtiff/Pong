@@ -1,7 +1,8 @@
 package edu.csueastbay.cs401.ethan.game;
 
 /**
- * Interface for providing simple controls for a {@link Game}
+ * Interface for providing simple controls for a {@link Game}.
+ * @see InputHandler#isHeld(String)
  */
 public interface InputHandler {
     /**

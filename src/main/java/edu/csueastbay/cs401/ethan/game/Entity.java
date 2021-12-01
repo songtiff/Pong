@@ -5,8 +5,6 @@ import javafx.scene.Node;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
-import java.util.Objects;
-
 /**
  * Abstract class representing all objects within the {@link Game}.
  */
@@ -37,7 +35,8 @@ public abstract class Entity {
     }
 
     /**
-     * Attaches a {@link Node} to this Entity.
+     * Adds a {@link Node} to this Entity's root. This is necessary if the node should inherit the Entity's position
+     * (such as {@link Collidable#getCollisionShape() collision shapes} or visible nodes).
      * @param node the node to add
      */
     public final void addNode(Node node) {
