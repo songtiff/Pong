@@ -23,13 +23,13 @@ public class UpgradeablePaddle extends Paddle
 
   public void ModifySpeed(double boost)
   {
-    UPGRADE_SPEED += boost;
+    UPGRADE_SPEED = UPGRADE_SPEED + boost;
 
-    if(UPGRADE_SPEED > 12)
+    if(UPGRADE_SPEED >= 10)
     {
-      UPGRADE_SPEED = 12;
+      UPGRADE_SPEED = 10;
     }
-    else if(UPGRADE_SPEED < (-3.5))
+    else if(UPGRADE_SPEED <= (-3.5))
     {
       UPGRADE_SPEED = -3.5;
     }
@@ -39,13 +39,13 @@ public class UpgradeablePaddle extends Paddle
 
   public void ModifyHeight(double boost)
   {
-    UPGRADE_HEIGHT += boost;
+    UPGRADE_HEIGHT = UPGRADE_HEIGHT + boost;
 
-    if(UPGRADE_HEIGHT > 120)
+    if(UPGRADE_HEIGHT >= 140)
     {
-      UPGRADE_HEIGHT = 120;
+      UPGRADE_HEIGHT = 140;
     }
-    else if(UPGRADE_HEIGHT < (-40))
+    else if(UPGRADE_HEIGHT <= (-40))
     {
       UPGRADE_HEIGHT = -40;
     }

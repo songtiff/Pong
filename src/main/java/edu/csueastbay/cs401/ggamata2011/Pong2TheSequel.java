@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 import javafx.scene.shape.Shape;
@@ -38,8 +40,6 @@ public class Pong2TheSequel extends Game {
     AudioClip SpeedBoostSound = new AudioClip(getClass().getResource("SpeedUpgradeSound.wav").toExternalForm());
     AudioClip HeightBoostSound = new AudioClip(getClass().getResource("HeightUpgradeSound.wav").toExternalForm());
     AudioClip DebuffSound = new AudioClip(getClass().getResource("fart-01.mp3").toExternalForm());
-
-
 
 
 
@@ -238,8 +238,8 @@ public class Pong2TheSequel extends Game {
         if(NumberofHits%4 == 0 && NumberofHits >= 4)
         {
                //AddSpeedUpgrade();
-               //AddHeightUpgrade();
-               AddDebuff();
+               AddHeightUpgrade();
+               //AddDebuff();
         }
 
     }

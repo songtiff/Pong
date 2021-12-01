@@ -3,8 +3,10 @@ package edu.csueastbay.cs401.ggamata2011;
 import edu.csueastbay.cs401.pong.Collidable;
 import edu.csueastbay.cs401.pong.Collision;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.image.Image;
 
 import java.util.Random;
 
@@ -18,6 +20,7 @@ public class UpgradeHeight extends Rectangle implements Collidable
 
     boolean InPlay = false;
 
+    Image Upgradeimg = new Image(getClass().getResource("heightup.png").toExternalForm());
 
 
     private static final int Default_Width = 5;
@@ -34,7 +37,7 @@ public class UpgradeHeight extends Rectangle implements Collidable
         this.RightBound = RightBound;
         setHeight(height);
         setWidth(width);
-        setFill(Color.YELLOW);
+        setFill(new ImagePattern(Upgradeimg));
         setVisible(false);
         InPlay = false;
     }
@@ -84,7 +87,7 @@ public class UpgradeHeight extends Rectangle implements Collidable
     public double HeightModify()
     {
         Random rand = new Random();
-        double HeightModifier= rand.nextInt(5)+1;
+        double HeightModifier= rand.nextInt(15)+1;
         OutOfPlay();
         return HeightModifier;
     }

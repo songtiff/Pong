@@ -4,8 +4,10 @@ import edu.csueastbay.cs401.pong.Collidable;
 import edu.csueastbay.cs401.pong.Collision;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.image.Image;
 
 import java.util.Random;
 
@@ -17,8 +19,9 @@ public class UpgradeSpeed extends Rectangle implements Collidable
     private double BottomBound;
     private double LeftBound;
     private double RightBound;
-
     boolean InPlay = false;
+
+    Image Upgradeimg = new Image(getClass().getResource("speedup.png").toExternalForm());
 
 
 
@@ -36,7 +39,7 @@ public class UpgradeSpeed extends Rectangle implements Collidable
         this.RightBound = RightBound;
         setHeight(height);
         setWidth(width);
-        setFill(Color.GREEN);
+        setFill(new ImagePattern(Upgradeimg));
         InPlay = false;
         setVisible(false);
     }
@@ -89,7 +92,7 @@ public class UpgradeSpeed extends Rectangle implements Collidable
     public double SpeedModify()
     {
         Random rand = new Random();
-        double speedmodifier= rand.nextInt(5)+1;
+        double speedmodifier= rand.nextInt(2)+1;
         OutOfPlay();
         return speedmodifier;
     }

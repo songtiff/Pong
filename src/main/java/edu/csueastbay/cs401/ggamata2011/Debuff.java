@@ -4,8 +4,10 @@ import edu.csueastbay.cs401.pong.Collidable;
 import edu.csueastbay.cs401.pong.Collision;
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.image.Image;
 
 import java.util.Random;
 
@@ -19,6 +21,8 @@ public class Debuff extends Rectangle implements Collidable
     private double RightBound;
 
     boolean InPlay = false;
+
+    Image Debuffimg = new Image(getClass().getResource("debuff.jpg").toExternalForm());
 
 
 
@@ -37,7 +41,7 @@ public class Debuff extends Rectangle implements Collidable
         setHeight(height);
         setWidth(width);
         setVisible(false);
-        setFill(Color.BLUE);
+        setFill(new ImagePattern(Debuffimg));
         InPlay = false;
     }
 
@@ -104,8 +108,7 @@ public class Debuff extends Rectangle implements Collidable
     public double DebuffSpeed()
     {
         Random rand = new Random();
-        double SpeedDebuff = (0.3) + ((0.9)-(0.3))*rand.nextDouble();;
-        System.out.println("Debuff Produced " + SpeedDebuff);
+        double SpeedDebuff = (0.5) + ((2.50)-(0.5))*rand.nextDouble();;
         OutOfPlay();
         return (-1)*SpeedDebuff;
     }
