@@ -1,15 +1,16 @@
-package edu.csueastbay.cs401.organicPong;
+package edu.csueastbay.cs401.pyae;
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.paint.Color;
 
-public class organicPong extends Game {
+import static edu.csueastbay.cs401.classic.ClassicPong.mapRange;
 
-    private double fieldHeight;
+public class PyaePong extends Game {
+
     private double fieldWidth;
+    private double fieldHeight;
 
-
-    public organicPong(int victoryScore, double fieldWidth, double fieldHeight) {
+    public PyaePong(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
 
         this.fieldWidth = fieldWidth;
@@ -61,7 +62,7 @@ public class organicPong extends Game {
 
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
-//        System.out.println(puck.getDirection());
+
         switch(collision.getType()) {
             case "Wall":
                 puck.setDirection(0 - puck.getDirection());
