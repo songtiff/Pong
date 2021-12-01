@@ -36,6 +36,12 @@ public class GameController implements Initializable {
     @FXML
     Label playerTwoScore;
 
+
+    /**
+     * This method will initialize a new game, add the elements to the field, and set duration/points.
+     * @param url string for the correct package name
+     * @param resourceBundle string for the correct resource directory
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         game = new NgonPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
@@ -46,6 +52,9 @@ public class GameController implements Initializable {
     }
 
 
+    /**
+     * This method will add all the elements onto the game field
+     */
     private void addGameElementsToField() {
         ArrayList<Puckable> pucks = game.getPucks();
         pucks.forEach((puck) -> {
@@ -59,18 +68,32 @@ public class GameController implements Initializable {
 
     }
 
+
+    /**
+     * This method will handle the case there a control key is pressed down and will move the element(s) accordingly
+     * @param event the key input from external keyboard
+     */
     @FXML
     public void keyPressed(KeyEvent event) {
         System.out.println("Pressed: " + event.getCode());
         game.keyPressed(event.getCode());
     }
 
+
+    /**
+     * This method will handle the case there a control key is released and will move the element(s) accordingly
+     * @param event the key input from external keyboard
+     */
     @FXML
     public void keyReleased(KeyEvent event) {
         game.keyReleased(event.getCode());
         System.out.println("Released: " + event.getCode());
     }
 
+
+    /**
+     * This method will initialize the game duration and display the player points
+     */
     private void setUpTimeline() {
 
         timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public abstract class Game {
     private int playerOneScore;
-    protected Paddle playOnePaddle;
+    private Paddle playOnePaddle;
     private int playerTwoScore;
-    protected Paddle playTwoPaddle;
+    private Paddle playTwoPaddle;
     private int victoryScore;
-    protected ArrayList<Collidable> objects;
-    protected ArrayList<Puckable> pucks;
+    private ArrayList<Collidable> objects;
+    private ArrayList<Puckable> pucks;
 
     public Game(int victoryScore) {
         this.victoryScore = victoryScore;
