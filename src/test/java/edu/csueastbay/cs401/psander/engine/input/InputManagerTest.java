@@ -82,4 +82,66 @@ public class InputManagerTest {
         var opt2 = instance.getCapturedKeystroke();
         assertTrue(opt2.isEmpty());
     }
+
+    @Test
+    public void MenuInputTests() {
+        var instance = InputManager.getInstance();
+
+        // Should be unpressed state, return false
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_UP));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_DOWN));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_LEFT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_RIGHT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CONFIRM));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CANCEL));
+
+        // Should be pressed state, return true
+        instance.keyDown(KeyCode.UP);
+        instance.keyDown(KeyCode.DOWN);
+        instance.keyDown(KeyCode.LEFT);
+        instance.keyDown(KeyCode.RIGHT);
+        instance.keyDown(KeyCode.ENTER);
+        instance.keyDown(KeyCode.ESCAPE);
+        instance.update(1.0);
+
+        assertTrue(instance.isMenuInputPressed(MenuInputEvent.MENU_UP));
+        assertTrue(instance.isMenuInputPressed(MenuInputEvent.MENU_DOWN));
+        assertTrue(instance.isMenuInputPressed(MenuInputEvent.MENU_LEFT));
+        assertTrue(instance.isMenuInputPressed(MenuInputEvent.MENU_RIGHT));
+        assertTrue(instance.isMenuInputPressed(MenuInputEvent.MENU_CONFIRM));
+        assertTrue(instance.isMenuInputPressed(MenuInputEvent.MENU_CANCEL));
+
+        // Should be held state, return false
+        instance.update(2.0);
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_UP));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_DOWN));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_LEFT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_RIGHT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CONFIRM));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CANCEL));
+
+        // Should be released state, return false
+        instance.keyUp(KeyCode.UP);
+        instance.keyUp(KeyCode.DOWN);
+        instance.keyUp(KeyCode.LEFT);
+        instance.keyUp(KeyCode.RIGHT);
+        instance.keyUp(KeyCode.ENTER);
+        instance.keyUp(KeyCode.ESCAPE);
+        instance.update(3.0);
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_UP));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_DOWN));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_LEFT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_RIGHT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CONFIRM));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CANCEL));
+
+        // Should be unpressed state again, return false
+        instance.update(4.0);
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_UP));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_DOWN));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_LEFT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_RIGHT));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CONFIRM));
+        assertFalse(instance.isMenuInputPressed(MenuInputEvent.MENU_CANCEL));
+    }
 }

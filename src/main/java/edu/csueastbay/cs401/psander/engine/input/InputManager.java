@@ -23,6 +23,8 @@ public class InputManager {
     private final Hashtable<KeyCode, InputEvent> _keycodeToInputMapping = new Hashtable<>();
     private final Hashtable<InputEvent, Optional<KeyCode>> _inputToKeycodeMapping = new Hashtable<>();
     private final List<Pair<KeyCode, KeyStatus>> _keyEventQueue;
+    private final Hashtable<KeyCode, MenuInputEvent> _keyToMenuMapping = new Hashtable<>();
+    private final Hashtable<MenuInputEvent, InputState> _menuInputStates = new Hashtable<>();
 
     private boolean _capturingKeycode = false;
     private Optional<KeyCode> _capturedKeycode;
@@ -30,24 +32,17 @@ public class InputManager {
     private InputManager() {
         _keyEventQueue = Collections.synchronizedList(new ArrayList<>());
 
-        // Default input mappings
-        _keycodeToInputMapping.put(KeyCode.W,     InputEvent.PLAYER_1_UP);
-        _keycodeToInputMapping.put(KeyCode.S,     InputEvent.PLAYER_1_DOWN);
-        _keycodeToInputMapping.put(KeyCode.A,     InputEvent.PLAYER_1_LEFT);
-        _keycodeToInputMapping.put(KeyCode.D,     InputEvent.PLAYER_1_RIGHT);
-        _keycodeToInputMapping.put(KeyCode.UP,    InputEvent.PLAYER_2_UP);
-        _keycodeToInputMapping.put(KeyCode.DOWN,  InputEvent.PLAYER_2_DOWN);
-        _keycodeToInputMapping.put(KeyCode.LEFT,  InputEvent.PLAYER_2_LEFT);
-        _keycodeToInputMapping.put(KeyCode.RIGHT, InputEvent.PLAYER_2_RIGHT);
-        _keycodeToInputMapping.forEach( (keycode, input) -> _inputToKeycodeMapping.put(input, Optional.of(keycode)));
+        setDefaultInputBindings();
     }
 
     /**
      * Reinitialize the input manager. Required because this is implemented as a singleton.
      */
     public void init() {
+        setDefaultInputBindings();
         _keyboardStates.clear();
         _inputStates.clear();
+        _menuInputStates.clear();
         synchronized (_keyEventQueue) {
             _capturingKeycode = false;
             _capturedKeycode = Optional.empty();
@@ -93,6 +88,52 @@ public class InputManager {
 
         _keyboardStates.putAll(processingMap);
 
+        // Update menu inputs - they have different logic to avoid
+        // key repeats
+
+        // First we do updates based on the current state, so we don't
+        // accidentally update a state that's newly-changed from a keyboard
+        // input
+        _menuInputStates.forEach((event, oldState) ->{
+            InputState newState;
+            switch(oldState) {
+
+                case UNPRESSED, RELEASED -> newState = InputState.UNPRESSED;
+                case PRESSED, HELD -> newState = InputState.HELD;
+                default -> throw new IllegalStateException("Unexpected value: " + oldState);
+            }
+            _menuInputStates.put(event, newState);
+        });
+
+        processingMap.forEach( (kc, newStatus) -> {
+            if (!_keyToMenuMapping.containsKey(kc)) return;
+
+            var menuInput = _keyToMenuMapping.get(kc);
+            if (!_menuInputStates.containsKey(menuInput))
+                _menuInputStates.put(menuInput, InputState.UNPRESSED);
+
+            InputState newState;
+            var oldState = _menuInputStates.get(menuInput);
+            // If-switch is kind of silly, but I don't have time to look up
+            // if there's nice pattern matching support (and Java doesn't have
+            // tuples anyway, as far as I've been able to check.)
+            if (newStatus == KeyStatus.KEY_DOWN) {
+                switch(oldState) {
+                    case UNPRESSED, RELEASED -> newState = InputState.PRESSED;
+                    case PRESSED, HELD -> newState = InputState.HELD;
+                    default -> throw new IllegalStateException("Unexpected value: " + oldState);
+                }
+            } else { // Key Up state
+                switch(oldState) {
+                    case UNPRESSED, RELEASED -> newState = InputState.UNPRESSED;
+                    case PRESSED, HELD -> newState = InputState.RELEASED;
+                    default -> throw new IllegalStateException("Unexpected value: " + oldState);
+                }
+            }
+            _menuInputStates.put(menuInput, newState);
+        });
+
+
         _keycodeToInputMapping.forEach( (code, event) -> {
             if (!_keyboardStates.containsKey(code)) return;
 
@@ -126,6 +167,20 @@ public class InputManager {
 
         var state = _inputStates.get(event);
         return state == KeyStatus.KEY_DOWN;
+    }
+
+    /**
+     * Checks if a particular menu event was pressed or not. Only returns
+     * true on the frame the input was first received, to avoid key repeats.
+     * @param menuInput The menu event to check for.
+     * @return True if the event was just input, otherwise false.
+     */
+    public boolean isMenuInputPressed(MenuInputEvent menuInput) {
+        if (!_menuInputStates.containsKey(menuInput))
+            _menuInputStates.put(menuInput, InputState.UNPRESSED);
+        var state = _menuInputStates.get(menuInput);
+
+        return state == InputState.PRESSED;
     }
 
     /**
@@ -215,6 +270,31 @@ public class InputManager {
             }
             _keyEventQueue.add(new Pair<>(k, KeyStatus.KEY_DOWN));
         }
+    }
+
+    private void setDefaultInputBindings() {
+        // Menu key bindings.
+        _keycodeToInputMapping.clear();
+        _keyToMenuMapping.put(KeyCode.UP,       MenuInputEvent.MENU_UP);
+        _keyToMenuMapping.put(KeyCode.DOWN,     MenuInputEvent.MENU_DOWN);
+        _keyToMenuMapping.put(KeyCode.LEFT,     MenuInputEvent.MENU_LEFT);
+        _keyToMenuMapping.put(KeyCode.RIGHT,    MenuInputEvent.MENU_RIGHT);
+        _keyToMenuMapping.put(KeyCode.SPACE,    MenuInputEvent.MENU_CONFIRM);
+        _keyToMenuMapping.put(KeyCode.ENTER,    MenuInputEvent.MENU_CONFIRM);
+        _keyToMenuMapping.put(KeyCode.ESCAPE,   MenuInputEvent.MENU_CANCEL);
+
+        // Default input mappings
+        _keycodeToInputMapping.clear();
+        _inputToKeycodeMapping.clear();
+        _keycodeToInputMapping.put(KeyCode.W,     InputEvent.PLAYER_1_UP);
+        _keycodeToInputMapping.put(KeyCode.S,     InputEvent.PLAYER_1_DOWN);
+        _keycodeToInputMapping.put(KeyCode.A,     InputEvent.PLAYER_1_LEFT);
+        _keycodeToInputMapping.put(KeyCode.D,     InputEvent.PLAYER_1_RIGHT);
+        _keycodeToInputMapping.put(KeyCode.UP,    InputEvent.PLAYER_2_UP);
+        _keycodeToInputMapping.put(KeyCode.DOWN,  InputEvent.PLAYER_2_DOWN);
+        _keycodeToInputMapping.put(KeyCode.LEFT,  InputEvent.PLAYER_2_LEFT);
+        _keycodeToInputMapping.put(KeyCode.RIGHT, InputEvent.PLAYER_2_RIGHT);
+        _keycodeToInputMapping.forEach( (keycode, input) -> _inputToKeycodeMapping.put(input, Optional.of(keycode)));
     }
 
     private enum KeyStatus {
