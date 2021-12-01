@@ -14,6 +14,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -43,6 +46,7 @@ public class GameController implements Initializable {
         addGameElementsToField();
         setUpTimeline();
     }
+
 
     private void addGameElementsToField() {
         ArrayList<Puckable> pucks = game.getPucks();
@@ -77,5 +81,4 @@ public class GameController implements Initializable {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
-
 }

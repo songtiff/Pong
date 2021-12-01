@@ -5,5 +5,6 @@ module edu.csueastbay.cs401.pong {
     opens edu.csueastbay.cs401.pong to javafx.fxml;
     opens edu.csueastbay.cs401.classic to javafx.fxml;
     opens edu.csueastbay.cs401.HanishPatel to javafx.fxml;
+    requires javafx.media;
     exports edu.csueastbay.cs401.pong;
 }
