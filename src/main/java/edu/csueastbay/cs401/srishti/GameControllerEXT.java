@@ -21,7 +21,6 @@ import javafx.util.Duration;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -49,16 +48,14 @@ public class GameControllerEXT implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Added Path for audio file
+        String path = "C:\\Users\\14082\\IdeaProjects\\Pong\\src\\main\\resources\\edu\\csueastbay\\cs401\\srishti\\pongMusic\\pongMusic.mp3";
         // Instantiating Media class
-        Media media = new Media(Objects.requireNonNull(getClass().getResource("pongMusic/pongMusic.mp3")).toExternalForm());
+        Media media = new Media(new File(path).toURI().toString());
         // Instantiating MediaPlayer class
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(0.5);
-        fieldPane.focusedProperty().addListener((obs, oldVal, newVal)->{
-            if(newVal) mediaPlayer.play();
-            else mediaPlayer.pause();
-        });
         // by setting this property to true, the audio will be played
+        mediaPlayer.setAutoPlay(false);
         mediaPlayer.setAutoPlay(true);
         game = new ClassicPongEXT(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
         Platform.runLater(() -> fieldPane.requestFocus());
