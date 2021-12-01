@@ -38,7 +38,6 @@ public class MattsController implements Initializable {
     private long timeTest;
     private long currTime = 0;
     private int puckCounter = 1;
-    ArrayList<Puckable> pucksToRemove = null;
 
     @FXML
     AnchorPane fieldPane;
@@ -52,8 +51,7 @@ public class MattsController implements Initializable {
     Label playerTwoBlocks;
     @FXML
     Label timer;
-    @FXML
-    Label victor;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -78,7 +76,9 @@ public class MattsController implements Initializable {
 
     }
 
-    private void addExtraPucks(){
+    // Adds a puck if 30 seconds have passed. Use currTime and puckCounter to make sure
+    // only one puck is created every 30 seconds since timeline will run multiple times in a second.
+    void addExtraPucks(){
         timeTest = game.getTime(game.startTime) % 30;
         if (currTime != timeTest){
             currTime = timeTest;
@@ -87,11 +87,12 @@ public class MattsController implements Initializable {
             Puck timerPuck = new Puck(FIELD_WIDTH, FIELD_HEIGHT);
             timerPuck.setID("Timer Puck");
             game.addPuck(timerPuck);
-            fieldPane.getChildren().add(timerPuck);
+            fieldPane.getChildren().add((Node) timerPuck);
             puckCounter = 1;
         }
     }
 
+    // Removes a "Timer Puck" if it scores a goal and removes it from the ArrayList.
     private void removeExtraPucks(){
         ArrayList<Puckable> pucks = game.getPucks();
         ArrayList<Collidable> objects = game.getObjects();
@@ -101,6 +102,7 @@ public class MattsController implements Initializable {
             objects.forEach((object) -> {
                 Collision collision = object.getCollision((Shape) puck);
                 if (collision.isCollided() && Objects.equals(collision.getType(), "Goal") && puck.getID() == "Timer Puck") {
+                    game.collisionHandler(puck, collision);
                     fieldPane.getChildren().remove((Node) puck);
                     game.removePuck(puck);
                 }
@@ -125,13 +127,14 @@ public class MattsController implements Initializable {
         timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
                 game.move();
                 removeExtraPucks();
-                playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
-                playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
+                playerOneScore.setText("Score: "+Integer.toString(game.getPlayerScore(1)));
+                playerTwoScore.setText("Score: "+Integer.toString(game.getPlayerScore(2)));
                 timer.setText(game.getTime(game.startTime) / 60 +":"+(game.getTime(game.startTime) % 60));
-                playerOneBlocks.setText(Integer.toString(game.getPlayerBlockScore(1)));
-                playerTwoBlocks.setText(Integer.toString(game.getPlayerBlockScore(2)));
+                playerOneBlocks.setText("Blocks: "+Integer.toString(game.getPlayerBlockScore(1)));
+                playerTwoBlocks.setText("Blocks: "+Integer.toString(game.getPlayerBlockScore(2)));
                 addExtraPucks();
                 game.checkPowerUpDuration();
             }

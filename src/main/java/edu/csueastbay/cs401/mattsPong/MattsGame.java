@@ -5,11 +5,17 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * A pong game where you receive points for blocking pucks with your paddle. If you
+ * collect 10 points blocking you can double the height of your paddle for 20 seconds.
+ * Collect 20 points to have your paddle give a speed boost to all pucks it touches for 20 seconds.
+ */
 public class MattsGame extends Game {
     public long startTime;
     private long playerOneTime;
@@ -27,15 +33,20 @@ public class MattsGame extends Game {
     private Paddle playOnePaddle;
     private Paddle playTwoPaddle;
 
-
+    /**
+     * This is the Constructor for class MattsGame.
+     * @param victoryScore contains the victoryScore.
+     * @param fieldWidth contains the width of the field.
+     * @param fieldHeight contains the height of the field.
+     */
     public MattsGame(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
+        // The starting time for the in-game timer.
         this.startTime = System.currentTimeMillis();
         this.playerOneBlocks = 0;
         this.playerTwoBlocks = 0;
-        //this.goalSound = new AudioClip(Objects.requireNonNull(this.getClass().getResource(")).toExternalForm());
 
 
         Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
@@ -83,9 +94,10 @@ public class MattsGame extends Game {
         this.playTwoPaddle = playerTwo;
     }
 
+    // Added a call to function playAudio in each case.
+    // Case paddle calls function addBlockPointsToPlayer and if a paddle is yellow changes the state of the puck.
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
-//        System.out.println(puck.getDirection());
         switch(collision.getType()) {
             case "Wall":
                 playAudio("Wall");
@@ -132,7 +144,12 @@ public class MattsGame extends Game {
         }
     }
 
-
+    /**
+     * Will make a paddle perform an in the game depending on the key pressed.
+     * @param code contains the key pressed by user.
+     */
+    // Pressing W or O will set the paddles to Yellow .
+    // Pressing Q or P will double the height of the paddles and change the color to green.
     @Override
     public void keyPressed(KeyCode code) {
         switch (code) {
@@ -166,7 +183,9 @@ public class MattsGame extends Game {
                 break;
             case Q:
                 if(playerOneBlocks >=10){
-                    this.playOnePaddle.setFill(Color.GREEN);
+                    if(!this.playOnePaddle.getFill().equals(Color.YELLOW)) {
+                        this.playOnePaddle.setFill(Color.GREEN);
+                    }
                     this.playOnePaddle.setHeight(200);
                     playerOneBlocks -= 10;
                     this.playerOneTime2 = System.currentTimeMillis();
@@ -175,7 +194,9 @@ public class MattsGame extends Game {
                 break;
             case P:
                 if(playerTwoBlocks >= 10){
-                    this.playTwoPaddle.setFill(Color.GREEN);
+                    if(!this.playTwoPaddle.getFill().equals(Color.YELLOW)) {
+                        this.playTwoPaddle.setFill(Color.GREEN);
+                    }
                     this.playTwoPaddle.setHeight(200);
                     playerTwoBlocks -= 10;
                     this.playerTwoTime2 = System.currentTimeMillis();
@@ -184,6 +205,11 @@ public class MattsGame extends Game {
         }
     }
 
+    /**
+     * Reverts paddles back to base form after 20 seconds.
+     */
+    // If a paddle has a power-up checkPowerDuration will check if their time is up and revert
+    // the paddle to base form.
     public void checkPowerUpDuration(){
         if(paddleOneYellow && getTime(playerOneTime) >= 20){
             this.playOnePaddle.setFill(Color.RED);
@@ -210,11 +236,23 @@ public class MattsGame extends Game {
         return b1 + ((s - a1)*(b2 - b1))/(a2 - a1);
     }
 
+    // Will return the current time that has elapsed since the game started in seconds.
+
+    /**
+     *
+     * @param time contains the starting time of when an event occurred.
+     * @return returns the elapsed time in seconds.
+     */
     public long getTime(long time){
         long elapsedTime = System.currentTimeMillis() - time;
         return elapsedTime / 1000;
     }
 
+    /**
+     * Adds block points to a player.
+     * @param player An integer value that can be 1 or 2 to select a player.
+     * @param value The amount of points that are added to a player.
+     */
     public void addBlockPointsToPlayer(int player, int value){
         if (player == 1){
             this.playerOneBlocks += value;
@@ -223,6 +261,11 @@ public class MattsGame extends Game {
         }
     }
 
+    /**
+     *
+     * @param player An integer value that can be 1 or 2 to select a player.
+     * @return returns the players total blocks.
+     */
     public int getPlayerBlockScore(int player){
         if (player == 1){
             return this.playerOneBlocks;
@@ -232,6 +275,11 @@ public class MattsGame extends Game {
         return 0;
     }
 
+
+    /**
+     *
+     * @param type A string that represents the object that will play audio.
+     */
     public void playAudio(String type){
         switch(type){
             case "Wall":
@@ -249,8 +297,45 @@ public class MattsGame extends Game {
         }
     }
 
+    /**
+     * Removes puck from puck ArrayList.
+     * @param puck An object puck from data type Puckable.
+     */
     public void removePuck(Puckable puck){
         pucks.remove(puck);
     }
 
+    // All code bellow used for tests.
+    public Paint getPaddleColor(int x){
+        if (x == 1){
+            return this.playOnePaddle.getFill();
+        }else{
+            return this.playTwoPaddle.getFill();
+        }
+    }
+
+    public Paddle getPaddle(int x){
+        if (x == 1){
+            return this.playOnePaddle;
+        }
+        return this.playTwoPaddle;
+    }
+
+    public long getStartTime(String time){
+
+        if(time == "startTime") {
+            return startTime;
+        }
+        if(time == "playerOneTime") {
+            return playerOneTime;
+        }
+        if(time == "playerTwoTime") {
+            return playerTwoTime;
+        }
+        if(time == "playerOneTime2") {
+            return playerOneTime2;
+        }
+        return playerTwoTime2;
+
+    }
 }
