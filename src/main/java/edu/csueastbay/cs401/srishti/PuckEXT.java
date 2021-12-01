@@ -7,6 +7,8 @@ import java.util.Random;
 
 
 /**
+ * @see edu.csueastbay.cs401.pong.Puck
+*This class extends Puck class
 *This class extends Puck class
 *
 */
@@ -83,8 +85,6 @@ public class PuckEXT extends Puck {
 		double deltaY = speed * Math.sin(Math.toRadians(direction));
 		setCenterX(getCenterX() + deltaX);
 		setCenterY(getCenterY() + deltaY);
-	}
-	
-
+	}	
 
 }

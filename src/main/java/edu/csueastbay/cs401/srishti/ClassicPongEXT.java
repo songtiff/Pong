@@ -1,5 +1,15 @@
 package edu.csueastbay.cs401.srishti;
+import edu.csueastbay.cs401.pong.*;
+import javafx.scene.paint.Color;
 
+/**
+ * This class extends GameEXT
+ * @see edu.csueastbay.cs401.srishti.GameEXT
+ *
+ * Changing Puck color and increasing the size of Puck
+ * adding hit audio as a change
+ *
+ */
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.media.Media;
@@ -25,7 +35,7 @@ public class ClassicPongEXT extends GameEXT {
 		super(victoryScore);
 		this.fieldWidth = fieldWidth;
 		this.fieldHeight = fieldHeight;
-
+    
 		// Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
 		PuckEXT puck = new PuckEXT(this.fieldWidth, this.fieldHeight);
 		puck.setID("Classic");
@@ -50,8 +60,9 @@ public class ClassicPongEXT extends GameEXT {
 		Paddle playerOne = new Paddle("Player 1 Paddle", 30, (this.fieldHeight / 2) - 50, 10, 100, 10,
 				this.fieldHeight - 10);
 		playerOne.setFill(Color.WHITE);
+		addPlayerPaddle(
+				1, playerOne);
 		addPlayerPaddle(1, playerOne);
-
 		Paddle playerTwo = new Paddle("Player 2 Paddle", this.fieldWidth - 40, (this.fieldHeight / 2) - 50, 10, 100, 10,
 				this.fieldHeight - 10);
 		playerTwo.setFill(Color.WHITE);
@@ -79,6 +90,12 @@ public class ClassicPongEXT extends GameEXT {
 				double puckCenter = ((Puck) puck).getCenterY();
 				double angle;
 				if (collision.getObjectID() == "Player 1 Paddle") {
+					new GameControllerEXT().addBackgroudMusic("hitAudio.mp3");
+					System.out.println(" Player 1 goal ");
+					angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
+				} else {
+					new GameControllerEXT().addBackgroudMusic("hitAudio.mp3");
+
 					// Added Path for audio file
 					String path = "C:\\Users\\14082\\IdeaProjects\\Pong\\src\\main\\resources\\edu\\csueastbay\\cs401\\srishti\\pongMusic\\hitAudio.mp3";
 					// Instantiating Media class
@@ -99,6 +116,7 @@ public class ClassicPongEXT extends GameEXT {
 					// by setting this property to true, the audio will be played
 					mediaPlayer.setAutoPlay(false);
 					mediaPlayer.setAutoPlay(true);
+
 					System.out.println(" Player 2 goal ");
 					angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
 				}
@@ -112,3 +130,6 @@ public class ClassicPongEXT extends GameEXT {
 	}
 
 }
+
+}
+
