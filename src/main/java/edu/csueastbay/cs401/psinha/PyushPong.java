@@ -1,8 +1,11 @@
 package edu.csueastbay.cs401.psinha;
+
 import edu.csueastbay.cs401.pong.*;
+
 
 import edu.csueastbay.cs401.psinha.Puckable;
 
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 
 public class PyushPong extends MyGame {
@@ -11,6 +14,7 @@ public class PyushPong extends MyGame {
     protected double fieldWidth;
     public static final int STARTING_RADIUS_small = 5;
     public static final int STARTING_RADIUS_large = 25;
+    protected AudioClip goalSound;
 
 
 
@@ -22,7 +26,7 @@ public class PyushPong extends MyGame {
 
     public PyushPong(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
-
+        this.goalSound = new AudioClip(getClass().getResource("score_sound.mp3").toExternalForm());
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
 
@@ -91,6 +95,7 @@ public class PyushPong extends MyGame {
 
 
 
+
     public void speedUp(Puckable a)
     {
     a.setSpeed(a.getSpeed() + 1);
@@ -115,7 +120,8 @@ public class PyushPong extends MyGame {
                 puck.setDirection(0 - puck.getDirection());
                 break;
             case "Goal":
-                if (collision.getObjectID() == "Player 1 Goal") { // and puck.getStatus = active
+                if (collision.getObjectID() == "Player 1 Goal") {
+                    goalSound.play();// and puck.getStatus = active
 
                     if(getPlayerScore(1) > getPlayerScore(2))
                     {
@@ -171,7 +177,9 @@ public class PyushPong extends MyGame {
                     }
                 }
 
-                else if (collision.getObjectID() == "Player 2 Goal") {
+                else if (collision.getObjectID() == "Player 2 Goal")
+                {
+                    goalSound.play();
                     // p2 lead p1
 
                     if (getPlayerScore(2) > getPlayerScore(1))

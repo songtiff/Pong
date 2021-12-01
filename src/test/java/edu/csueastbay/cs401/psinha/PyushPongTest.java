@@ -21,7 +21,7 @@ class PyushPongTest {
     @Test
     void ShouldHaveTwoPuckAtStart () {
         ArrayList<Puckable> pucks = game.getPucks();
-        assertEquals(2, pucks.size(), "There should be one puck");
+        assertEquals(2, pucks.size(), "There should be two pucks");
     }
 
     @Test
