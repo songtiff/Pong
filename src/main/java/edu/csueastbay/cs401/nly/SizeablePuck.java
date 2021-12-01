@@ -118,15 +118,7 @@ public class SizeablePuck extends Circle implements Puckable {
      */
     @Override
     public void setDirection(double angle) { this.direction = angle; }
-
-    /**
-     * This method will return the object to initial state
-     */
-
-    @Override
-    public void setDirection(double angle) { this.direction = angle; }
-
-
+    
     @Override
     public void reset() {
         Random random = new Random();
