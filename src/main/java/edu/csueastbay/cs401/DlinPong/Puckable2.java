@@ -1,8 +1,6 @@
-package edu.csueastbay.cs401.pong;
+package edu.csueastbay.cs401.DlinPong;
 
-import java.util.ArrayList;
-
-public interface Puckable {
+public interface Puckable2 {
     public void move();
     public String getID();
     public void setID(String name);

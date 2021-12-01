@@ -1,29 +1,31 @@
-package edu.csueastbay.cs401.pong;
+package edu.csueastbay.cs401.DlinPong;
 
+import edu.csueastbay.cs401.pong.Collidable;
+import edu.csueastbay.cs401.pong.Collision;
+import edu.csueastbay.cs401.DlinPong.Paddle2;
+import edu.csueastbay.cs401.DlinPong.Puckable2;
 import javafx.scene.input.KeyCode;
-import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 
-public abstract class Game {
+public abstract class Game2 {
     private int playerOneScore;
-    protected Paddle playOnePaddle;
+    protected Paddle2 playOnePaddle;
     private int playerTwoScore;
-    protected Paddle playTwoPaddle;
+    protected Paddle2 playTwoPaddle;
     private int victoryScore;
     protected ArrayList<Collidable> objects;
-    protected ArrayList<Puckable> pucks;
+    protected ArrayList<Puckable2> pucks;
 
-    public Game(int victoryScore) {
+    public Game2(int victoryScore) {
         this.victoryScore = victoryScore;
         this.objects = new ArrayList<>();
         this.pucks = new ArrayList<>();
         this.playerOneScore = 0;
         this.playerTwoScore = 0;
+
     }
-
-
 
 
     public int getPlayerScore(int player) {
@@ -51,7 +53,7 @@ public abstract class Game {
     public int getVictor() {
         int victor = 0;
         if (playerOneScore >= victoryScore) victor = 1;
-        else if (playerTwoScore >= victoryScore) victor = 2;
+        else if (playerTwoScore>= victoryScore) victor =2;
         return victor;
     }
 
@@ -66,11 +68,11 @@ public abstract class Game {
         return (ArrayList<Collidable>) objects.clone();
     }
 
-    public void addPuck(Puckable ball) {this.pucks.add(ball);}
+    public void addPuck(Puckable2 ball) {this.pucks.add(ball);}
 
-    public ArrayList<Puckable> getPucks() {
+    public ArrayList<Puckable2> getPucks() {
         // Also shallow copy
-        return (ArrayList<Puckable>) pucks.clone();
+        return (ArrayList<Puckable2>) pucks.clone();
     }
 
     public void clearPucks(){
@@ -82,13 +84,13 @@ public abstract class Game {
         playOnePaddle.move();
         playTwoPaddle.move();
 
-        for (Puckable puck : pucks) {
+        for (Puckable2 puck : pucks) {
             checkCollision(puck);
             puck.move();
         }
     }
 
-    public void checkCollision(Puckable puck) {
+    public void checkCollision(Puckable2 puck) {
         objects.forEach((object) -> {
             Collision collision = object.getCollision((Shape)puck);
             if (collision.isCollided()) {
@@ -97,7 +99,7 @@ public abstract class Game {
         });
     }
 
-    protected void addPlayerPaddle(int player, Paddle paddle) {
+    protected void addPlayerPaddle(int player, Paddle2 paddle) {
         if (player == 1) {
             playOnePaddle = paddle;
             addObject(paddle);
@@ -107,21 +109,20 @@ public abstract class Game {
         }
     }
 
-    public abstract void collisionHandler(Puckable puck, Collision collision);
+    public abstract void collisionHandler(Puckable2 puck, Collision collision);
 
     public void keyPressed(KeyCode code) {
         switch (code) {
-            case E:
+            case W:
                 playOnePaddle.moveUp();
                 break;
-            case D:
+            case S:
                 playOnePaddle.moveDown();
                 break;
-
-            case I:
+            case UP:
                 playTwoPaddle.moveUp();
                 break;
-            case K:
+            case DOWN:
                 playTwoPaddle.moveDown();
                 break;
         }
@@ -129,14 +130,12 @@ public abstract class Game {
 
     public void keyReleased(KeyCode code) {
         switch (code) {
-            case E, D:
+            case W, S:
                 playOnePaddle.stop();
                 break;
-            case I, K:
+            case UP, DOWN:
                 playTwoPaddle.stop();
                 break;
         }
     }
-
 }
-
