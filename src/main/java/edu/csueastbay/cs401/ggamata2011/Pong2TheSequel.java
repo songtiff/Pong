@@ -109,7 +109,7 @@ public class Pong2TheSequel extends Game {
                 (double) this.fieldWidth - 200);
 
         puck = new Puck(this.fieldWidth, this.fieldHeight);
-        puck.setID("Pong2TheSequel");
+        puck.setID("ClassicPong");
         addPuck(puck);
 
         Wall top = new Wall("Top Wall", 0, 0, this.fieldWidth, 10);
