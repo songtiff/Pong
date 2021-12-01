@@ -9,7 +9,9 @@ import java.io.File;
 
 /***
  *
- *
+ *  Extends PGame class.
+ *  Level difficulty and Sound fx is added:
+ *      each time the ball bounces on paddle, the ball speed is increased by 1.
  *
  * ***/
 
@@ -99,7 +101,7 @@ public class PyaePong extends PGame {
                     // Difficulty: Increasing ball speed for each hit without scoring
                     double speed = puck.getSpeed();
                     puck.setSpeed(speed + 1);
-
+                    System.out.println(puck.getSpeed());
                 } else {
                     // Hit sound fx
                     Media sfx = new Media(new File(audioPath).toURI().toString());
@@ -109,9 +111,9 @@ public class PyaePong extends PGame {
                     // Difficulty: Increasing ball speed for each hit without scoring
                     double speed = puck.getSpeed();
                     puck.setSpeed(speed + 1);
+                    System.out.println(puck.getSpeed());
                 }
                 puck.setDirection(angle);
-
         }
     }
 
