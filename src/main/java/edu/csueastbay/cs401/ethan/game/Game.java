@@ -2,9 +2,11 @@ package edu.csueastbay.cs401.ethan.game;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.*;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.ReadOnlySetProperty;
+import javafx.beans.property.ReadOnlySetWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
@@ -91,16 +93,18 @@ public abstract class Game {
         collidables = new HashSet<>();
         cache = new HashMap<>();
 
+        // scheduledEvents is a queue sorted by execution time
         scheduledEvents = new PriorityQueue<>(Comparator.comparing(Pair::getKey));
         gameTime = 0;
         timer = new Timeline(new KeyFrame(Duration.millis(10), (e)->{
             Instant now = Instant.now();
             double delta = java.time.Duration.between(lastUpdate, now).toNanos() / 1e9;
             gameTime += delta;
+            // execute all events which are past their execution time
             while(!scheduledEvents.isEmpty() && scheduledEvents.peek().getKey() < gameTime) {
                 scheduledEvents.poll().getValue().run();
             }
-            cache.clear();
+            cache.clear();  // clear the collision cache
             update(delta);
             commit();
             lastUpdate = now;
@@ -244,15 +248,17 @@ public abstract class Game {
      */
     public <T extends Collidable> Set<Collision<T>> getCollisionsWithType(Collidable collidable, Class<T> type) {
         Set<Collision<T>> out = new HashSet<>();
+        // localCache contains any collisions with the given collidable that others have already detected
         Map<Collidable, Shape> localCache = cache.getOrDefault(collidable, Collections.emptyMap());
+        // Precompute the transformed bounds for collidable
         Bounds boundsInScene = collidable.getCollisionShape().localToScene(collidable.getCollisionShape().getBoundsInLocal());
         for(Collidable c : collidables) {
-            if(c == collidable) continue; // Don't collide with yourself
-            if(type.isAssignableFrom(c.getClass())) {
+            if(c == collidable) continue;               // Don't collide with yourself
+            if(type.isAssignableFrom(c.getClass())) {   // if c extends type
                 T other = type.cast(c);
                 Shape intersect;
-                if(localCache.containsKey(other)) {
-                    intersect = localCache.get(other);
+                if(localCache.containsKey(other)) {     // if this result is already cached,
+                    intersect = localCache.get(other);  // use the cached value
                 } else {
                     // Check bounds first to avoid expensive Shape.intersect if possible
                     if(other.getCollisionShape().localToScene(other.getCollisionShape().getBoundsInLocal()).intersects(boundsInScene)) {
@@ -260,11 +266,13 @@ public abstract class Game {
                     } else {
                         intersect = null;
                     }
+                    // add the intersection to the cache for other
                     cache.putIfAbsent(other, new HashMap<>());
                     cache.get(other).put(collidable, intersect);
                 }
+                // if there was an intersection (and has bounds, meaning an actual collision)
                 if(intersect != null && intersect.getBoundsInLocal().getWidth() > 0) {
-                    out.add(new Collision<T>(other, intersect));
+                    out.add(new Collision<>(other, intersect));
                 }
             }
 
