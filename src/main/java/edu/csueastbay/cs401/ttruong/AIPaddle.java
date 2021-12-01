@@ -37,6 +37,7 @@ public class AIPaddle extends Paddle {
         this.puck = puck;
     }
 
+    //calculate angled slope to predict where aipaddle should be
     public double predictPuckHeight() {
         double m = Math.tan(Math.toRadians(puck.getDirection()));
         double y1 = puck.getCenterY();

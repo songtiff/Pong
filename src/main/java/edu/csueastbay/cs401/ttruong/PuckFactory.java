@@ -29,7 +29,7 @@ public class PuckFactory {
     public Puckable createPuck() {
         Random random = new Random();
         Puckable puck = null;
-        switch (random.nextInt(2)) {
+        switch (random.nextInt(2)) { //randomly generate square or regular puck
             case 0:
                 puck = new Puck(fieldWidth, fieldHeight);
                 break;
