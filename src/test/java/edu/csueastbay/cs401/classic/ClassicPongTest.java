@@ -188,8 +188,6 @@ class ClassicPongTest {
         assertEquals(1, game.getPlayerScore(2));
     }
 
-
-
     @Test
     void mapRange0to10and30to50() {
         double result = ClassicPong.mapRange(0,10,30,50, 5);

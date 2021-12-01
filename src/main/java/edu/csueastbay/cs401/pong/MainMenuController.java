@@ -13,7 +13,9 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
 import javafx.scene.layout.BorderPane;
+
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -27,7 +29,9 @@ public class MainMenuController implements Initializable {
     private Registry registry;
 
     @FXML
-    private BorderPane baseBorderPane;
+    private StackPane scalePane;
+    @FXML
+    private Group gameGroup;
     @FXML
     private StackPane scalePane;
     @FXML
@@ -41,10 +45,18 @@ public class MainMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         registry = new Registry();
         registry.register("Classic Pong", "classic", "Classic Pong Game");
+
         registry.register("Pyae Maung", "pyae", "Organic Pong");
+        registry.register("Srishti's Pong", "srishti", "Srishti's Pong Game");
+
+
+        registry.register("Taylor Hansen", "thansen", "Four Way Pong Game");
+        registry.register("Ngon Ly", "nly", "Get Closer to the monitor...");
+        registry.register("Joshua Rodriguez", "StarWarsPong", "A simple Star Wars themed" +
+                " ping pong game that is fast paced with power small power zones that make the game experience interesting. ");
+        registry.register("Ethan Ketell", "ethan", "Neon Pong+");
 
         registry.reset();
 
@@ -63,9 +75,10 @@ public class MainMenuController implements Initializable {
             gameButton.setText(registry.getStudentName());
             gameButton.setPrefWidth(280);
             gameButton.setOnAction(new EventHandler<ActionEvent>() {
+                private final String packageName = registry.getPackageName();
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    loadGamePane("/edu/csueastbay/cs401/" + registry.getPackageName() +"/field.fxml");
+                    loadGamePane("/edu/csueastbay/cs401/" + packageName +"/field.fxml");
                 }
             });
             studentGameList.getChildren().add(gameButton);
