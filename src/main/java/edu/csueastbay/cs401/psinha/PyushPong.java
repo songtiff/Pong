@@ -1,19 +1,22 @@
 package edu.csueastbay.cs401.psinha;
-
 import edu.csueastbay.cs401.pong.*;
-import javafx.scene.shape.Shape;
-import javafx.scene.input.KeyCode;
+
+import edu.csueastbay.cs401.psinha.Puckable;
+
 import javafx.scene.paint.Color;
 
-import java.util.Random;
+public class PyushPong extends MyGame {
 
-public class PyushPong extends Game {
+    protected double fieldHeight;
+    protected double fieldWidth;
+    public static final int STARTING_RADIUS_small = 5;
+    public static final int STARTING_RADIUS_large = 25;
 
-    private double fieldHeight;
-    private double fieldWidth;
+
 
     boolean toastino2 = false;
     boolean toastino = false;
+    boolean active = false;
 
 
 
@@ -23,53 +26,57 @@ public class PyushPong extends Game {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
 
-        MyPuck puck = new MyPuck(this.fieldWidth, this.fieldHeight);
+        MyPuck puck = new MyPuck(this.fieldWidth, this.fieldHeight, STARTING_RADIUS_large);
+        MyPuck a_puck = new MyPuck(this.fieldWidth, this.fieldHeight, STARTING_RADIUS_small);
+        a_puck.setID("Classic");
+        addPuck(a_puck);
+
+
 
 
 
         puck.setID("Classic");
-        addPuck(puck); // add pucks
+
+        addPuck(puck);
 
 
 
-        //  set speed
-        //when close to victory, increase speed of puck
-        // add victory screen or end the game
-        // if you score two in a row, reduce speed of your paddle
+
+
 
         Wall top = new Wall("Top Wall", 0,0, this.fieldWidth, 10);
-        top.setFill(Color.WHITE);
+        top.setFill(Color.CHARTREUSE);
         addObject(top);
 
         Wall bottom = new Wall("Bottom Wall", 0, this.fieldHeight -10, this.fieldWidth, 10 );
-        bottom.setFill(Color.WHITE);
+        bottom.setFill(Color.CHARTREUSE);
         addObject(bottom);
 
-        Goal left = new Goal("Player 1 Goal", this.fieldWidth -10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.RED);
+        Goal left = new Goal("Player 1 Goal", this.fieldWidth -10, 10, 250, this.fieldHeight - 20);
+        left.setFill(Color.DARKTURQUOISE);
         addObject(left);
 
-        Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.BLUE);
+        Goal right = new Goal("Player 2 Goal", 0, 10, 250, this.fieldHeight - 20);
+        right.setFill(Color.FIREBRICK);
         addObject(right);
 
-        Paddle playerOne = new Paddle(
+        MyPaddle playerOne = new MyPaddle(
                 "Player 1 Paddle",
-                50,
+                this.fieldWidth/2,
                 (this.fieldHeight/2) - 50,
-                10,
-                100,
+                25,
+                25,
                 10,
                 this.fieldHeight - 10);
         playerOne.setFill(Color.RED);
         addPlayerPaddle(1, playerOne);
 
-        Paddle playerTwo = new Paddle(
+        MyPaddle playerTwo = new MyPaddle(
                 "Player 2 Paddle",
-                this.fieldWidth - 50,
+                this.fieldWidth/1.5,
                 (this.fieldHeight/2) - 50,
-                10,
-                100,
+                25,
+                25,
                 10,
                 this.fieldHeight - 10);
         playerTwo.setFill(Color.BLUE);
@@ -108,7 +115,7 @@ public class PyushPong extends Game {
                 puck.setDirection(0 - puck.getDirection());
                 break;
             case "Goal":
-                if (collision.getObjectID() == "Player 1 Goal") {
+                if (collision.getObjectID() == "Player 1 Goal") { // and puck.getStatus = active
 
                     if(getPlayerScore(1) > getPlayerScore(2))
                     {
@@ -214,9 +221,9 @@ public class PyushPong extends Game {
 
                        }
                     }
-                    else if (getPlayerScore(1) == getPlayerScore(2))
+                    else
                     {
-                        addPointsToPlayer(1,1);
+                        addPointsToPlayer(2,1);
                         puck.reset();
                         if(getPlayerScore(2) == getVictoryScore())
                         {
@@ -240,6 +247,17 @@ public class PyushPong extends Game {
 
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {
         return b1 + ((s - a1)*(b2 - b1))/(a2 - a1);
+    }
+
+
+    protected void addPlayerPaddle(int player, MyPaddle paddle) {
+        if (player == 1) {
+            playOnePaddle = paddle;
+            addObject(paddle);
+        } else if (player == 2) {
+            playTwoPaddle = paddle;
+            addObject(paddle);
+        }
     }
 
 }

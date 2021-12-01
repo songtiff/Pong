@@ -1,6 +1,7 @@
 package edu.csueastbay.cs401.psinha;
 
-import edu.csueastbay.cs401.pong.Puckable;
+import edu.csueastbay.cs401.psinha.Puckable;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -8,36 +9,36 @@ import java.util.Random;
 
 public class MyPuck extends Circle implements Puckable {
 
-    public static final double STARTING_SPEED = 5.0;
+    public static final double STARTING_SPEED = 1.0;
     public static final int STARTING_RADIOUS = 5;
     private final double fieldWidth;
     private final double fieldHeight;
     private String id;
     private Double speed;
     private Double direction;
+    private boolean status;
+    private int puck_radius;
 
-    public MyPuck(double fieldWidth, double fieldHeight) {
+    public MyPuck(double fieldWidth, double fieldHeight, int in_puck_radius) {
         super();
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
-        reset2();
+        this.status = true;
+        this.puck_radius = in_puck_radius;
+        engage(in_puck_radius);
+
 
     }
 
-    public MyPuck(MyPuck a)
-    {
-        super();
-        this.fieldWidth = a.fieldWidth;
-        this.fieldHeight = a.fieldHeight;
-        reset2();
 
-    }
-    public void reset2() {
+
+
+    public void engage(int in_puckradius) {
         Random random = new Random();
         setCenterX(fieldWidth / 2);
         setCenterY(fieldHeight / 2);
-        setRadius(STARTING_RADIOUS);
-        setFill(Color.WHITE);
+        setRadius(in_puckradius);
+        setFill(Color.HONEYDEW);
 
         speed = STARTING_SPEED;
         if (random.nextInt(2) == 0) {
@@ -52,8 +53,8 @@ public class MyPuck extends Circle implements Puckable {
         Random random = new Random();
         setCenterX(fieldWidth / 2);
         setCenterY(fieldHeight / 2);
-        setRadius(STARTING_RADIOUS);
-        setFill(Color.WHITE);
+        setRadius(this.getPuck_radius());
+
 
 
 
@@ -66,7 +67,9 @@ public class MyPuck extends Circle implements Puckable {
     }
 
 
-
+public int getPuck_radius(){
+        return puck_radius;
+    }
 
     @Override
     public String getID() {
@@ -98,6 +101,29 @@ public class MyPuck extends Circle implements Puckable {
         this.direction = angle;
     }
 
+    @Override
+    public boolean getStatus()
+    {
+        return status;
+    }
+@Override
+
+public void setStatus(String a)
+{
+    if (a == "True")
+    {
+        status = true;
+    }
+
+    else if ( a== "False")
+    {
+        status = false;
+    }
+    else
+    {
+        System.out.println("Nada");
+    }
+}
 
 
     @Override

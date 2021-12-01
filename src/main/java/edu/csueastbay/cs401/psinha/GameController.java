@@ -1,7 +1,7 @@
 package edu.csueastbay.cs401.psinha;
 
 import edu.csueastbay.cs401.pong.Collidable;
-import edu.csueastbay.cs401.pong.Puckable;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
     public static final int FIELD_WIDTH = 1300;
     public static final int FIELD_HEIGHT = 860;
-    public static final int VICTORY_SCORE = 10;
+    public static final int VICTORY_SCORE = 50;
 
     private PyushPong game;
     private Timeline timeline;
@@ -68,16 +68,17 @@ public class GameController implements Initializable {
 
     public void banzo(KeyCode code) {
         switch (code) {
-            case W:
-               game.speedUp(game.getPucks().get(0));
 
-                break;
-            case S:
+            case X:
                 game.slowDown(game.getPucks().get(0));
                 break;
             case B:
-                game.addPuck((game.getPucks().get(0)));
 
+
+
+                break;
+            case N:
+                game.playOnePaddle.speedUp();
                 break;
 
 
@@ -91,7 +92,7 @@ public class GameController implements Initializable {
     public void keyPressed(KeyEvent event) {
         System.out.println("Pressed: " + event.getCode());
         game.keyPressed(event.getCode());
-        banzo(event.getCode());
+
 
 
 
