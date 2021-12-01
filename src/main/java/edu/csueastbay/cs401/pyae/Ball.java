@@ -5,10 +5,16 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
+/***
+ * New Ball class extends the original Puck
+ * Starting speed: 3.0
+ * Starting radius: 25
+ * ***/
+
 public class Ball extends Puck {
 
     public static final double STARTING_SPEED = 3.0;
-    public static final int STARTING_RADIOUS = 10;
+    public static final int STARTING_RADIOUS = 25;
     private final double fieldWidth;
     private final double fieldHeight;
     private String id;

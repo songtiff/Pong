@@ -11,7 +11,8 @@ import java.io.File;
  *
  *  Extends PGame class.
  *  Level difficulty and Sound fx is added:
- *      each time the ball bounces on paddle, the ball speed is increased by 1.
+ *      each time the ball bounces on paddle, the ball speed is increased by 1
+ *      and the ball size is decreased by 1.
  *
  * ***/
 
@@ -89,28 +90,17 @@ public class PyaePong extends PGame {
             case "Paddle":
                 double puckCenter = ((Puck) puck).getCenterY();
                 double angle;
-                // Media path
-                String audioPath = "src/main/resources/edu/csueastbay/cs401/pyae/SFX/paddle.wav";
 
                 if (collision.getObjectID() == "Player 1 Paddle") {
-                    // Hit sound fx
-                    Media sfx = new Media(new File(audioPath).toURI().toString());
-                    MediaPlayer sfxPlayer = new MediaPlayer(sfx);
-                    sfxPlayer.setAutoPlay(true);
+                    MediaInput();       // Bounce sound fx
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
-                    // Difficulty: Increasing ball speed for each hit without scoring
-                    double speed = puck.getSpeed();
-                    puck.setSpeed(speed + 1);
+                    Difficulty(puck);   // Level difficulty
+
                     System.out.println(puck.getSpeed());
                 } else {
-                    // Hit sound fx
-                    Media sfx = new Media(new File(audioPath).toURI().toString());
-                    MediaPlayer sfxPlayer = new MediaPlayer(sfx);
-                    sfxPlayer.setAutoPlay(true);
+                    MediaInput();       // Bounce sound fx
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
-                    // Difficulty: Increasing ball speed for each hit without scoring
-                    double speed = puck.getSpeed();
-                    puck.setSpeed(speed + 1);
+                    Difficulty(puck);   // Level difficulty
                     System.out.println(puck.getSpeed());
                 }
                 puck.setDirection(angle);
@@ -119,6 +109,22 @@ public class PyaePong extends PGame {
 
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {
         return b1 + ((s - a1)*(b2 - b1))/(a2 - a1);
+    }
+
+    // Function: Ball Bounce sfx.
+    public void MediaInput() {
+        String audioPath = "src/main/resources/edu/csueastbay/cs401/pyae/SFX/paddle.wav";
+        Media sfx = new Media(new File(audioPath).toURI().toString());
+        MediaPlayer sfxPlayer = new MediaPlayer(sfx);
+        sfxPlayer.setAutoPlay(true);
+    }
+
+    // Function: Difficulty: Increasing ball speed for each hit without scoring
+    public void Difficulty(Puckable puck) {
+        double speed = puck.getSpeed();
+        puck.setSpeed(speed + 1);
+        double size = ((Puck) puck).getRadius();
+        ((Puck) puck).setRadius(size - 1);
     }
 
 }
