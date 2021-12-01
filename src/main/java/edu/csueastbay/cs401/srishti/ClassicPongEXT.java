@@ -2,13 +2,11 @@ package edu.csueastbay.cs401.srishti;
 
 
 import edu.csueastbay.cs401.pong.*;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 
 import java.io.File;
-import java.util.Objects;
 
 /**
  * This class extends GameEXT
@@ -80,12 +78,28 @@ public class ClassicPongEXT extends GameEXT {
 			case "Paddle":
 				double puckCenter = ((Puck) puck).getCenterY();
 				double angle;
-				AudioClip clip = new AudioClip(Objects.requireNonNull(getClass().getResource("pongMusic/hitAudio.mp3")).toExternalForm());
-				if ("Player 1 Paddle".equals(collision.getObjectID())) {
-					clip.play();
+				if (collision.getObjectID() == "Player 1 Paddle") {
+					// Added Path for audio file
+					String path = "C:\\Users\\14082\\IdeaProjects\\Pong\\src\\main\\resources\\edu\\csueastbay\\cs401\\srishti\\pongMusic\\hitAudio.mp3";
+					// Instantiating Media class
+					Media media = new Media(new File(path).toURI().toString());
+					// Instantiating MediaPlayer class
+					MediaPlayer mediaPlayer = new MediaPlayer(media);
+					// by setting this property to true, the audio will be played
+					mediaPlayer.setAutoPlay(false);
+					mediaPlayer.setAutoPlay(true);
+					System.out.println(" Player 1 goal ");
 					angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
 				} else {
-					clip.play();
+					String path = "C:\\Users\\14082\\IdeaProjects\\Pong\\src\\main\\resources\\edu\\csueastbay\\cs401\\srishti\\pongMusic\\hitAudio.mp3";
+					// Instantiating Media class
+					Media media = new Media(new File(path).toURI().toString());
+					// Instantiating MediaPlayer class
+					MediaPlayer mediaPlayer = new MediaPlayer(media);
+					// by setting this property to true, the audio will be played
+					mediaPlayer.setAutoPlay(false);
+					mediaPlayer.setAutoPlay(true);
+					System.out.println(" Player 2 goal ");
 					angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
 				}
 				puck.setDirection(angle);
