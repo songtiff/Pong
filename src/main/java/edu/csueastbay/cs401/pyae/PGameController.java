@@ -55,7 +55,6 @@ public class PGameController implements Initializable {
         objects.forEach((object)-> {
             fieldPane.getChildren().add((Node) object);
         });
-
     }
 
     @FXML
