@@ -2,10 +2,12 @@ package edu.csueastbay.cs401.pyae;
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.paint.Color;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
-import static edu.csueastbay.cs401.classic.ClassicPong.mapRange;
+import java.io.File;
 
-public class PyaePong extends Game {
+public class PyaePong extends PGame {
 
     private double fieldWidth;
     private double fieldHeight;
@@ -16,9 +18,9 @@ public class PyaePong extends Game {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
 
-        Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
-        puck.setID("Classic");
-        addPuck(puck);
+        Ball ball = new Ball(this.fieldWidth, this.fieldHeight);
+        ball.setID("Organic");
+        addPuck(ball);
 
         Wall top = new Wall("Top Wall", 0,0, this.fieldWidth, 10);
         top.setFill(Color.WHITE);
@@ -79,10 +81,28 @@ public class PyaePong extends Game {
             case "Paddle":
                 double puckCenter = ((Puck) puck).getCenterY();
                 double angle;
+                // Media path
+                String audioPath = "src/main/resources/edu/csueastbay/cs401/pyae/SFX/paddle.wav";
+
                 if (collision.getObjectID() == "Player 1 Paddle") {
+                    // Hit sound fx
+                    Media sfx = new Media(new File(audioPath).toURI().toString());
+                    MediaPlayer sfxPlayer = new MediaPlayer(sfx);
+                    sfxPlayer.setAutoPlay(true);
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
+                    // Difficulty: Increasing ball speed for each hit
+                    double speed = puck.getSpeed();
+                    puck.setSpeed(speed + 1);
+
                 } else {
+                    // Hit sound fx
+                    Media sfx = new Media(new File(audioPath).toURI().toString());
+                    MediaPlayer sfxPlayer = new MediaPlayer(sfx);
+                    sfxPlayer.setAutoPlay(true);
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
+                    // Difficulty: Increasing ball speed for each hit
+                    double speed = puck.getSpeed();
+                    puck.setSpeed(speed + 1);
                 }
                 puck.setDirection(angle);
 

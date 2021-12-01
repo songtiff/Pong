@@ -1,27 +1,25 @@
-package edu.csueastbay.cs401.pong;
+package edu.csueastbay.cs401.pyae;
 
-import edu.csueastbay.cs401.pong.Puckable;
+import edu.csueastbay.cs401.pong.Puck;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import java.util.Random;
 
-public class Puck extends Circle implements Puckable {
+public class Ball extends Puck {
 
-    public static final double STARTING_SPEED = 5.0;
-    public static final int STARTING_RADIOUS = 5;
+    public static final double STARTING_SPEED = 3.0;
+    public static final int STARTING_RADIOUS = 10;
     private final double fieldWidth;
     private final double fieldHeight;
     private String id;
     private Double speed;
     private Double direction;
 
-    public Puck(double fieldWidth, double fieldHeight) {
-        super();
+    public Ball(double fieldWidth, double fieldHeight) {
+        super(fieldWidth, fieldHeight);
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
         reset();
-
     }
 
     @Override
@@ -38,7 +36,6 @@ public class Puck extends Circle implements Puckable {
         } else {
             direction = (random.nextDouble() * 90) + 115;
         }
-
     }
 
     @Override
@@ -70,8 +67,6 @@ public class Puck extends Circle implements Puckable {
     public void setDirection(double angle) {
         this.direction = angle;
     }
-
-
 
     @Override
     public void move() {
