@@ -65,7 +65,6 @@ public class PongGame extends Game {
 
         addBall();
         schedule(10, this::addRandomUpgrade);
-        commit();
     }
 
     private void addBall() {

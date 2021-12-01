@@ -2,8 +2,7 @@ package edu.csueastbay.cs401.ethan.game;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.geometry.BoundingBox;
@@ -42,11 +41,9 @@ public abstract class Game {
     private final Queue<Pair<Double, Runnable>> scheduledEvents;
 
     // Whether the game is playing, or over. Observable for bindings
-    private final BooleanProperty playing, gameOver;
-    // Actual set of Entities
-    private final ObservableSet<Entity> entities;
-    // Read-only set of Entities
-    private final ObservableSet<Entity> _entities;
+    private final ReadOnlyBooleanWrapper playing, gameOver;
+    // Entities within the game
+    private final ReadOnlySetWrapper<Entity> entities;
     // Sets to track additions and removals
     private final Set<Entity> toAdd, toRemove;
     // Set of Entities which implement Collidable
@@ -86,10 +83,9 @@ public abstract class Game {
         pane.setClip(new Rectangle(width, height));
         input = control -> false;
         bounds = new BoundingBox(0, 0, width, height);
-        playing = new SimpleBooleanProperty(false);
-        gameOver = new SimpleBooleanProperty(false);
-        entities = FXCollections.observableSet(new HashSet<>());
-        _entities = FXCollections.unmodifiableObservableSet(entities);
+        playing = new ReadOnlyBooleanWrapper(false);
+        gameOver = new ReadOnlyBooleanWrapper(false);
+        entities = new ReadOnlySetWrapper<>(FXCollections.observableSet(new HashSet<>()));
         toAdd = new HashSet<>();
         toRemove = new HashSet<>();
         collidables = new HashSet<>();
@@ -113,16 +109,19 @@ public abstract class Game {
     }
 
     /**
-     * Returns a read-only {@link ObservableSet} of {@link Entity Entities} within this Game
+     * Returns a {@link ReadOnlySetProperty} of {@link Entity Entities} within this Game
      * @return a read-only set of the entities in this game
+     * @see Game#add(Entity)
+     * @see Game#remove(Entity)
      */
-    public final ObservableSet<Entity> getEntities() {
-        return _entities;
+    public final ReadOnlySetProperty<Entity> getEntities() {
+        return entities.getReadOnlyProperty();
     }
 
     /**
      * Adds an {@link Entity} to the game.
      * @param entity the Entity to add
+     * @see Game#addAll(Collection)
      */
     public final void add(Entity entity) {
         toAdd.add(entity);
@@ -131,6 +130,7 @@ public abstract class Game {
     /**
      * Adds multiple {@link Entity Entities} to the game.
      * @param entities the Entities to add
+     * @see Game#add(Entity)
      */
     public final void addAll(Collection<Entity> entities) {
         toAdd.addAll(entities);
@@ -139,6 +139,7 @@ public abstract class Game {
     /**
      * Removes an {@link Entity} from the game.
      * @param entity the Entity to remove
+     * @see Game#removeAll(Collection)
      */
     public final void remove(Entity entity) {
         toRemove.add(entity);
@@ -147,6 +148,7 @@ public abstract class Game {
     /**
      * Removes multiple {@link Entity Entities} from the game.
      * @param entities the Entities to remove
+     * @see Game#remove(Entity)
      */
     public final void removeAll(Collection<Entity> entities) {
         toRemove.addAll(entities);
@@ -187,25 +189,59 @@ public abstract class Game {
     }
 
     /**
-     * Controls whether the game is playing. If false, the game is paused and {@link Game#update(double)} is not called.
-     * @return
+     * Returns a {@link ReadOnlyBooleanProperty} for adding handlers to this Game's {@code playing} property
+     * @return this game's {@code playing} read-only boolean property
+     * @see Game#setPlaying(boolean)
+     * @see Game#isPlaying()
      */
-    public final BooleanProperty playingProperty() { return playing; }
+    public final ReadOnlyBooleanProperty playingProperty() {
+        return playing.getReadOnlyProperty();
+    }
 
+    /**
+     * Sets whether this game has reached an end state
+     * @param gameOver whether this game is over
+     */
     public final void setGameOver(boolean gameOver) {
         this.gameOver.set(gameOver);
     }
 
+    /**
+     * Gets whether this game has reached an end state
+     * @return whether this game is over
+     */
     public final boolean isGameOver() {
         return gameOver.get();
     }
 
-    public final BooleanProperty gameOverProperty() { return gameOver; }
+    /**
+     * Returns a {@link ReadOnlyBooleanProperty} for adding handlers to this Game's {@code gameOver} property
+     * @return this game's {@code gameOver} read-only boolean property
+     * @see Game#setGameOver(boolean)
+     * @see Game#isGameOver()
+     */
+    public final ReadOnlyBooleanProperty gameOverProperty() {
+        return gameOver.getReadOnlyProperty();
+    }
 
+    /**
+     * This method is where game-specific logic should happen. Default implementation simply calls {@link Entity#update(double)}
+     * for each entity in {@link Game#getEntities() entities}. {@code delta} is time since last update in seconds, and can be
+     * used to normalize movement.
+     * @param delta time elapsed since last update, in seconds.
+     */
     protected void update(double delta) {
         entities.forEach(e->e.update(delta));
     }
 
+    /**
+     * Checks for collisions between the given {@link Collidable} and Collidables of the specified type within the Game.
+     * Returns a set of {@link Collision<T> Collisions} which include the overlapping area.
+     * @param collidable the collidable to check for collisions
+     * @param type the type to check for collisions
+     * @param <T> the type to check for collisions
+     * @return the set of collisions between the given collidable and others of the given type
+     */
     public <T extends Collidable> Set<Collision<T>> getCollisionsWithType(Collidable collidable, Class<T> type) {
         Set<Collision<T>> out = new HashSet<>();
         Map<Collidable, Shape> localCache = cache.getOrDefault(collidable, Collections.emptyMap());
@@ -236,11 +272,19 @@ public abstract class Game {
         return out;
     }
 
+    /**
+     * Checks for collisions between the given {@link Collidable} and other Collidables within the Game.
+     * Returns a set of {@link Collision<Collidable> Collisions} which include the overlapping area.
+     * <br/>Equivalent to {@code Game.getCollisionsWithType(collidable, Collidable.class)}
+     * @param collidable the collidable to check for collisions
+     * @return the set of collisions between the given collidable others
+     */
     public Set<Collision<Collidable>> getCollisions(Collidable collidable) {
         return getCollisionsWithType(collidable, Collidable.class);
     }
 
-    protected void commit() {
+    // Apply changes from toAdd, toRemove, and call Entities' commit()
+    private void commit() {
         for(Entity e : toAdd) {
             if(entities.add(e)) {
                 e.game = this;
