@@ -1,5 +1,6 @@
 package edu.csueastbay.cs401.psander;
 
+import edu.csueastbay.cs401.psander.engine.audio.AudioManager;
 import edu.csueastbay.cs401.psander.engine.events.EventHub;
 import edu.csueastbay.cs401.psander.engine.input.InputManager;
 import edu.csueastbay.cs401.psander.engine.render.RenderManager;
@@ -76,6 +77,7 @@ public class PongWare {
         _sceneManager.init();
         _renderManager.init(_fieldWidth, _fieldHeight, gc);
         _eventHub.init();
+        AudioManager.init();
 
         var titleScreen = new TitleScreenScene();
         titleScreen.init();
