@@ -14,7 +14,7 @@ import javafx.scene.shape.Shape;
 
 /**
  * This is used to instantiate the Game Instance
- * @see UpgradeablePuck
+ * @see Debuff
  * @see UpgradeablePaddle
  * @see UpgradeSpeed
  * @see UpgradeHeight
@@ -153,8 +153,12 @@ public class Pong2TheSequel extends Game {
 
     }
 
+
+
+
     /**
-     *
+     *Collision Handler, checks what object has been collided
+     * and calls the appropriate behavior
      * @param puck What is being used to be collided with
      * @param collision Collision handles what puck intersecs with
      * @see Collision
@@ -333,7 +337,15 @@ public class Pong2TheSequel extends Game {
 
         }
 
-
+    /**
+     * Returns the range of the map
+     * @param a1
+     * @param a2
+     * @param b1
+     * @param b2
+     * @param s
+     * @return
+     */
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {
         return b1 + ((s - a1) * (b2 - b1)) / (a2 - a1);
     }

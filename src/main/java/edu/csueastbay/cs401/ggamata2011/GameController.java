@@ -21,6 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * Spawns In Game Elements and controls Timeline of game
+ */
 public class GameController implements Initializable {
     public static final int FIELD_WIDTH = 1300;
     public static final int FIELD_HEIGHT = 860;
@@ -36,6 +39,11 @@ public class GameController implements Initializable {
     @FXML
     Label playerTwoScore;
 
+    /**
+     * Initializes Game Elements and request focus on the fieldpane
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         game = new Pong2TheSequel(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
@@ -62,17 +70,28 @@ public class GameController implements Initializable {
 
     }
 
+    /**
+     * Gets Keypress
+     * @param event keypress
+     */
     @FXML
     public void keyPressed(KeyEvent event) {
         game.keyPressed(event.getCode());
     }
 
+    /**
+     * Gets KeyRelease
+     * @param event KeyRelease
+     */
     @FXML
     public void keyReleased(KeyEvent event) {
         game.keyReleased(event.getCode());
     }
 
 
+    /**
+     * Sets Up Game timeline and keeps the game running
+     */
     private void setUpTimeline() {
 
         timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
