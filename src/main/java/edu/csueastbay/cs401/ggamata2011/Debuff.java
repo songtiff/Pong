@@ -89,14 +89,14 @@ public class Debuff extends Rectangle implements Collidable
     public int DebuffRandomizer()
     {
         Random rand = new Random();
-        int DebuffChoice= rand.nextInt(1);
+        int DebuffChoice= rand.nextInt(10)+1;
         return DebuffChoice;
     }
 
     public double DebuffHeight()
     {
         Random rand = new Random();
-        double HeightDebuff = rand.nextInt(5);
+        double HeightDebuff = rand.nextInt(25);
         OutOfPlay();
         return (-1)*HeightDebuff;
     }
@@ -104,7 +104,8 @@ public class Debuff extends Rectangle implements Collidable
     public double DebuffSpeed()
     {
         Random rand = new Random();
-        double SpeedDebuff = rand.nextInt(5);
+        double SpeedDebuff = (0.3) + ((0.9)-(0.3))*rand.nextDouble();;
+        System.out.println("Debuff Produced " + SpeedDebuff);
         OutOfPlay();
         return (-1)*SpeedDebuff;
     }

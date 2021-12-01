@@ -89,7 +89,7 @@ public class UpgradeSpeed extends Rectangle implements Collidable
     public double SpeedModify()
     {
         Random rand = new Random();
-        double speedmodifier= rand.nextInt(2)+1;
+        double speedmodifier= rand.nextInt(5)+1;
         OutOfPlay();
         return speedmodifier;
     }

@@ -29,9 +29,9 @@ public class UpgradeablePaddle extends Paddle
     {
       UPGRADE_SPEED = 12;
     }
-    else if(UPGRADE_SPEED < (-5))
+    else if(UPGRADE_SPEED < (-3.5))
     {
-      UPGRADE_SPEED = -5;
+      UPGRADE_SPEED = -3.5;
     }
 
 
@@ -45,9 +45,9 @@ public class UpgradeablePaddle extends Paddle
     {
       UPGRADE_HEIGHT = 120;
     }
-    else if(UPGRADE_HEIGHT < (-50))
+    else if(UPGRADE_HEIGHT < (-40))
     {
-      UPGRADE_HEIGHT = -50;
+      UPGRADE_HEIGHT = -40;
     }
     super.setHeight(getHeight()+UPGRADE_HEIGHT);
   }

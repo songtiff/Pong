@@ -87,19 +87,19 @@ public class Pong2TheSequel extends Game {
         addPuck(puck);
 
         Wall top = new Wall("Top Wall", 0, 0, this.fieldWidth, 10);
-        top.setFill(Color.RED);
+        top.setFill(Color.WHITE);
         addObject(top);
 
         Wall bottom = new Wall("Bottom Wall", 0, this.fieldHeight - 10, this.fieldWidth, 10);
-        bottom.setFill(Color.RED);
+        bottom.setFill(Color.WHITE);
         addObject(bottom);
 
         Goal left = new Goal("Player 1 Goal", this.fieldWidth - 10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.GREEN);
+        left.setFill(Color.PURPLE);
         addObject(left);
 
         Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.GREEN);
+        right.setFill(Color.BLUE);
         addObject(right);
 
 
@@ -197,15 +197,17 @@ public class Pong2TheSequel extends Game {
                     if (PaddleOneHit)
                     {
                         System.out.println("Player 1 Debuffed Player 2");
-                        if(DebuffItem.DebuffRandomizer() == 1)
+                        if(DebuffItem.DebuffRandomizer() >= 5)
                         {
                             System.out.println("Player 2 Height Debuff");
+
                             playerTwo.ModifyHeight(DebuffItem.DebuffHeight());
                         }
                         else
                         {
                             System.out.println("Player 2 Speed Debuff");
-                            playerTwo.ModifyHeight(DebuffItem.DebuffSpeed());
+
+                            playerTwo.ModifySpeed(DebuffItem.DebuffSpeed());
                         }
 
                     }
@@ -213,13 +215,17 @@ public class Pong2TheSequel extends Game {
                     {
 
                         System.out.println("Player 2 Debuffed Player 1");
-                        if(DebuffItem.DebuffRandomizer() == 1)
+                        if(DebuffItem.DebuffRandomizer() >= 5)
                         {
+                            System.out.println("Player 1 Height Debuff");
+
                             playerOne.ModifyHeight(DebuffItem.DebuffHeight());
                         }
                         else
                         {
-                            playerOne.ModifyHeight(DebuffItem.DebuffSpeed());
+                            System.out.println("Player 1 Speed Debuff");
+
+                            playerOne.ModifySpeed(DebuffItem.DebuffSpeed());
                         }
                     }
                     DebuffSound.play();
@@ -231,8 +237,8 @@ public class Pong2TheSequel extends Game {
         //Upgrades will Spawn every 4 hits
         if(NumberofHits%4 == 0 && NumberofHits >= 4)
         {
-               AddSpeedUpgrade();
-               AddHeightUpgrade();
+               //AddSpeedUpgrade();
+               //AddHeightUpgrade();
                AddDebuff();
         }
 
