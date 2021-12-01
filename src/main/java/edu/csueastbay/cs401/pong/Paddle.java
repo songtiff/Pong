@@ -73,7 +73,7 @@ public class Paddle extends Rectangle implements Collidable{
         moving = Direction.Down;
     }
 
-    public void setSpeed(double a) { speed = a;}
+
 
 
 
