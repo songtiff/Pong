@@ -2,6 +2,7 @@ module edu.csueastbay.cs401.pong {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.media;
+    requires java.desktop;
     //requires javafx.graphics;
 
     opens edu.csueastbay.cs401.pong to javafx.fxml;
@@ -12,6 +13,7 @@ module edu.csueastbay.cs401.pong {
     opens edu.csueastbay.cs401.ethan.game to javafx.base;
     opens edu.csueastbay.cs401.nly to javafx.fxml;
     opens edu.csueastbay.cs401.StarWarsPong to javafx.fxml;
+    opens edu.csueastbay.cs401.vnguyen to javafx.fxml;
 
     exports edu.csueastbay.cs401.pong;
 }
