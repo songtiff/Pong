@@ -2,29 +2,18 @@ package edu.csueastbay.cs401.classic;
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.paint.Color;
-import java.util.Random;
 
 public class ClassicPong extends Game {
     
     private double fieldHeight;
     private double fieldWidth;
 
-    Random random = new Random();
-    double leftLocation = random.nextDouble(750);
-    double rightLocation = random.nextDouble(750);
-    double leftYLocation, rightYLocation;
 
     public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
 
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
-
-        leftYLocation = this.fieldHeight - leftLocation;
-        if(this.fieldHeight - leftLocation > 750) {leftYLocation = 750;}
-
-        rightYLocation = this.fieldHeight - rightLocation;
-        if(this.fieldHeight - rightLocation > 750) {rightYLocation = 750;}
 
         Puck puck = new Puck(this.fieldWidth, this.fieldHeight);
         puck.setID("Classic");
