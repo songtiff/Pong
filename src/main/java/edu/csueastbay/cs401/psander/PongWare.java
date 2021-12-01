@@ -79,6 +79,14 @@ public class PongWare {
         _eventHub.init();
         AudioManager.init();
 
+        var paddleHitPath = getClass().getResource("sounds/Paddle Hit.wav").toExternalForm();
+        var wallHitPath = getClass().getResource("sounds/Wall Hit.wav").toExternalForm();
+        var goalHitPath = getClass().getResource("sounds/Goal Hit.wav").toExternalForm();
+
+        AudioManager.registerSoundEffect("PaddleHit", paddleHitPath);
+        AudioManager.registerSoundEffect("WallHit", wallHitPath);
+        AudioManager.registerSoundEffect("GoalHit", goalHitPath);
+
         var titleScreen = new TitleScreenScene();
         titleScreen.init();
         _sceneManager.push(titleScreen);
