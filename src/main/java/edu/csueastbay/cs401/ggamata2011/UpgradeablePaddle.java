@@ -8,10 +8,13 @@ import edu.csueastbay.cs401.pong.Paddle;
  */
 public class UpgradeablePaddle extends Paddle
 {
-  public final double START_SPEED = 5.0;
-  public  double UPGRADE_SPEED = 0;
-  public  double UPGRADE_HEIGHT = 0;
+  //Initialization of Starting SPeed
+  private double START_SPEED = 5.0;
+  //Default Modifiers to SPeed and Height declared here
+  private  double UPGRADE_SPEED = 0;
+  private  double UPGRADE_HEIGHT = 0;
 
+  //bounds used to limit paddle movement
   private double topBound;
   private double bottomBound;
 
@@ -36,8 +39,10 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
-   *
-   * @param boost
+   *Function takes a double generated from UpgradeSpeed to modify
+   * its own Speed
+   * @param boost added to upgrade speed to modify a paddles speed
+   * @see UpgradeSpeed
    */
   public void ModifySpeed(double boost)
   {
@@ -56,8 +61,10 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
-   *
-   * @param boost
+   *Function takes a double generated from UpgradeHeight to modify
+   * its own Speed
+   * @param boost added to upgrade speed to modify a paddles speed
+   * @see UpgradeHeight
    */
   public void ModifyHeight(double boost)
   {
@@ -75,7 +82,8 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
-   *
+   * Used to move the paddle, Start Speed is Modified by
+   * Upgrade speed
    */
   @Override
   public void move()
@@ -93,7 +101,7 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
-   *
+   * Used to Stop Paddle
    */
   @Override
   public void stop() {
@@ -101,7 +109,7 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
-   *
+   * Used to Set Paddle Direction to up
    */
   @Override
   public void moveUp() {
@@ -109,7 +117,7 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
-   *
+   *Used to Set Paddle Direction to down
    */
   @Override
   public void moveDown() {
