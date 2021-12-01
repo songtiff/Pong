@@ -33,6 +33,8 @@ public class UpgradeablePaddle extends Paddle
     {
       UPGRADE_SPEED = -5;
     }
+
+
   }
 
   public void ModifyHeight(double boost)

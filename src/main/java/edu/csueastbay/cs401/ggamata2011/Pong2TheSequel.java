@@ -4,6 +4,8 @@ import edu.csueastbay.cs401.pong.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import javafx.scene.media.AudioClip;
+
 
 import javafx.scene.shape.Shape;
 
@@ -28,6 +30,15 @@ public class Pong2TheSequel extends Game {
 
     private Boolean PaddleOneHit = false;
     private Boolean PaddleTwoHit = false;
+
+    AudioClip P1HitSound  = new AudioClip(getClass().getResource("P1Hit.wav").toExternalForm());
+    AudioClip P2HitSound  = new AudioClip(getClass().getResource("P2Hit.wav").toExternalForm());
+    AudioClip GoalSound = new AudioClip(getClass().getResource("P2Hit.wav").toExternalForm()) ;
+
+    AudioClip SpeedBoostSound = new AudioClip(getClass().getResource("SpeedUpgradeSound.wav").toExternalForm());
+    AudioClip HeightBoostSound = new AudioClip(getClass().getResource("HeightUpgradeSound.wav").toExternalForm());
+    AudioClip DebuffSound = new AudioClip(getClass().getResource("fart-01.mp3").toExternalForm());
+
 
 
 
@@ -140,10 +151,12 @@ public class Pong2TheSequel extends Game {
                 double angle;
                 if (collision.getObjectID() == "Player 1 Paddle") {
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
+                    P1HitSound.play();
                     PaddleOneHit = true;
                     PaddleTwoHit = false;
                 } else {
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
+                    P2HitSound.play();
                     PaddleTwoHit = true;
                     PaddleOneHit = false;
                 }
@@ -161,6 +174,7 @@ public class Pong2TheSequel extends Game {
                       System.out.println("Player 2 Obtained Speed Upgrade!");
                       playerTwo.ModifySpeed(SpeedItem.SpeedModify());
                   }
+                  SpeedBoostSound.play();
               }
                 break;
             case "UpgradeHeight":
@@ -168,13 +182,13 @@ public class Pong2TheSequel extends Game {
                     if (PaddleOneHit) {
                         System.out.println("Player 1 Obtained Height Upgrade!");
                         playerOne.ModifyHeight(HeightItem.HeightModify());
-                        break;
                     }
                     if (PaddleTwoHit) {
                         System.out.println("Player 2 Obtained Height Upgrade!");
                         playerTwo.ModifyHeight(HeightItem.HeightModify());
-                        break;
+
                     }
+                    HeightBoostSound.play();
                 }
 
                 break;
@@ -208,6 +222,7 @@ public class Pong2TheSequel extends Game {
                             playerOne.ModifyHeight(DebuffItem.DebuffSpeed());
                         }
                     }
+                    DebuffSound.play();
                 }
                 break;
 
