@@ -6,10 +6,23 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 //create class for speedbost obj
+
+/**
+ * class that extends circle by creating circular objects
+ * while tracking type to ensure that collisionhandler can handle
+ * the collisions with puck in classicpong. when collided,
+ * this will increase the speed of the puck.
+ */
 public class SpeedBoost extends Circle implements Collidable {
     private final double fieldWidth;
     private final double fieldHeight;
     private String id;
+
+    /**
+     * SpeedBoost constructor takes in
+     * @param fieldWidth - width of the field
+     * @param fieldHeight - height of the field
+     */
 
     public SpeedBoost(double fieldWidth, double fieldHeight) {
         super();

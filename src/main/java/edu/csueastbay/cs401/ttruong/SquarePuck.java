@@ -6,16 +6,25 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Random;
 
+/**
+ * creates a square puck
+ */
 public class SquarePuck extends Rectangle implements Puckable {
 
     public static final double STARTING_SPEED = 5.0;
-    public static final int STARTING_WIDTH = 25;
+    public static final int STARTING_WIDTH = 25; //changed radius to width cause rectangular shapes don't have a radius
     private final double fieldWidth;
     private final double fieldHeight;
     private String id;
     private Double speed;
     private Double direction;
     private Integer direction_lock;
+
+    /**
+     * SquarePuck constructor takes in
+     * @param fieldWidth - width of the field
+     * @param fieldHeight - height of the field
+     */
 
     public SquarePuck(double fieldWidth, double fieldHeight) {
         super();

@@ -7,15 +7,29 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+/**
+ * initializes paddles and objects for the pong game
+ * with addition of individually contributed circular bouncers that
+ * increases/decreases the speed of the puck. PuckFactory() switches
+ * what type of puck is selected everytime there is a goal. The speed buffs/debuffs
+ * are 'camouflaged' to make it harder to see/unexpected for players who can't tell.
+ */
 public class ClassicPong extends Game {
 
     private double fieldHeight;
     private double fieldWidth;
     private PuckFactory puckFactory;
     private AnchorPane field;
+    private AIPaddle botPaddle;
 
 
-
+    /**
+     * Constructor for ClassicPong
+     * @param victoryScore - stores points
+     * @param fieldWidth - width of the screen
+     * @param fieldHeight - height of the screen
+     * @param field - entire field
+     */
     public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight, AnchorPane field) {
         super(victoryScore);
 
@@ -89,18 +103,23 @@ public class ClassicPong extends Game {
         playerOne.setFill(Color.AZURE);
         addPlayerPaddle(1, playerOne);
 
-        Paddle playerTwo = new Paddle(
+        AIPaddle playerTwo = new AIPaddle(
                 "Player 2 Paddle",
                 this.fieldWidth - 50,
                 (this.fieldHeight / 2) - 50,
                 10,
                 100,
                 10,
-                this.fieldHeight - 10);
+                this.fieldHeight - 10,
+                puck);
         playerTwo.setFill(Color.AZURE);
         addPlayerPaddle(2, playerTwo);
+        botPaddle = playerTwo;
     }
 
+    public AIPaddle getBotPaddle() {
+        return botPaddle;
+    }
 
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
@@ -128,11 +147,10 @@ public class ClassicPong extends Game {
                 double angle;
                 if (collision.getObjectID() == "Player 1 Paddle") {
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
-                    puck.setSpeed(7.0); //increase speed to increase difficulty
                 } else {
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
-                    puck.setSpeed(7.0); //increase speed to increase difficulty
                 }
+                puck.setSpeed(7.0); //increase speed to increase difficulty
                 puck.setDirection(angle);
                 break;
         }
@@ -144,10 +162,13 @@ public class ClassicPong extends Game {
             field.getChildren().remove((Node) old_puck);
         });
         clearPucks();
+
         Puckable puck = puckFactory.createPuck();
         puck.setID("Random");
         addPuck(puck);
         field.getChildren().add((Node)puck);
+
+        botPaddle.setPuck(puck);
     }
 
     public static double mapRange(double a1, double a2, double b1, double b2, double s) {

@@ -5,9 +5,21 @@ import edu.csueastbay.cs401.pong.Puckable;
 
 import java.util.Random;
 
+/**
+ * class that implements a switch case between
+ * regular puck and square puck. the decision is
+ * randomized so players can get both pucks at different
+ * rates.
+ */
 public class PuckFactory {
     private double fieldWidth;
     private double fieldHeight;
+
+    /**
+     * PuckFactory constructor takes in
+     * @param fieldWidth - width of the field
+     * @param fieldHeight - height of the field
+     */
 
     public PuckFactory(double fieldWidth, double fieldHeight) {
         this.fieldHeight = fieldHeight;

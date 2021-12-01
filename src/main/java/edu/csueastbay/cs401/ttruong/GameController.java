@@ -20,6 +20,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * GameController displays the score(s) of each player and
+ * displays what keys are pressed. Keeps the game in motion
+ * and keeps track of pucks on the field.
+ */
+
 public class GameController implements Initializable {
     public static final int FIELD_WIDTH = 1300;
     public static final int FIELD_HEIGHT = 860;
@@ -35,6 +41,11 @@ public class GameController implements Initializable {
     @FXML
     Label playerTwoScore;
 
+    /**
+     * Constructor for initialize
+     * @param url - location used to resolve relative paths for the root object, or null if the location is not known
+     * @param resourceBundle - resources used to localize the root object, or null if the root object was not localized
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,6 +87,7 @@ public class GameController implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 game.move();
+                game.getBotPaddle().move();
                 playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
                 playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
 
