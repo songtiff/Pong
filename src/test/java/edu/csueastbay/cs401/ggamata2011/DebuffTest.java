@@ -1,5 +1,4 @@
-package edu.csueastbay.cs401.ggamata2011;
-
+import edu.csueastbay.cs401.ggamata2011.Debuff;
 import edu.csueastbay.cs401.pong.Collision;
 import javafx.scene.shape.Rectangle;
 import org.junit.jupiter.api.BeforeEach;

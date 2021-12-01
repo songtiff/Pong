@@ -24,7 +24,7 @@ public class Debuff extends Rectangle implements Collidable
 
     boolean InPlay = false;
 
-   // Image Debuffimg = new Image(getClass().getResource("debuff.jpg").toExternalForm());
+    Image Debuffimg = new Image(getClass().getResource("debuff.jpg").toExternalForm());
 
 
 
@@ -56,7 +56,7 @@ public class Debuff extends Rectangle implements Collidable
         setHeight(height);
         setWidth(width);
         setVisible(false);
-       // setFill(new ImagePattern(Debuffimg));
+        setFill(new ImagePattern(Debuffimg));
         InPlay = false;
     }
 

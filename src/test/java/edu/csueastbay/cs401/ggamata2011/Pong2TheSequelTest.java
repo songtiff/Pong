@@ -1,6 +1,5 @@
-package edu.csueastbay.cs401.ggamata2011;
-
 import edu.csueastbay.cs401.classic.ClassicPong;
+import edu.csueastbay.cs401.ggamata2011.Pong2TheSequel;
 import edu.csueastbay.cs401.pong.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -177,6 +177,7 @@ public class Pong2TheSequel extends Game {
             case "Goal":
                 if (collision.getObjectID() == "Player 1 Goal") {
                     addPointsToPlayer(1, 1);
+                    //Checks for Victor, if the Victor is player 1 game will halt
                     if(getVictor() != 1)
                     {
                         puck.reset();
@@ -184,6 +185,7 @@ public class Pong2TheSequel extends Game {
                     }
                     if(getVictor() == 1)
                     {
+                        //Halt Game Assets
                         AllUpgradesOutOfPlay();
                         puck.reset();
                         puck.setSpeed(0);
@@ -191,14 +193,15 @@ public class Pong2TheSequel extends Game {
 
                 } else if (collision.getObjectID() == "Player 2 Goal") {
                     addPointsToPlayer(2, 1);
+                    //Checks for Victor, if the Victor is player 2 game will halt
                     if(getVictor() != 2)
                     {
-
                         puck.reset();
 
                     }
                     if(getVictor() == 2)
                     {
+                        //Halt Game assets
                         AllUpgradesOutOfPlay();
                         puck.reset();
                         puck.setSpeed(0);
@@ -211,6 +214,8 @@ public class Pong2TheSequel extends Game {
             case "Paddle":
                 double puckCenter = ((Puck) puck).getCenterY();
                 double angle;
+                //Collision with paddle will set Either PaddleOnehit/PaddleTwohit
+                //to true depending on which object it collided with
                 if (collision.getObjectID() == "Player 1 Paddle") {
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
                     P1HitSound.play();
@@ -227,6 +232,8 @@ public class Pong2TheSequel extends Game {
                 puck.setDirection(angle);
                 break;
             case "UpgradeSpeed":
+                //Upgrade checks if speedItem is in play, will then
+                //see which paddle last hit the puck then modify speed
               if(SpeedItem.PlayState()) {
                   if (PaddleOneHit) {
                       System.out.println("Player 1 Obtained Speed Upgrade!");
@@ -240,6 +247,8 @@ public class Pong2TheSequel extends Game {
               }
                 break;
             case "UpgradeHeight":
+                //Upgrade checks if HeightItem is in play, will then
+                //see which paddle last hit the puck then modify speed
                 if(HeightItem.PlayState()) {
                     if (PaddleOneHit) {
                         System.out.println("Player 1 Obtained Height Upgrade!");
@@ -255,10 +264,14 @@ public class Pong2TheSequel extends Game {
 
                 break;
             case "Debuff":
+                //Upgrade checks if HeightItem is in play, will then randomly
+                //generate which debuff to use as well as which paddle hit last
+                //to apply debuff to opposing opponent
                 if(DebuffItem.PlayState()) {
                     if (PaddleOneHit)
                     {
                         System.out.println("Player 1 Debuffed Player 2");
+                        //Generate Random Number to pick which debuff
                         if(DebuffItem.DebuffRandomizer() >= 5)
                         {
                             System.out.println("Player 2 Height Debuff");
@@ -277,6 +290,7 @@ public class Pong2TheSequel extends Game {
                     {
 
                         System.out.println("Player 2 Debuffed Player 1");
+                        //Generate Random Number to pick which debuff
                         if(DebuffItem.DebuffRandomizer() >= 5)
                         {
                             System.out.println("Player 1 Height Debuff");
@@ -322,6 +336,7 @@ public class Pong2TheSequel extends Game {
             Collision HeightCollision = HeightItem.getCollision((Shape)puck);
             Collision DebuffCollision = DebuffItem.getCollision((Shape)puck);
 
+            //Check Collision for all three items
             if (SpeedCollision.isCollided())
             {
                 collisionHandler(puck, SpeedCollision);
@@ -387,6 +402,8 @@ public class Pong2TheSequel extends Game {
      */
     public void AddDebuff()
     {
+        //if Item is not in play, reset to new position on field
+        //then set Inplay to spawn on field
         if(!DebuffItem.InPlay)
         {
             DebuffItem.ResetPosition();
@@ -401,6 +418,8 @@ public class Pong2TheSequel extends Game {
      */
     public void AddSpeedUpgrade()
     {
+        //if Item is not in play, reset to new position on field
+        //then set Inplay to spawn on field
       if(!SpeedItem.InPlay)
       {
           SpeedItem.ResetPosition();
@@ -414,6 +433,8 @@ public class Pong2TheSequel extends Game {
      */
     public void AddHeightUpgrade()
     {
+        //if Item is not in play, reset to new position on field
+        //then set Inplay to spawn on field
         if(!HeightItem.InPlay)
         {
             HeightItem.ResetPosition();

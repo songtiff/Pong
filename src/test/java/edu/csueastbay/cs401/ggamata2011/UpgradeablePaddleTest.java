@@ -1,5 +1,4 @@
-package edu.csueastbay.cs401.ggamata2011;
-
+import edu.csueastbay.cs401.ggamata2011.UpgradeablePaddle;
 import edu.csueastbay.cs401.pong.Collision;
 import edu.csueastbay.cs401.pong.Paddle;
 import javafx.scene.shape.Rectangle;

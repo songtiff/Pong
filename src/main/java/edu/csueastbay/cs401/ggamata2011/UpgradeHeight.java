@@ -23,7 +23,7 @@ public class UpgradeHeight extends Rectangle implements Collidable
 
     boolean InPlay = false;
 
-    //Image Upgradeimg = new Image(getClass().getResource("heightup.png").toExternalForm());
+    Image Upgradeimg = new Image(getClass().getResource("heightup.png").toExternalForm());
 
 
     private static final int Default_Width = 5;
@@ -52,7 +52,7 @@ public class UpgradeHeight extends Rectangle implements Collidable
         this.RightBound = RightBound;
         setHeight(height);
         setWidth(width);
-        //setFill(new ImagePattern(Upgradeimg));
+        setFill(new ImagePattern(Upgradeimg));
         setVisible(false);
         InPlay = false;
     }
