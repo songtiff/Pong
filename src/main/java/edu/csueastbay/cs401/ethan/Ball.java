@@ -28,7 +28,12 @@ public class Ball extends NeonEntity implements Collidable {
     /** The mass of this ball. Used for collisions between two balls. */
     double mass;
 
-    /** Constructs a Ball with the given radius, at the given position */
+    /**
+     * Constructs a Ball with the given radius, at the given position
+     * @param radius the size of the ball
+     * @param x the horizontal position of the ball
+     * @param y the vertical position of the ball
+     */
     public Ball(double radius, double x, double y) {
         this.radius = new SimpleDoubleProperty(radius);
         this.x = x;
@@ -76,7 +81,7 @@ public class Ball extends NeonEntity implements Collidable {
     private Set<Collidable> exceptions = new HashSet<>();
 
     /**
-     * Balls move based on their speed <{@link Ball#dx}, {@link Ball#dy}>, and bounce off of other Balls,
+     * Balls move based on their speed ({@link Ball#dx}, {@link Ball#dy}), and bounce off of other Balls,
      *  {@link Paddle Paddles}, and the top and bottom of {@link Ball#game}'s {@link PongGame#bounds bounds}.
      * @param delta elapsed time since last call, in seconds. Used to normalize motion.
      */
