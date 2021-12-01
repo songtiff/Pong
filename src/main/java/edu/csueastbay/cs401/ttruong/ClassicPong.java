@@ -15,8 +15,6 @@ public class ClassicPong extends Game {
     private AnchorPane field;
 
 
-    //speed boost variables
-    public double puck_speed_boost;
 
     public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight, AnchorPane field) {
         super(victoryScore);
@@ -26,10 +24,12 @@ public class ClassicPong extends Game {
         this.field = field;
         this.puckFactory = new PuckFactory(fieldWidth, fieldHeight);
 
+        //use puckFactory
         Puckable puck = puckFactory.createPuck();
         puck.setID("Classic");
         addPuck(puck);
 
+        //create objects for boost and slow when collided with puck
         SpeedBoost zoom1 = new SpeedBoost(this.fieldWidth, this.fieldHeight);
         zoom1.setId("Boost Top Left");
         zoom1.setCenterX(200);
@@ -105,10 +105,10 @@ public class ClassicPong extends Game {
     @Override
     public void collisionHandler(Puckable puck, Collision collision) {
         switch (collision.getType()) {
-            case "SpeedBuff":
+            case "SpeedBuff": //increase buff speed when collided
                 puck.setSpeed(10.0);
                 break;
-            case "SpeedDebuff":
+            case "SpeedDebuff": //slow down puck when collided
                 puck.setSpeed(2.0);
                 break;
             case "Wall":
@@ -128,12 +128,10 @@ public class ClassicPong extends Game {
                 double angle;
                 if (collision.getObjectID() == "Player 1 Paddle") {
                     angle = mapRange(collision.getTop(), collision.getBottom(), -45, 45, puckCenter);
-                    puck_speed_boost = puck.getSpeed();
-                    puck_speed_boost += 2.5;
+                    puck.setSpeed(7.0); //increase speed to increase difficulty
                 } else {
                     angle = mapRange(collision.getTop(), collision.getBottom(), 225, 135, puckCenter);
-                    puck_speed_boost = puck.getSpeed();
-                    puck_speed_boost += 2.5;
+                    puck.setSpeed(7.0); //increase speed to increase difficulty
                 }
                 puck.setDirection(angle);
                 break;

@@ -5,6 +5,7 @@ import edu.csueastbay.cs401.pong.Collision;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
+//create class for speedbost obj
 public class SpeedBoost extends Circle implements Collidable {
     private final double fieldWidth;
     private final double fieldHeight;
