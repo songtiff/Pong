@@ -1,5 +1,6 @@
 package edu.csueastbay.cs401.psander.game.scripts;
 
+import edu.csueastbay.cs401.psander.engine.audio.AudioManager;
 import edu.csueastbay.cs401.psander.engine.math.Utility;
 import edu.csueastbay.cs401.psander.engine.math.Vector2D;
 import edu.csueastbay.cs401.psander.engine.physics.BoxCollider;
@@ -27,6 +28,17 @@ public class PlainBallCollisionListener extends CollisionListener {
 
             double centerAngle = 0.0, ballCenter = 0.0, angleMin = 0.0, angleMax = 0.0,
                     paddleMin = 0.0, paddleMax = 0.0;
+
+            // Handling different types of sound hits
+            var pos = getOwner().Transform().getWorldPosition();
+            pos.add(new Vector2D(collider.getWidth()/2, collider.getHeight()/2));
+            if (name == "wall")
+                AudioManager.playSoundEffect("WallHit", pos);
+            else if (name == "goal")
+                AudioManager.playSoundEffect("GoalHit", pos);
+            else if (name == "vertical paddle" || name == "horizontal paddle")
+                AudioManager.playSoundEffect("PaddleHit", pos);
+
 
             // Now check for paddles to adjust the angle of reflection
             if (name == "vertical paddle" && side.hasHorizontalComponent()) {
