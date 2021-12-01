@@ -61,6 +61,28 @@ public class UpgradeablePaddle extends Paddle
   }
 
   /**
+   * Returns the current speed modifier that gets added to starting speed
+   * for testing purposes only
+   * @return a double value UPGRADE_SPEED
+   */
+  public double GetSpeedModifier()
+  {
+    return UPGRADE_SPEED;
+  }
+
+  /**
+   * Returns the current height modifier that gets added to starting speed
+   * for testing purposes only
+   * @return a double value UPGRADE_HEIGHT
+   */
+  public double GetHeightModifier()
+  {
+    return UPGRADE_SPEED;
+  }
+
+
+
+  /**
    *Function takes a double generated from UpgradeHeight to modify
    * its own Speed
    * @param boost added to upgrade speed to modify a paddles speed

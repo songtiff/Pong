@@ -24,7 +24,7 @@ public class Debuff extends Rectangle implements Collidable
 
     boolean InPlay = false;
 
-    Image Debuffimg = new Image(getClass().getResource("debuff.jpg").toExternalForm());
+   // Image Debuffimg = new Image(getClass().getResource("debuff.jpg").toExternalForm());
 
 
 
@@ -56,7 +56,7 @@ public class Debuff extends Rectangle implements Collidable
         setHeight(height);
         setWidth(width);
         setVisible(false);
-        setFill(new ImagePattern(Debuffimg));
+       // setFill(new ImagePattern(Debuffimg));
         InPlay = false;
     }
 
@@ -68,8 +68,7 @@ public class Debuff extends Rectangle implements Collidable
      */
     @Override
     public Collision getCollision(Shape shape) {
-        return new Collision(
-                "Debuff",
+        return new Collision("Debuff",
                 this.id,
                 this.getLayoutBounds().intersects(shape.getLayoutBounds()),
                 this.getLayoutBounds().getMinY(),
@@ -150,7 +149,8 @@ public class Debuff extends Rectangle implements Collidable
         Random rand = new Random();
         double HeightDebuff = rand.nextInt(25)+5;
         OutOfPlay();
-        return (-1)*HeightDebuff;
+        HeightDebuff = HeightDebuff*(-1);
+        return HeightDebuff;
     }
 
     /**
@@ -164,7 +164,8 @@ public class Debuff extends Rectangle implements Collidable
         Random rand = new Random();
         double SpeedDebuff = (0.5) + ((2.50)-(0.5))*rand.nextDouble();;
         OutOfPlay();
-        return (-1)*SpeedDebuff;
+        SpeedDebuff = SpeedDebuff*(-1);
+        return SpeedDebuff;
     }
 
     /**

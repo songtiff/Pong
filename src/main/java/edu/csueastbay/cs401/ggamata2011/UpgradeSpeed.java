@@ -23,7 +23,7 @@ public class UpgradeSpeed extends Rectangle implements Collidable
     private double RightBound;
     boolean InPlay = false;
 
-    Image Upgradeimg = new Image(getClass().getResource("speedup.png").toExternalForm());
+    //Image Upgradeimg = new Image(getClass().getResource("speedup.png").toExternalForm());
 
 
 
@@ -53,7 +53,7 @@ public class UpgradeSpeed extends Rectangle implements Collidable
         this.RightBound = RightBound;
         setHeight(height);
         setWidth(width);
-        setFill(new ImagePattern(Upgradeimg));
+        //setFill(new ImagePattern(Upgradeimg));
         InPlay = false;
         setVisible(false);
     }
