@@ -12,6 +12,7 @@ module edu.csueastbay.cs401.pong {
     opens edu.csueastbay.cs401.ethan.game to javafx.base;
     opens edu.csueastbay.cs401.nly to javafx.fxml;
     opens edu.csueastbay.cs401.StarWarsPong to javafx.fxml;
+    opens edu.csueastbay.cs401.ronan to javafx.fxml;
 
     exports edu.csueastbay.cs401.pong;
 }
