@@ -29,6 +29,9 @@ public class GameController implements Initializable {
         _game = PongWare.getInstance();
         Platform.runLater(()-> _fieldPane.requestFocus());
         _game.init(_canvas.getGraphicsContext2D());
+        _fieldPane.focusedProperty().addListener((obj, oldVal, newVal) -> {
+            _game.setPlaying(newVal);
+        });
     }
 
     /**

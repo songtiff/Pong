@@ -96,6 +96,13 @@ public class PongWare {
         _previousNano = System.nanoTime();
     }
 
+    void setPlaying(boolean playing) {
+        if (playing)
+            _timeline.play();
+        else
+            _timeline.stop();
+    }
+
     /**
      * Accepts incoming keyboard input to dispatch
      * it to the proper handler.
