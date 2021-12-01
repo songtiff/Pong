@@ -121,8 +121,7 @@ public class PyushPong extends MyGame {
                 break;
             case "Goal":
                 if (collision.getObjectID() == "Player 1 Goal") {
-                    goalSound.play();// and puck.getStatus = active
-
+                    goalSound.play();
                     if(getPlayerScore(1) > getPlayerScore(2))
                     {
                         diff = getPlayerScore(1) - getPlayerScore(2);
@@ -180,8 +179,6 @@ public class PyushPong extends MyGame {
                 else if (collision.getObjectID() == "Player 2 Goal")
                 {
                     goalSound.play();
-                    // p2 lead p1
-
                     if (getPlayerScore(2) > getPlayerScore(1))
                     {
                         diff = getPlayerScore(2) - getPlayerScore(1);
@@ -223,10 +220,7 @@ public class PyushPong extends MyGame {
                            if(getPlayerScore(2) == getVictoryScore())
                            {
                                toastino2 = true;
-
-
                            }
-
                        }
                     }
                     else

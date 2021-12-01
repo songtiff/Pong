@@ -30,8 +30,11 @@ public class MyPuck extends Circle implements Puckable {
 
     }
 
-
-
+    /**
+     * Initializes a puck
+     * @param in_puckradius the radius to initialize
+     * @return    void
+     */
 
     public void engage(int in_puckradius) {
         Random random = new Random();
@@ -48,6 +51,10 @@ public class MyPuck extends Circle implements Puckable {
         }
 
     }
+    /**
+     * Resets a puck
+     * @return    void
+     */
     @Override
     public void reset() {
         Random random = new Random();
@@ -100,16 +107,14 @@ public int getPuck_radius(){
     public void setDirection(double angle) {
         this.direction = angle;
     }
-
     @Override
     public boolean getStatus()
     {
         return status;
     }
-@Override
-
-public void setStatus(String a)
-{
+    @Override
+    public void setStatus(String a)
+        {
     if (a == "True")
     {
         status = true;
@@ -123,7 +128,7 @@ public void setStatus(String a)
     {
         System.out.println("Nada");
     }
-}
+        }
 
 
     @Override
@@ -133,9 +138,4 @@ public void setStatus(String a)
         setCenterX(getCenterX() + deltaX);
         setCenterY(getCenterY() + deltaY);
     }
-
-
-
-
-
 }

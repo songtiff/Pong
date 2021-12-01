@@ -46,9 +46,6 @@ public class GameController implements Initializable {
         addGameElementsToField();
         setUpTimeline();
 
-
-
-
     }
 
 
@@ -65,37 +62,10 @@ public class GameController implements Initializable {
 
     }
 
-
-    public void banzo(KeyCode code) {
-        switch (code) {
-
-            case X:
-                game.slowDown(game.getPucks().get(0));
-                break;
-            case B:
-
-
-
-                break;
-            case N:
-                game.playOnePaddle.speedUp();
-                break;
-
-
-
-        }
-    }
-
-
-
     @FXML
     public void keyPressed(KeyEvent event) {
         System.out.println("Pressed: " + event.getCode());
         game.keyPressed(event.getCode());
-
-
-
-
         if(game.toastino)
         {
             timeline.stop();

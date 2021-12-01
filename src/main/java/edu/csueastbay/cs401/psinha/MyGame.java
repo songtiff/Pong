@@ -14,6 +14,12 @@ public abstract class MyGame {
     private int victoryScore;
     protected ArrayList<Collidable> objects;
     protected ArrayList<Puckable> pucks;
+    /**
+     * Returns a new Game
+     * @param  victoryScore  integer that decides maximum points in the game
+     * @return      a new Game
+     * @see         Image
+     */
 
     public MyGame(int victoryScore) {
         this.victoryScore = victoryScore;
@@ -26,36 +32,57 @@ public abstract class MyGame {
 
     }
 
-
+    /**
+     * Returns a player's score of a two player game
+     * @param  player  integer that decides which player to evaluate
+     * @return      the score of a player
+     */
     public int getPlayerScore(int player) { // can work with this
         if (player == 1) return playerOneScore;
         else if (player == 2) return playerTwoScore;
         return 0;
     }
-
+    /**
+     * Adds points to player of a two player game
+     * @param  player  integer that decides which player to evaluate
+     * @return      void
+     */
     public void addPointsToPlayer(int player, int value) {
         if (player == 1)  playerOneScore += value;
         else if (player == 2) playerTwoScore += value;
     }
+    /**
+     * Sets the victory score of the game
+     * @param  victoryScore  integer that sets victoryScore
+     * @return      nothing
+     */
 
     public void setVictoryScore(int score) {
         victoryScore = score;
     }
 
+    /**
+     * Returns the victory score of the game
+     * @return     the victory score of the game
+     */
+
     public int getVictoryScore() {
         return victoryScore;
     }
 
-    public int getVictor() {
-        int victor = 0;
-        if (playerOneScore >= victoryScore) victor = 1;
-        else if (playerTwoScore>= victoryScore) victor =2;
-        return victor;
-    }
-
+    /**
+     * Adds object to list of collidables
+     * @param  object  that is added
+     * @return      void
+     */
     public void addObject(Collidable object) {
         objects.add(object);
     }
+
+    /**
+     * Returns list of collidables
+     * @return    the list of collidables
+     */
 
     public ArrayList<Collidable> getObjects() {
         // Shallow copy so the object collection can not be accessed but
@@ -63,20 +90,41 @@ public abstract class MyGame {
         // are accessible.
         return (ArrayList<Collidable>) objects.clone();
     }
-
+    /**
+     * Adds object to list of puckables
+     * @param  object  that is added
+     * @return      void
+     */
     public void addPuck(Puckable ball) {
         this.pucks.add(ball);
     }
+    /**
+     * Returns list of pucks
+     * @return    the list of pucks
+     */
 
     public ArrayList<Puckable> getPucks() {
         // Also shallow copy
         return (ArrayList<Puckable>) pucks.clone();
     }
+
+    /**
+     * Speeds up a puck to a max speed of 20
+     * @param a a puckable object ( a puck )
+     * @return    void
+     */
     public void speedUp(Puckable a)
     {
-        a.setSpeed(a.getSpeed() + 1);
+        if (a.getSpeed() < 20) {
+            a.setSpeed(a.getSpeed() + 1);
+        }
 
     }
+    /**
+     * Slows down a puck
+     * @param a a puckable object ( a puck )
+     * @return    void
+     */
     public void slowDown (Puckable a)
     {
         if (a.getSpeed() > 0 ) {
@@ -84,6 +132,7 @@ public abstract class MyGame {
         }
 
     }
+
     public void move() {
 
         playOnePaddle.move();
@@ -115,7 +164,17 @@ public abstract class MyGame {
     }
 
     public abstract void collisionHandler(Puckable puck, Collision collision);
-
+    /**
+     * Controls of the game
+     * Player one move : W , A , S , D
+     * Player two Move: I , J, L, K
+     * Speed up little puck: z
+     * Slow down little puck: x
+     * Paddle1 speedup/slowdown, T, Y
+     * Paddle2 speedup/slowdown, G,H
+     * @param code a keycode from keyboard
+     * @return   void
+     */
     public void keyPressed(KeyCode code) {
         switch (code) {
             case W:
@@ -148,6 +207,19 @@ public abstract class MyGame {
             case X:
                 this.slowDown(this.pucks.get(0));
                 break;
+            case T:
+                playOnePaddle.speedUp();
+                break;
+            case Y:
+                playOnePaddle.slowDown();
+                break;
+            case G:
+                playTwoPaddle.speedUp();
+                break;
+            case H:
+                playTwoPaddle.slowDown();
+                break;
+
         }
     }
 

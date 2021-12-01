@@ -16,7 +16,17 @@ public class MyPaddle extends Rectangle implements Collidable{
     enum Direction {UP, Down, LEFT, RIGHT ,STILL}
     private Direction moving;
 
-
+    /**
+     * Creates a Paddle
+     * @param id, the id
+     * @param x, the x location
+     * @param y, the y location
+     * @param width, the width
+     * @param height, the height
+     * @param topBound, limits y movement
+     * @param bottomBound , limits y movement
+     * @return    a new Paddle
+     */
     public MyPaddle(String id, double x, double y, double width, double height, double topBound, double bottomBound) {
         super(x, y, width, height);
         this.id = id;
@@ -51,6 +61,11 @@ public class MyPaddle extends Rectangle implements Collidable{
     public String getType() {
         return "Paddle";
     }
+
+    /**
+     * Sets direction of paddle according to input
+
+     */
 
     public void move() {
         if (moving == Direction.UP) {
@@ -105,13 +120,22 @@ public class MyPaddle extends Rectangle implements Collidable{
     public double getSpeed(){return speed;}
 
     public void setSpeed(double a){speed = a;}
+    /**
+     * Speeds up a paddle to a max speed of 15
 
-    public void speedUp(){speed = speed + 1;}
+     */
+    public void speedUp() {
+        if (getSpeed() < 15) {
+            speed = speed + 1;
+        }
+    }
+    /**
+     * Slow down a paddle to minimum speed of 2
 
-    public void slowDown() {speed = speed -1 ;}
-
-
-
-
-
+     */
+    public void slowDown() {
+        if (speed > 2) {
+            speed = speed -1 ;
+        }
+    }
 }
