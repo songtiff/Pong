@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCode;
 
 public class VerticalPaddle extends Script {
     private int _player;
-    private final double _steerSpeed = 100.0;
+    private final double _steerSpeed = 250.0;
 
     public VerticalPaddle(int player) {
         _player = player;

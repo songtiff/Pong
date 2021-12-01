@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class PlainBallCollisionListener extends CollisionListener {
 
     // Range of reflection in degrees, should be less than 180.
-    private final double _reflectionRange = 179;
+    private final double _reflectionRange = 120;
+    private final double _speedIncrement = 0.2;
 
     public void processCollisions(ArrayList<CollisionInformation> collisions) {
         var collider = getOwner().getComponent(BoxCollider.class);
@@ -39,6 +40,12 @@ public class PlainBallCollisionListener extends CollisionListener {
             else if (name == "vertical paddle" || name == "horizontal paddle")
                 AudioManager.playSoundEffect("PaddleHit", pos);
 
+            // Speed increses
+            if (name == "vertical paddle" || name == "horizontal paddle") {
+                var v = collider.getVelocity();
+                v.add(new Vector2D(_speedIncrement, _speedIncrement));
+                collider.setVelocity(v);
+            }
 
             // Now check for paddles to adjust the angle of reflection
             if (name == "vertical paddle" && side.hasHorizontalComponent()) {
