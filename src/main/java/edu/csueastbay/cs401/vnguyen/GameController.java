@@ -47,7 +47,6 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
     /**
      * This is to set up scene and update the elements
-     * @param args contain command line arguments
      */
     public static final int FIELD_WIDTH = 1300;
     public static final int FIELD_HEIGHT = 860;

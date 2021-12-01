@@ -19,7 +19,6 @@ public class MyPaddle extends Rectangle implements Collidable {
     /**
      *This is the paddles .
      * Added new features for paddles.
-     * @param args contain command line arguments
      */
 
     public static final double STARTING_SPEED = 5.0;

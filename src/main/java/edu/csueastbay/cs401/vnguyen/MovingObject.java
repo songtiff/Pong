@@ -20,7 +20,7 @@ import java.util.Random;
 public class MovingObject extends Rectangle implements Collidable {
     /**
      * This is Moving Object. Added distraction for the players
-     * @param args contain command line arguments
+     *
      */
     public static final double STARTING_SPEED = 5.0;
     private final String id;

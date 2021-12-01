@@ -14,7 +14,6 @@ public class ViPong extends MyGame {
      *This is the interface of the game.
      * Added moving object and how to handle them.
      * Added new features for paddles.
-     * @param args contain command line arguments
      */
     
     private double fieldHeight;

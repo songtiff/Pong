@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public abstract class MyGame {
     /**
      * This is the game's activity
-     * @param args contain command line arguments
      */
     private int playerOneScore;
     protected MyPaddle playOnePaddle;

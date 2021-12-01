@@ -23,14 +23,20 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound {
     /**
-     * This is the game's activity
-     * @param args contain command line arguments
+     * This is the sound
      */
 
 
     Clip clip;
     AudioInputStream audioInputStream;
 
+    /**
+     * Constructor
+     * @param filePath
+     * @throws UnsupportedAudioFileException
+     * @throws IOException
+     * @throws LineUnavailableException
+     */
     // constructor to initialize streams and clip
     public Sound(String filePath)
             throws UnsupportedAudioFileException,
