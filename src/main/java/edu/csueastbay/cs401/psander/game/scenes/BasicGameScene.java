@@ -1,7 +1,6 @@
 package edu.csueastbay.cs401.psander.game.scenes;
 
 import edu.csueastbay.cs401.psander.PongWare;
-import edu.csueastbay.cs401.psander.demo.demo3renderlayers.FakeBounce2Script;
 import edu.csueastbay.cs401.psander.engine.common.HorizontalAlignment;
 import edu.csueastbay.cs401.psander.engine.gameObjects.GameObject;
 import edu.csueastbay.cs401.psander.engine.math.Vector2D;
@@ -11,10 +10,7 @@ import edu.csueastbay.cs401.psander.engine.render.RectangleRenderer;
 import edu.csueastbay.cs401.psander.engine.render.TextRenderer;
 import edu.csueastbay.cs401.psander.engine.scenes.Scene;
 import edu.csueastbay.cs401.psander.game.scripts.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-
-import java.util.Vector;
 
 public class BasicGameScene extends Scene {
     @Override
@@ -71,12 +67,6 @@ public class BasicGameScene extends Scene {
         stripe.Transform().Position().set(PongWare.getFieldWidth() / 2 - stripeWidth/2, 0);
         stripe.addComponent(new RectangleRenderer(stripeWidth, PongWare.getFieldHeight(), Color.WHITE, -1));
         addGameObject(stripe);
-
-
-        var fakeBounce = new GameObject("fake bounce");
-        fakeBounce.addComponent(new FakeBounce2Script(300, 300, new Vector2D(.5, .5)));
-        fakeBounce.addComponent(new RectangleRenderer(300, 300, Color.DARKBLUE, -5));
-        addGameObject(fakeBounce);
     }
 
     private GameObject makeGoal(double x, double y, double width, double height, Color color, int owner) {
