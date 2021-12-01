@@ -56,7 +56,7 @@ public class MainMenuController implements Initializable {
         registry.register("Ethan Ketell", "ethan", "Neon Pong+");
         registry.register("Rahul Ravi", "rravi", "The regular pong game with additions that" +
                 " that make the experience feel like a full fledged Pong game! ");
-
+        registry.register("Lucas Bernard", "lbernard", "Pong");
         registry.reset();
 
         prefWidth = new SimpleDoubleProperty(scalePane.getPrefWidth());

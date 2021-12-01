@@ -22,6 +22,7 @@ module edu.csueastbay.cs401.pong {
     opens edu.csueastbay.cs401.jzepeda to javafx.fxml;
     opens edu.csueastbay.cs401.pyae to javafx.fxml;
     opens edu.csueastbay.cs401.rravi to javafx.fxml;
+    opens edu.csueastbay.cs401.lbernard to javafx.fxml;
 
     exports edu.csueastbay.cs401.pong;
 
