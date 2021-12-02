@@ -19,6 +19,7 @@ public class ClassicPong extends Game {
         puck.setID("Classic");
         addPuck(puck);
 
+
         Wall top = new Wall("Top Wall", 0,0, this.fieldWidth, 10);
         top.setFill(Color.WHITE);
         addObject(top);

@@ -4,6 +4,7 @@ module edu.csueastbay.cs401.pong {
     requires javafx.media;
     requires javafx.graphics;
     requires javafx.base;
+    requires java.desktop;
 
     opens edu.csueastbay.cs401.pong to javafx.fxml, javafx.graphics, javafx.media;
     opens edu.csueastbay.cs401.classic to javafx.fxml;
@@ -27,6 +28,11 @@ module edu.csueastbay.cs401.pong {
     opens edu.csueastbay.cs401.csaeteurn to javafx.fxml;
     opens edu.csueastbay.cs401.HanishPatel to javafx.fxml;
     opens edu.csueastbay.cs401.psinha to javafx.fxml;
+    opens edu.csueastbay.cs401.ggamata2011 to javafx.fxml;
+    opens edu.csueastbay.cs401.vnguyen to javafx.fxml;
+    opens edu.csueastbay.cs401.mattsPong to javafx.fxml;
+    opens edu.csueastbay.cs401.LSingh to javafx.fxml;
+    opens edu.csueastbay.cs401.psander to javafx.fxml;
 
     exports edu.csueastbay.cs401.pong;
 
