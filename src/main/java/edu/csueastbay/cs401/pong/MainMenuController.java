@@ -47,11 +47,22 @@ public class MainMenuController implements Initializable {
         registry.register("Felix Choy's Pong", "felixchoypong", "Modified Pong Game");
         registry.register("Katherine Hettick-Leir", "khlPong", "Small quality of life upgrades and additions.");
         registry.register("Srishti's Pong", "srishti", "Srishti's Pong Game");
+        registry.register("Pyae Maung", "pyae", "Organic Pong");
         registry.register("Taylor Hansen", "thansen", "Four Way Pong Game");
+        registry.register("Ngon Ly", "nly", "Get Closer to the monitor...");
         registry.register("Joshua Rodriguez", "StarWarsPong", "A simple Star Wars themed" +
                 " ping pong game that is fast paced with power small power zones that make the game experience interesting. ");
         registry.register("Jonathan Zepeda", "jzepeda", "Pong Game");
         registry.register("Ethan Ketell", "ethan", "Neon Pong+");
+        registry.register("Rahul Ravi", "rravi", "The regular pong game with additions that" +
+                " that make the experience feel like a full fledged Pong game! ");
+        registry.register("Lucas Bernard", "lbernard", "Pong");
+        registry.register("Ronan Lépée", "ronan", "A football themed pong");
+        registry.register("Chan Saeteurn", "csaeteurn", "Background image, Victory message " +
+                "and restart button");
+        registry.register("Hanish Patel","HanishPatel","Pong Ball");
+        registry.register("Pyush Pong", "psinha", "Pong with Adjustments");
+
 
         registry.reset();
 
@@ -68,7 +79,7 @@ public class MainMenuController implements Initializable {
         while (registry.next()) {
             Button gameButton = new Button();
             gameButton.setText(registry.getStudentName());
-            gameButton.setPrefWidth(180);
+            gameButton.setPrefWidth(280);
             gameButton.setOnAction(new EventHandler<ActionEvent>() {
                 private final String packageName = registry.getPackageName();
                 @Override
@@ -79,7 +90,6 @@ public class MainMenuController implements Initializable {
             studentGameList.getChildren().add(gameButton);
         }
     }
-
 
     private void loadGamePane(String template) {
         try {
@@ -93,7 +103,6 @@ public class MainMenuController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 }

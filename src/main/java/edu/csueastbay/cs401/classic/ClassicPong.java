@@ -85,6 +85,9 @@ public class ClassicPong extends Game {
                 }
                 puck.setDirection(angle);
                 break;
+            case "Restart":
+                puck.reset();
+                break;
 
         }
     }
