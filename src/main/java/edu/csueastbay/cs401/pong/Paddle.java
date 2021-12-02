@@ -54,7 +54,6 @@ public class Paddle extends Rectangle implements Collidable{
             setY(getY() + speed) ;
         }
 
-
         if (getY() < topBound) setY(topBound);
         double floor = bottomBound - getHeight();
         if (getY() > floor) setY(floor);
