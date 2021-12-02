@@ -1,30 +1,45 @@
-package edu.csueastbay.cs401.classic;
+package edu.csueastbay.cs401.LSingh;
 
+import edu.csueastbay.cs401.classic.ClassicPong;
 import edu.csueastbay.cs401.pong.Collidable;
 import edu.csueastbay.cs401.pong.Puckable;
+import edu.csueastbay.cs401.pong.Registry;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class GameController implements Initializable {
+public class LovejitsController implements Initializable {
     public static final int FIELD_WIDTH = 1300;
     public static final int FIELD_HEIGHT = 860;
     public static final int VICTORY_SCORE = 10;
 
-    private ClassicPong game;
+    private LovejitsPong game;
     private Timeline timeline;
 
     @FXML
@@ -36,8 +51,8 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("p[eeee");
-        game = new ClassicPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
+        game = new LovejitsPong(VICTORY_SCORE, FIELD_WIDTH, FIELD_HEIGHT);
+        Platform.runLater(()->fieldPane.requestFocus());
 
         addGameElementsToField();
         setUpTimeline();
@@ -55,6 +70,7 @@ public class GameController implements Initializable {
         ArrayList<Collidable> objects = game.getObjects();
         objects.forEach((object)-> {
             fieldPane.getChildren().add((Node) object);
+
         });
 
     }
@@ -76,7 +92,6 @@ public class GameController implements Initializable {
         timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                fieldPane.requestFocus();
                 game.move();
                 playerOneScore.setText(Integer.toString(game.getPlayerScore(1)));
                 playerTwoScore.setText(Integer.toString(game.getPlayerScore(2)));
