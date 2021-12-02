@@ -61,6 +61,8 @@ public class MainMenuController implements Initializable {
         registry.register("Chan Saeteurn", "csaeteurn", "Background image, Victory message " +
                 "and restart button");
         registry.register("Hanish Patel","HanishPatel","Pong Ball");
+        registry.register("Pyush Pong", "psinha", "Pong with Adjustments");
+
 
         registry.reset();
 
