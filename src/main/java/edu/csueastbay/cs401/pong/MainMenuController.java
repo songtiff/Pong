@@ -58,7 +58,8 @@ public class MainMenuController implements Initializable {
                 " that make the experience feel like a full fledged Pong game! ");
         registry.register("Lucas Bernard", "lbernard", "Pong");
         registry.register("Ronan Lépée", "ronan", "A football themed pong");
-
+        registry.register("Chan Saeteurn", "csaeteurn", "Background image, Victory message " +
+                "and restart button");
         registry.reset();
 
         prefWidth = new SimpleDoubleProperty(scalePane.getPrefWidth());

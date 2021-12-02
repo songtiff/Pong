@@ -1,15 +1,33 @@
-package edu.csueastbay.cs401.classic;
+/**
+ * 1st Improvement: Rematch button
+ * 2nd Improvement: Victory Screen
+ * 3rd Improvement: Background Image
+ * 4th Improvement: Player win streak indicator
+ * 5th Improvement: Player 1 & 2 Label
+ */
+
+package edu.csueastbay.cs401.csaeteurn;
 
 import edu.csueastbay.cs401.pong.*;
 import javafx.scene.paint.Color;
 
-public class ClassicPong extends Game {
-    
+public class SquidPong extends Game {
+
     private double fieldHeight;
     private double fieldWidth;
+    public int player1Score = 1;
+    public int player2Score = 1;
 
+    /**
+     * Method to get players win streak
+     */
+    public int getWinStreak(int player) {
+        if (player == 1) return player1Score++;
+        else if (player == 2) return player2Score++;
+        return 0;
+    }
 
-    public ClassicPong(int victoryScore, double fieldWidth, double fieldHeight) {
+    public SquidPong(int victoryScore, double fieldWidth, double fieldHeight) {
         super(victoryScore);
 
         this.fieldWidth = fieldWidth;
@@ -28,11 +46,11 @@ public class ClassicPong extends Game {
         addObject(bottom);
 
         Goal left = new Goal("Player 1 Goal", this.fieldWidth -10, 10, 10, this.fieldHeight - 20);
-        left.setFill(Color.RED);
+        left.setFill(Color.BLUE);
         addObject(left);
 
         Goal right = new Goal("Player 2 Goal", 0, 10, 10, this.fieldHeight - 20);
-        right.setFill(Color.BLUE);
+        right.setFill(Color.RED);
         addObject(right);
 
         Paddle playerOne = new Paddle(
@@ -87,8 +105,6 @@ public class ClassicPong extends Game {
                 break;
             case "Restart":
                 puck.reset();
-                break;
-
         }
     }
 
